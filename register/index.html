@@ -295,234 +295,748 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // Konfigurasi Supabase
-        const SUPABASE_URL = "https://mlvzybhlgohekytjeosv.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdnp5YmhsZ29oZWt5dGplb3N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMTk3ODksImV4cCI6MjEwNjU5NTc4OX0.rCXjNkAbhmyXesE5p9we_V5oUrLaQCQ1sOxhCRK66vk";
+/* =========================================================
+   SITENEXS - REGISTER SYSTEM
+   Supabase Auth + Clients
+========================================================= */
 
-        const { createClient } = supabase;
-        const _supabase = createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY,
-            {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: false
-                }
-            }
+const SUPABASE_URL =
+    "https://mlvzybhlgohekytjeosv.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdnp5YmhsZ29lO"
+    + "2V5dGplb3N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMTk3ODksImV4cCI6MjEwNjU5NTc4OX0.rCXjNkAbhmyXesE5p9we_V5oUrLaQCQ1sOxhCRK66vk";
+
+const { createClient } = supabase;
+
+const _supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: false
+        }
+    }
+);
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(title, message, type = "success") {
+
+    const container =
+        document.getElementById("toast-container");
+
+    const toast =
+        document.createElement("div");
+
+    toast.className =
+        `toast ${type}`;
+
+    const iconClass =
+        type === "success"
+            ? "fa-solid fa-circle-check"
+            : "fa-solid fa-circle-exclamation";
+
+    toast.innerHTML = `
+        <div class="toast-icon">
+            <i class="${iconClass}"></i>
+        </div>
+
+        <div class="toast-content">
+            <div class="toast-title">
+                ${escapeHtml(title)}
+            </div>
+
+            <div class="toast-message">
+                ${escapeHtml(message)}
+            </div>
+        </div>
+
+        <button
+            class="toast-close"
+            aria-label="Tutup">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 10);
+
+    toast
+        .querySelector(".toast-close")
+        .addEventListener("click", () => {
+            removeToast(toast);
+        });
+
+    setTimeout(() => {
+        removeToast(toast);
+    }, 5000);
+}
+
+
+function removeToast(toast) {
+
+    toast.classList.remove("show");
+
+    setTimeout(() => {
+        toast.remove();
+    }, 300);
+}
+
+
+/* =========================================================
+   SECURITY HELPER
+========================================================= */
+
+function escapeHtml(value = "") {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const logoInput =
+    document.getElementById("store-logo");
+
+const logoPreviewBox =
+    document.getElementById("logo-preview-box");
+
+const logoPreviewImg =
+    document.getElementById("logo-preview-img");
+
+const logoFileName =
+    document.getElementById("logo-file-name");
+
+const logoRemoveBtn =
+    document.getElementById("logo-remove-btn");
+
+const passwordInput =
+    document.getElementById("password-input");
+
+const togglePasswordBtn =
+    document.getElementById("toggle-password");
+
+const eyeIcon =
+    document.getElementById("eye-icon");
+
+
+/* =========================================================
+   LOGO PREVIEW
+========================================================= */
+
+logoInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+        showToast(
+            "Format Tidak Didukung",
+            "Gunakan JPG, PNG, atau WebP.",
+            "error"
         );
 
-        function showToast(title, message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const iconClass = type === 'success' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
-            toast.innerHTML = `
-                <div class="toast-icon"><i class="${iconClass}"></i></div>
-                <div class="toast-content">
-                    <div class="toast-title">${title}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-                <button class="toast-close" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
-            `;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 10);
-            toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
-            setTimeout(() => removeToast(toast), 5000);
+        logoInput.value = "";
+
+        return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+
+        showToast(
+            "Ukuran Terlalu Besar",
+            "Logo maksimal berukuran 2 MB.",
+            "error"
+        );
+
+        logoInput.value = "";
+
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+    reader.onload = function (e) {
+
+        logoPreviewImg.src =
+            e.target.result;
+
+        logoFileName.textContent =
+            file.name;
+
+        logoPreviewBox
+            .classList
+            .add("show");
+    };
+
+    reader.readAsDataURL(file);
+});
+
+
+logoRemoveBtn.addEventListener("click", function () {
+
+    logoInput.value = "";
+
+    logoPreviewImg.src = "";
+
+    logoFileName.textContent = "";
+
+    logoPreviewBox
+        .classList
+        .remove("show");
+});
+
+
+/* =========================================================
+   LOCAL DRAFT
+========================================================= */
+
+const fields = [
+    "owner-name",
+    "store-name",
+    "store-address",
+    "store-social",
+    "email-input",
+    "whatsapp",
+    "service-select"
+];
+
+fields.forEach(id => {
+
+    const element =
+        document.getElementById(id);
+
+    if (!element) return;
+
+    const saved =
+        localStorage.getItem(
+            "draft_" + id
+        );
+
+    if (saved) {
+        element.value = saved;
+    }
+
+    element.addEventListener(
+        "input",
+        () => {
+
+            localStorage.setItem(
+                "draft_" + id,
+                element.value
+            );
+        }
+    );
+});
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+togglePasswordBtn.addEventListener(
+    "click",
+    () => {
+
+        const isPassword =
+            passwordInput.type === "password";
+
+        passwordInput.type =
+            isPassword
+                ? "text"
+                : "password";
+
+        eyeIcon.classList.toggle(
+            "fa-eye",
+            !isPassword
+        );
+
+        eyeIcon.classList.toggle(
+            "fa-eye-slash",
+            isPassword
+        );
+    }
+);
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+
+const bar1 =
+    document.getElementById("bar-1");
+
+const bar2 =
+    document.getElementById("bar-2");
+
+const bar3 =
+    document.getElementById("bar-3");
+
+const strengthText =
+    document.getElementById("strength-text");
+
+
+passwordInput.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            passwordInput.value;
+
+        bar1.style.backgroundColor =
+            "transparent";
+
+        bar2.style.backgroundColor =
+            "transparent";
+
+        bar3.style.backgroundColor =
+            "transparent";
+
+        if (!value.length) {
+
+            strengthText.textContent =
+                "Minimal 6 karakter";
+
+            return;
         }
 
-        function removeToast(toast) {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
+        if (value.length < 6) {
+
+            bar1.style.backgroundColor =
+                "#ef4444";
+
+            strengthText.textContent =
+                "Terlalu pendek";
+
+        } else if (value.length < 8) {
+
+            bar1.style.backgroundColor =
+                "#f59e0b";
+
+            bar2.style.backgroundColor =
+                "#f59e0b";
+
+            strengthText.textContent =
+                "Cukup";
+
+        } else {
+
+            bar1.style.backgroundColor =
+                "#10b981";
+
+            bar2.style.backgroundColor =
+                "#10b981";
+
+            bar3.style.backgroundColor =
+                "#10b981";
+
+            strengthText.textContent =
+                "Kuat";
         }
+    }
+);
 
-        const logoInput = document.getElementById('store-logo');
-        const logoPreviewBox = document.getElementById('logo-preview-box');
-        const logoPreviewImg = document.getElementById('logo-preview-img');
-        const logoFileName = document.getElementById('logo-file-name');
-        const logoRemoveBtn = document.getElementById('logo-remove-btn');
 
-        logoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                    showToast('Ukuran Terlalu Besar', 'File logo maksimal berukuran 2 MB.', 'error');
-                    logoInput.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    logoPreviewImg.src = e.target.result;
-                    logoFileName.textContent = file.name;
-                    logoPreviewBox.classList.add('show');
-                }
-                reader.readAsDataURL(file);
-            }
-        });
+/* =========================================================
+   REGISTER
+========================================================= */
 
-        logoRemoveBtn.addEventListener('click', function() {
-            logoInput.value = '';
-            logoPreviewImg.src = '';
-            logoFileName.textContent = '';
-            logoPreviewBox.classList.remove('show');
-        });
+document
+    .getElementById("register-form")
+    .addEventListener(
+        "submit",
+        async function (e) {
 
-        const fields = ['owner-name', 'store-name', 'store-address', 'store-social', 'email-input', 'whatsapp', 'service-select'];
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                const saved = localStorage.getItem('draft_' + id);
-                if (saved) el.value = saved;
-                el.addEventListener('input', () => localStorage.setItem('draft_' + id, el.value));
-            }
-        });
+            e.preventDefault();
 
-        const togglePasswordBtn = document.getElementById('toggle-password');
-        const passwordInput = document.getElementById('password-input');
-        const eyeIcon = document.getElementById('eye-icon');
+            const ownerName =
+                document
+                    .getElementById("owner-name")
+                    .value
+                    .trim();
 
-        togglePasswordBtn.addEventListener('click', () => {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            eyeIcon.classList.toggle('fa-eye', !isPassword);
-            eyeIcon.classList.toggle('fa-eye-slash', isPassword);
-        });
+            const storeName =
+                document
+                    .getElementById("store-name")
+                    .value
+                    .trim();
 
-        const bar1 = document.getElementById('bar-1');
-        const bar2 = document.getElementById('bar-2');
-        const bar3 = document.getElementById('bar-3');
-        const strengthText = document.getElementById('strength-text');
+            const storeAddress =
+                document
+                    .getElementById("store-address")
+                    .value
+                    .trim();
 
-        passwordInput.addEventListener('input', () => {
-            const val = passwordInput.value;
-            bar1.style.backgroundColor = 'transparent';
-            bar2.style.backgroundColor = 'transparent';
-            bar3.style.backgroundColor = 'transparent';
+            const storeSocial =
+                document
+                    .getElementById("store-social")
+                    .value
+                    .trim();
 
-            if (val.length === 0) {
-                strengthText.textContent = 'Minimal 6 karakter';
+            const email =
+                document
+                    .getElementById("email-input")
+                    .value
+                    .trim();
+
+            const whatsapp =
+                document
+                    .getElementById("whatsapp")
+                    .value
+                    .trim();
+
+            const selectedService =
+                document
+                    .getElementById("service-select")
+                    .value;
+
+            const password =
+                passwordInput.value;
+
+
+            /* VALIDASI */
+
+            if (!ownerName ||
+                !storeName ||
+                !storeAddress ||
+                !email ||
+                !whatsapp ||
+                !selectedService) {
+
+                showToast(
+                    "Data Belum Lengkap",
+                    "Silakan lengkapi semua data wajib.",
+                    "error"
+                );
+
                 return;
             }
-            if (val.length < 6) {
-                bar1.style.backgroundColor = '#ef4444';
-                strengthText.textContent = 'Terlalu pendek';
-            } else if (val.length < 8) {
-                bar1.style.backgroundColor = '#f59e0b';
-                bar2.style.backgroundColor = '#f59e0b';
-                strengthText.textContent = 'Cukup';
-            } else {
-                bar1.style.backgroundColor = '#10b981';
-                bar2.style.backgroundColor = '#10b981';
-                bar3.style.backgroundColor = '#10b981';
-                strengthText.textContent = 'Kuat';
-            }
-        });
 
-        const serviceRoutes = {
-            'katalog': 'katalog.html',
-            'presensi': 'https://presensi.sitenexs.site',
-            'kasir': 'kasir.html',
-            'booking': 'https://usahaweb.sitenexs.site/order'
-        };
-
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const ownerName = document.getElementById('owner-name').value.trim();
-            const storeName = document.getElementById('store-name').value.trim();
-            const storeAddress = document.getElementById('store-address').value.trim();
-            const storeSocial = document.getElementById('store-social').value.trim();
-            const email = document.getElementById('email-input').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const selectedService = document.getElementById('service-select').value;
-            const password = passwordInput.value;
 
             if (password.length < 6) {
-                showToast('Validasi Gagal', 'Kata sandi minimal harus 6 karakter.', 'error');
+
+                showToast(
+                    "Password Tidak Valid",
+                    "Password minimal 6 karakter.",
+                    "error"
+                );
+
                 return;
             }
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses Akun...';
-            submitBtn.style.opacity = '0.8';
+
+            const submitBtn =
+                e.target.querySelector(
+                    'button[type="submit"]'
+                );
+
             submitBtn.disabled = true;
 
+            submitBtn.style.opacity =
+                "0.7";
+
+            submitBtn.innerHTML =
+                '<i class="fas fa-spinner fa-spin"></i> Membuat Akun...';
+
+
             try {
-                // 1. Coba signup auth standar
-                let userId;
-                const { data: authData, error: authError } = await _supabase.auth.signUp({
-                    email: email,
-                    password: password
-                });
+
+                /* =========================================
+                   1. SUPABASE AUTH
+                ========================================= */
+
+                const {
+                    data: authData,
+                    error: authError
+                } =
+                    await _supabase.auth.signUp({
+                        email,
+                        password
+                    });
+
 
                 if (authError) {
-                    // Jika terkena batasan rate limit atau email sudah terdaftar
-                    if (authError.message.toLowerCase().includes('rate limit')) {
-                        throw new Error('Batas pengiriman email tercapai (Rate Limit). Silakan matikan "Confirm email" di Dashboard Supabase Authentication agar pendaftaran instan tanpa email.');
+
+                    const message =
+                        authError.message
+                            .toLowerCase();
+
+                    if (
+                        message.includes(
+                            "already registered"
+                        )
+                    ) {
+
+                        throw new Error(
+                            "Email ini sudah terdaftar. Silakan masuk."
+                        );
                     }
+
+                    if (
+                        message.includes(
+                            "rate limit"
+                        )
+                    ) {
+
+                        throw new Error(
+                            "Batas pendaftaran tercapai. Silakan coba beberapa saat lagi."
+                        );
+                    }
+
                     throw authError;
                 }
 
-                userId = authData.user ? authData.user.id : 'temp_' + Date.now();
 
-                // 2. Upload logo jika ada
+                if (!authData.user) {
+
+                    throw new Error(
+                        "User ID tidak ditemukan."
+                    );
+                }
+
+
+                /*
+                 * Jika email confirmation aktif,
+                 * session belum tersedia.
+                 */
+
+                if (!authData.session) {
+
+                    showToast(
+                        "Cek Email",
+                        "Akun berhasil dibuat. Silakan konfirmasi email Anda terlebih dahulu.",
+                        "success"
+                    );
+
+                    submitBtn.innerHTML =
+                        '<i class="fas fa-envelope"></i> Cek Email Anda';
+
+                    return;
+                }
+
+
+                const userId =
+                    authData.user.id;
+
+
+                /* =========================================
+                   2. UPLOAD LOGO
+                ========================================= */
+
                 let logoUrl = null;
-                const logoFile = logoInput.files[0];
-                if (logoFile) {
-                    const fileExt = logoFile.name.split('.').pop();
-                    const fileName = `${userId}/${Date.now()}.${fileExt}`;
-                    const { error: uploadError } = await _supabase.storage
-                        .from('business-logos')
-                        .upload(fileName, logoFile);
 
-                    if (uploadError) {
-                        console.warn('Upload logo gagal, melanjutkan tanpa logo:', uploadError.message);
+                const logoFile =
+                    logoInput.files[0];
+
+                if (logoFile) {
+
+                    const fileExt =
+                        logoFile.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+                    const fileName =
+                        `${userId}/${Date.now()}.${fileExt}`;
+
+
+                    const {
+                        error: uploadError
+                    } =
+                        await _supabase.storage
+                            .from("business-logos")
+                            .upload(
+                                fileName,
+                                logoFile,
+                                {
+                                    cacheControl:
+                                        "3600",
+                                    upsert:
+                                        false
+                                }
+                            );
+
+
+                    if (!uploadError) {
+
+                        const {
+                            data: publicData
+                        } =
+                            _supabase.storage
+                                .from(
+                                    "business-logos"
+                                )
+                                .getPublicUrl(
+                                    fileName
+                                );
+
+                        logoUrl =
+                            publicData
+                                ?.publicUrl ||
+                            null;
+
                     } else {
-                        const { data: publicData } = _supabase.storage
-                            .from('business-logos')
-                            .getPublicUrl(fileName);
-                        logoUrl = publicData.publicUrl;
+
+                        console.warn(
+                            "Logo gagal diupload:",
+                            uploadError.message
+                        );
                     }
                 }
 
-                // 3. Simpan data profil ke tabel clients
-                const { error: dbError } = await _supabase.from('clients').insert([{
-                    uid: userId,
-                    owner_name: ownerName,
-                    store_name: storeName,
-                    store_logo: logoUrl,
-                    store_address: storeAddress,
-                    store_social: storeSocial || null,
-                    email: email,
-                    whatsapp: whatsapp,
-                    service: selectedService
-                }]);
 
-                if (dbError) throw new Error('Gagal menyimpan profil ke database: ' + dbError.message);
+                /* =========================================
+                   3. SIMPAN CLIENT
+                ========================================= */
 
-                // Bersihkan draft
-                fields.forEach(id => localStorage.removeItem('draft_' + id));
+                const {
+                    error: dbError
+                } =
+                    await _supabase
+                        .from("clients")
+                        .insert([{
 
-                showToast('Pendaftaran Berhasil!', 'Akun Anda berhasil dibuat. Mengalihkan ke layanan...', 'success');
+                            uid: userId,
 
-                const targetPage = serviceRoutes[selectedService] || 'https://sitenexs.site';
+                            owner_name:
+                                ownerName,
+
+                            store_name:
+                                storeName,
+
+                            store_logo:
+                                logoUrl,
+
+                            store_address:
+                                storeAddress,
+
+                            store_social:
+                                storeSocial ||
+                                null,
+
+                            email:
+
+                                email,
+
+                            whatsapp:
+                                whatsapp,
+
+                            service:
+                                selectedService,
+
+                            payment_status:
+                                "unpaid",
+
+                            subscription_status:
+                                "trial",
+
+                            expires_at:
+                                null,
+
+                            current_package:
+                                null,
+
+                            paid_at:
+                                null,
+
+                            paid_amount:
+                                0
+
+                        }]);
+
+
+                if (dbError) {
+
+                    throw new Error(
+                        "Gagal menyimpan profil: " +
+                        dbError.message
+                    );
+                }
+
+
+                /* =========================================
+                   4. BERSIHKAN DRAFT
+                ========================================= */
+
+                fields.forEach(id => {
+
+                    localStorage.removeItem(
+                        "draft_" + id
+                    );
+                });
+
+
+                /* =========================================
+                   5. BERHASIL
+                ========================================= */
+
+                showToast(
+                    "Pendaftaran Berhasil",
+                    "Akun berhasil dibuat. Mengalihkan ke dashboard...",
+                    "success"
+                );
+
+
                 setTimeout(() => {
-                    window.location.href = targetPage;
+
+                    window.location.href =
+                        "dashboard.html";
+
                 }, 1500);
 
-            } catch (error) {
-                console.error("Gagal mendaftar:", error);
-                let message = error.message;
-                if (message.includes('already registered')) {
-                    message = 'Email ini sudah terdaftar. Silakan gunakan email lain atau masuk.';
-                }
-                showToast('Pendaftaran Gagal', message, 'error');
 
-                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Daftar Sekarang';
-                submitBtn.style.opacity = '1';
-                submitBtn.disabled = false;
+            } catch (error) {
+
+                console.error(
+                    "Register Error:",
+                    error
+                );
+
+                showToast(
+                    "Pendaftaran Gagal",
+                    error.message ||
+                    "Terjadi kesalahan.",
+                    "error"
+                );
+
+                submitBtn.disabled =
+                    false;
+
+                submitBtn.style.opacity =
+                    "1";
+
+                submitBtn.innerHTML =
+                    '<i class="fas fa-user-plus"></i> Daftar Sekarang';
             }
-        });
-    </script>
+        }
+    );
+</script>
 </body>
 </html>
