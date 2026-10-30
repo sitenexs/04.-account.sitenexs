@@ -14,8 +14,8 @@
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --primary-light: #eff6ff;
-            --danger: #ef4444;        /* Warna Merah */
-            --danger-dark: #dc2626;   /* Merah Gelap untuk Hover */
+            --danger: #ef4444;        
+            --danger-dark: #dc2626;   
             --bg-body: #f1f5f9;
             --bg-panel: #ffffff;
             --text-main: #0f172a;
@@ -23,7 +23,6 @@
             --border-light: #e2e8f0;
             --border-focus: #bfdbfe;
             
-            /* Shadow Halus Premium */
             --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
             --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
             
@@ -51,10 +50,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Container Dinamis menyesuaikan layar */
+        /* Container dengan padding permanen agar tidak mepet tepi layar */
         .container {
-            width: min(960px, calc(100% - 2rem));
+            width: 100%;
+            max-width: 960px;
             margin: 0 auto;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
         }
 
         /* Topbar Ramping */
@@ -66,7 +68,7 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            height: 60px;
+            height: 64px;
             display: flex;
             align-items: center;
         }
@@ -138,7 +140,7 @@
             background: var(--danger);
             color: #fff;
             width: 100%;
-            margin-top: auto; /* Mendorong tombol ke paling bawah otomatis */
+            margin-top: auto;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
         }
 
@@ -179,7 +181,7 @@
             flex-direction: column; 
             align-items: center; 
             text-align: center; 
-            height: 100%; /* Agar bisa mendorong tombol ke bawah */
+            height: 100%; 
             min-height: 400px;
         }
 
@@ -223,7 +225,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
-            margin-bottom: 2rem; /* Jarak dengan tombol keluar */
+            margin-bottom: 2rem; 
         }
 
         .meta li {
@@ -340,13 +342,20 @@
                 min-height: auto; 
                 flex-direction: column; 
             }
+            .sidebar .btn-danger {
+                margin-top: 1rem; 
+            }
             .header-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
             .header-row .btn { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .container { padding-left: 1rem; padding-right: 1rem; }
+            .topbar { height: 56px; }
+            .panel { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Topbar Tanpa Tombol Keluar (Sudah dipindah ke bawah) -->
     <header class="topbar">
         <div class="container topbar-inner">
             <a href="https://sitenexs.com/" class="brand" aria-label="Kembali ke halaman utama">
@@ -363,7 +372,6 @@
     <main class="page">
         <div class="container profile-shell">
             
-            <!-- Sidebar Kiri -->
             <aside class="panel sidebar">
                 <div id="avatar" class="avatar" aria-hidden="true">SN</div>
                 <h2 id="profile-name" class="name">Memuat...</h2>
@@ -375,13 +383,11 @@
                     <li><i class="fas fa-id-badge"></i> <span id="profile-uid">-</span></li>
                 </ul>
 
-                <!-- Tombol Keluar di letakkan di paling bawah sidebar -->
                 <button id="sign-out" class="btn btn-danger" type="button">
                     <i class="fas fa-sign-out-alt"></i> Keluar Akun
                 </button>
             </aside>
 
-            <!-- Panel Kanan (Detail) -->
             <section class="panel main-panel">
                 <div class="header-row">
                     <h1>Profil Saya</h1>
@@ -428,7 +434,6 @@
         </div>
     </main>
 
-    <!-- (Firebase Script) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import {
@@ -471,7 +476,6 @@
             document.getElementById('avatar').textContent = initials || 'S';
             document.getElementById('profile-name').textContent = name;
             document.getElementById('profile-email').textContent = user.email || '-';
-            // Potong UID agar lebih rapi
             document.getElementById('profile-uid').textContent = `UID: ${user.uid.substring(0,8)}...`;
             document.getElementById('profile-status').textContent = 'Sesi Aktif';
             
@@ -483,7 +487,6 @@
             console.error('Firebase auth check failed:', error);
         });
 
-        // Event Logout
         document.getElementById('sign-out').addEventListener('click', async () => {
             const btn = document.getElementById('sign-out');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Keluar...';
@@ -499,7 +502,6 @@
             }
         });
 
-        // Event Ubah Nama
         document.getElementById('edit-profile').addEventListener('click', async () => {
             if (!currentUser) return;
             const nextName = window.prompt('Masukkan nama baru Anda:', currentUser.displayName || '');
@@ -514,7 +516,6 @@
             try {
                 await updateProfile(currentUser, { displayName: newName });
                 
-                // Update UI Instan
                 document.getElementById('profile-name').textContent = newName;
                 document.getElementById('account-name').textContent = newName;
                 const newInitials = newName.split(/\s+/).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
