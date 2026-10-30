@@ -7,241 +7,298 @@
     <meta name="description" content="Halaman pendaftaran akun Sitenexs." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
-            --primary-light: #eff6ff;
-            --accent: #10b981;
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
+            --bg-body: #f1f5f9;
             --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-subtle: #e2e8f0;
-            --border-medium: #cbd5e1;
-            --shadow-md: 0 12px 30px -12px rgba(15,23,42,0.18);
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-            --radius-xl: 1.5rem;
+            --text-muted: #64748b;
+            --border-light: #cbd5e1;
+            --border-focus: #93c5fd;
+            
+            /* Shadow yang lebih rapat dan natural */
+            --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
+            
+            --radius-sm: 0.4rem;  /* Ujung input lebih rapi/tajam */
+            --radius-md: 0.75rem; /* Ujung kartu */
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #eef7ff 0%, #f8fafc 100%);
+            background-color: var(--bg-body);
             color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a { text-decoration: none; color: inherit; }
-        button, input, select { font: inherit; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        button, input { font: inherit; outline: none; border: none; }
 
-        .container {
-            width: min(1100px, calc(100% - 2rem));
-            margin: 0 auto;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Topbar - Lebih Ramping */
         .topbar {
+            width: min(900px, calc(100% - 2rem));
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 72px;
+            height: 60px;
         }
 
         .brand {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--text-main);
+            font-size: 1rem;
         }
 
         .brand-mark {
-            width: 38px;
-            height: 38px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(37,99,235,0.2);
-            background: #fff;
+            border: 1px solid var(--border-light);
         }
 
+        /* Gradient pada Sitenexs */
         .brand-text {
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.01em;
         }
 
         .back-link {
-            color: var(--primary);
-            font-weight: 700;
-            display: inline-flex;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
+        
+        .back-link:hover { color: var(--primary); }
 
+        /* Card Wrapper - Diperkecil */
         .auth-wrap {
-            min-height: calc(100vh - 72px);
-            display: grid;
-            place-items: center;
-            padding: 2rem 0 4rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
         .card {
-            width: min(100%, 560px);
-            background: rgba(255,255,255,0.95);
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-md);
-            border-radius: var(--radius-xl);
-            padding: 2rem 1.5rem;
+            width: 100%;
+            max-width: 360px; /* Dipersempit agar input tidak memanjang */
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-card);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.75rem; /* Padding dikurangi */
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
-        .eyebrow {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.35rem 0.8rem;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
+        .header-text { text-align: center; margin-bottom: 1.5rem; }
 
         h1 {
-            font-size: clamp(1.8rem, 4vw, 2.3rem);
-            margin: 0 0 0.5rem;
-            letter-spacing: -0.03em;
+            font-size: 1.35rem; /* Judul lebih kecil */
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #0f172a;
         }
 
         .subtext {
             color: var(--text-muted);
-            margin: 0 0 1.5rem;
-            font-size: 0.96rem;
-            line-height: 1.6;
+            font-size: 0.8rem;
+            line-height: 1.4;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
+        /* Form Inputs - Lebih presisi dan ringkas */
+        .form-group { margin-bottom: 1rem; }
 
         label {
             display: block;
-            margin-bottom: 0.45rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
+            margin-bottom: 0.35rem;
+            font-size: 0.75rem; /* Label dikecilkan */
+            font-weight: 600;
+            color: #475569;
         }
 
-        .input-wrap {
-            position: relative;
-        }
+        .input-wrap { position: relative; }
 
-        .input-wrap i {
+        .input-wrap i.icon-left {
             position: absolute;
-            left: 0.9rem;
+            left: 0.85rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            color: #94a3b8;
+            font-size: 0.85rem; /* Ikon dikecilkan */
+            transition: color 0.2s ease;
         }
 
-        input, select {
+        input {
             width: 100%;
-            border: 1px solid var(--border-medium);
-            background: #f8fafc;
-            border-radius: var(--radius-md);
-            padding: 0.85rem 1rem 0.85rem 2.5rem;
-            transition: 0.2s ease;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.8rem 0.6rem 2.2rem; /* Ruang input ditipiskan */
+            font-size: 0.85rem; /* Teks input dikecilkan */
             color: var(--text-main);
+            transition: all 0.2s ease;
         }
 
-        input:focus, select:focus {
-            outline: none;
+        input::placeholder { color: #94a3b8; }
+
+        input:hover { border-color: #94a3b8; }
+
+        input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            background: #fff;
+            box-shadow: 0 0 0 3px var(--border-focus); /* Cincin fokus lebih tipis */
         }
 
+        input:focus + i.icon-left, 
+        .input-wrap:focus-within i.icon-left {
+            color: var(--primary);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.3rem;
+        }
+
+        .toggle-password:hover { color: var(--text-main); }
+
+        /* Checkbox - Disejajarkan Sempurna */
+        .terms-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .terms-wrap input[type="checkbox"] {
+            width: 0.85rem;
+            height: 0.85rem;
+            margin-top: 0.15rem; /* Menyelaraskan kotak dengan baris pertama teks */
+            accent-color: var(--primary);
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .terms-wrap a { color: var(--primary); font-weight: 500; }
+        .terms-wrap a:hover { text-decoration: underline; }
+
+        /* Button - Lebih slim */
         .btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             width: 100%;
-            padding: 0.9rem 1.25rem;
-            border: 1px solid transparent;
-            border-radius: var(--radius-md);
-            font-weight: 800;
+            padding: 0.65rem; /* Tinggi tombol dikurangi */
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem; /* Ukuran teks disesuaikan */
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: all 0.2s;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary);
             color: #fff;
-            box-shadow: 0 8px 18px rgba(37,99,235,0.2);
         }
 
-        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
 
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Message */
+        #auth-message {
+            margin-top: 1rem;
+            padding: 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            display: none;
+            text-align: center;
+        }
+
+        #auth-message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* Alt Link */
         .alt {
-            margin-top: 1.2rem;
+            margin-top: 1.5rem;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
-        .alt a {
-            color: var(--primary);
-            font-weight: 800;
-        }
+        .alt a { color: var(--primary); font-weight: 600; }
+        .alt a:hover { text-decoration: underline; }
 
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-            .card { padding: 1.25rem 1rem; }
-            .topbar { height: 64px; }
-        }
     </style>
 </head>
 <body>
-    <header class="container topbar">
-        <a href="https://sitenexs.com/" class="brand" aria-label="Ke halaman utama Sitenexs">
-            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=64&rounded=true';">
+    <header class="topbar">
+        <a href="https://sitenexs.com/" class="brand" aria-label="Ke halaman utama">
+            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=28&rounded=true';">
             <span class="brand-text">Sitenexs</span>
         </a>
-        <a href="https://sitenexs.com/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali</a>
+        <a href="https://sitenexs.com/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </header>
 
     <main class="auth-wrap">
         <section class="card">
-            <div class="eyebrow">Bergabung</div>
-            <h1>Daftar</h1>
-            <p class="subtext">Pendaftaran bersifat opsional. Anda tetap bisa menjelajahi situs tanpa membuat akun.</p>
+            <div class="header-text">
+                <h1>Buat Akun</h1>
+                <p class="subtext">Daftar untuk mengakses fitur penuh.</p>
+            </div>
 
             <form id="register-form">
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
                     <div class="input-wrap">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user icon-left"></i>
                         <input id="nama" type="text" autocomplete="name" placeholder="Nama Anda" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Alamat Email</label>
                     <div class="input-wrap">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope icon-left"></i>
                         <input id="email" type="email" autocomplete="email" placeholder="email@contoh.com" required>
                     </div>
                 </div>
@@ -249,21 +306,35 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrap">
-                        <i class="fas fa-lock"></i>
-                        <input id="password" type="password" autocomplete="new-password" minlength="6" placeholder="Minimal 6 karakter" required>
+                        <i class="fas fa-lock icon-left"></i>
+                        <input id="password" type="password" autocomplete="new-password" minlength="6" placeholder="Min. 6 karakter" required>
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan password">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Buat Akun</button>
+                <div class="terms-wrap">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms" style="margin:0; cursor:pointer;">
+                        Saya setuju dengan <a href="#">Syarat</a> & <a href="#">Ketentuan</a> Sitenexs.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span id="btnText">Buat Akun Sekarang</span>
+                </button>
             </form>
 
-            <p id="auth-message" role="status" aria-live="polite" style="margin-top:1rem;color:var(--text-muted);"></p>
+            <div id="auth-message" role="status" aria-live="polite"></div>
 
             <div class="alt">
-                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
+                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk</a>
             </div>
         </section>
     </main>
+    
+    <!-- (Firebase Script) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
@@ -281,12 +352,23 @@
         const auth = getAuth(initializeApp(firebaseConfig));
         const form = document.getElementById('register-form');
         const message = document.getElementById('auth-message');
-        const submitButton = form.querySelector('button[type="submit"]');
+        const submitButton = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
+            message.className = '';
             message.textContent = '';
             submitButton.disabled = true;
+            btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
 
             try {
                 const credential = await createUserWithEmailAndPassword(
@@ -297,18 +379,21 @@
                 await updateProfile(credential.user, {
                     displayName: document.getElementById('nama').value.trim()
                 });
+                
+                btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
                 window.location.assign('/profile/');
+                
             } catch (error) {
+                message.className = 'error';
                 const messages = {
-                    'auth/email-already-in-use': 'Email ini sudah terdaftar. Silakan masuk.',
-                    'auth/invalid-email': 'Masukkan alamat email yang valid.',
-                    'auth/weak-password': 'Password terlalu lemah. Gunakan minimal 6 karakter.',
-                    'auth/network-request-failed': 'Koneksi bermasalah. Periksa internet Anda.'
+                    'auth/email-already-in-use': 'Email sudah terdaftar. Silakan masuk.',
+                    'auth/invalid-email': 'Format email tidak valid.',
+                    'auth/weak-password': 'Password minimal harus 6 karakter.',
+                    'auth/network-request-failed': 'Gagal terhubung ke jaringan.'
                 };
-                message.textContent = messages[error.code] || 'Pendaftaran gagal. Silakan coba lagi.';
-                console.error('Firebase registration failed:', error);
-            } finally {
+                message.textContent = messages[error.code] || 'Terjadi kesalahan saat mendaftar.';
                 submitButton.disabled = false;
+                btnText.textContent = 'Buat Akun Sekarang';
             }
         });
     </script>
