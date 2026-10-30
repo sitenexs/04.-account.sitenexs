@@ -92,6 +92,7 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            padding-bottom: 2rem;
         }
 
         /* --- LOGIC SLIDER CARD --- */
@@ -115,7 +116,7 @@
             padding: 0 1rem;
         }
 
-        /* Desain Card Super Slim & Rapi */
+        /* Desain Card */
         .card {
             width: 100%;
             max-width: 320px; 
@@ -297,16 +298,17 @@
             border: 1px solid #fecaca;
         }
 
-        /* Tautan Login - Mepet dengan Card */
-        .alt {
-            margin-top: 0.25rem;
+        /* Tautan Login di dalam Card (Menempel Otomatis) */
+        .alt-in-card {
+            margin-top: 0.8rem;
             text-align: center;
             color: var(--text-muted);
             font-size: 0.75rem;
-            padding-bottom: 2rem;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 0.75rem;
         }
-        .alt a { color: var(--primary); font-weight: 600; }
-        .alt a:hover { text-decoration: underline; color: var(--primary-dark); }
+        .alt-in-card a { color: var(--primary); font-weight: 600; }
+        .alt-in-card a:hover { text-decoration: underline; color: var(--primary-dark); }
         
         .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 
@@ -403,13 +405,12 @@
         
         .phone-group .input-wrap { flex: 1; min-width: 0; }
 
-        /* Media Query untuk mengatasi kolom yang terhimpit di HP */
         @media (max-width: 500px) {
             .row-grid { 
-                grid-template-columns: 1fr; /* Kolom jadi 1 (atas bawah) khusus di layar kecil */
+                grid-template-columns: 1fr; 
                 gap: 0.7rem; 
             }
-            .custom-select-wrapper { width: 95px; } /* Sedikit dikecilkan untuk HP */
+            .custom-select-wrapper { width: 95px; }
         }
     </style>
 </head>
@@ -455,6 +456,9 @@
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary" onclick="nextStep(0)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                            <div class="alt-in-card">
+                                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
                             </div>
                         </section>
                     </div>
@@ -508,6 +512,9 @@
                             <div class="btn-group">
                                 <button type="button" class="btn btn-outline" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Kembali</button>
                                 <button type="button" class="btn btn-primary" onclick="nextStep(1)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                            <div class="alt-in-card">
+                                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
                             </div>
                         </section>
                     </div>
@@ -592,6 +599,9 @@
                                 <button type="button" class="btn btn-outline" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Kembali</button>
                                 <button type="button" class="btn btn-primary" onclick="nextStep(2)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
                             </div>
+                            <div class="alt-in-card">
+                                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
+                            </div>
                         </section>
                     </div>
 
@@ -629,16 +639,16 @@
                             </div>
                             
                             <div id="auth-message" role="status" aria-live="polite"></div>
+                            
+                            <div class="alt-in-card">
+                                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
+                            </div>
                         </section>
                     </div>
 
                 </div>
             </div>
         </form>
-
-        <div class="alt">
-            Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
-        </div>
     </main>
     
     <script type="module">
@@ -698,7 +708,6 @@
             const searchInput = wrapper.querySelector('.search-country');
             const valDisplay = document.getElementById(valId);
 
-            // Populate list
             const renderList = (data) => {
                 list.innerHTML = '';
                 data.forEach(country => {
@@ -708,7 +717,6 @@
                         valDisplay.textContent = country.code;
                         optionsBox.classList.remove('open');
                         
-                        // Sync Personal Country Code to Business Country Code
                         if (valId === 'selected-code-1') {
                             document.getElementById('selected-code-2').textContent = country.code;
                         }
@@ -718,19 +726,17 @@
             };
             renderList(countryData);
 
-            // Toggle Open/Close
             trigger.addEventListener('click', (e) => {
                 e.stopPropagation();
                 document.querySelectorAll('.custom-options').forEach(opt => {
                     if(opt !== optionsBox) opt.classList.remove('open');
                 });
                 optionsBox.classList.toggle('open');
-                searchInput.value = ''; // Reset search
+                searchInput.value = ''; 
                 renderList(countryData);
                 if (optionsBox.classList.contains('open')) searchInput.focus();
             });
 
-            // Search filter
             searchInput.addEventListener('keyup', (e) => {
                 const keyword = e.target.value.toLowerCase();
                 const filtered = countryData.filter(c => 
@@ -788,7 +794,6 @@
             document.getElementById('auth-message').style.display = 'none';
         }
 
-        // Preview Logo Bisnis
         const logoInput = document.getElementById('logo_bisnis');
         const logoPreviewContainer = document.getElementById('logoPreviewContainer');
         const logoPreview = document.getElementById('logoPreview');
@@ -808,7 +813,6 @@
             }
         });
 
-        // Fitur Tampilkan Sandi
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
 
@@ -827,7 +831,6 @@
             return number ? code + number : "";
         }
 
-        // Submit Form Final & Integrasi Firebase
         const form = document.getElementById('register-form');
         const message = document.getElementById('auth-message');
         const submitButton = document.getElementById('submitBtn');
