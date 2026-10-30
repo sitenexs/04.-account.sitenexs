@@ -11,130 +11,163 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --bg-body: #f1f5f9;
+            --primary: #3b82f6; 
+            --primary-dark: #1e40af;
+            --bg-body: #f8fafc;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --border-light: #cbd5e1;
+            --border-light: #e2e8f0;
             --border-focus: #93c5fd;
             
-            /* Shadow yang lebih rapat dan natural */
-            --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
+            --shadow-card: 0 4px 15px -3px rgba(15, 23, 42, 0.05);
             
-            --radius-sm: 0.4rem;  /* Ujung input lebih rapi/tajam */
-            --radius-md: 0.75rem; /* Ujung kartu */
+            --radius-sm: 6px;
+            --radius-md: 12px; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
+            background: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.2s; }
-        button, input { font: inherit; outline: none; border: none; }
+        button, input, select, textarea { font: inherit; outline: none; border: none; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Topbar - Lebih Ramping */
         .topbar {
-            width: min(900px, calc(100% - 2rem));
+            width: 100%;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 60px;
+            height: 56px;
+            padding: 0 1rem;
         }
 
         .brand {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            font-weight: 800;
-            font-size: 1rem;
+            gap: 0.4rem;
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
         .brand-mark {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid var(--border-light);
         }
 
-        /* Gradient pada Sitenexs */
         .brand-text {
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.01em;
         }
 
         .back-link {
             color: var(--text-muted);
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.3rem;
         }
-        
         .back-link:hover { color: var(--primary); }
 
-        /* Card Wrapper - Diperkecil */
         .auth-wrap {
             flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            width: 100%;
         }
 
+        /* --- LOGIC SLIDER CARD --- */
+        .slider-viewport {
+            width: 100%;
+            overflow: hidden;
+            padding: 1rem 0; 
+        }
+
+        .card-track {
+            display: flex;
+            width: 400%; 
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            align-items: flex-start;
+        }
+
+        .slide-wrapper {
+            width: 25%; 
+            display: flex;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        /* Desain Card Super Slim & Rapi */
         .card {
             width: 100%;
-            max-width: 360px; /* Dipersempit agar input tidak memanjang */
+            max-width: 320px; 
             background: #ffffff;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-light);
             box-shadow: var(--shadow-card);
             border-radius: var(--radius-md);
-            padding: 2rem 1.75rem; /* Padding dikurangi */
-            animation: fadeIn 0.4s ease-out forwards;
+            padding: 1.5rem 1.25rem; 
+            
+            transform: scale(0.95);
+            opacity: 0.5;
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .header-text { text-align: center; margin-bottom: 1.5rem; }
+        .slide-wrapper.active .card {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .header-text { text-align: center; margin-bottom: 1.2rem; }
 
         h1 {
-            font-size: 1.35rem; /* Judul lebih kecil */
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            font-size: 1.15rem; 
+            font-weight: 600;
+            margin-bottom: 0.15rem;
             color: #0f172a;
         }
 
         .subtext {
             color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.4;
+            font-size: 0.75rem;
+        }
+        
+        .step-indicator {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #e0f2fe;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            display: inline-block;
+            margin-bottom: 0.4rem;
         }
 
-        /* Form Inputs - Lebih presisi dan ringkas */
-        .form-group { margin-bottom: 1rem; }
+        /* Form Inputs Tipis */
+        .form-group { margin-bottom: 0.7rem; }
 
         label {
             display: block;
-            margin-bottom: 0.35rem;
-            font-size: 0.75rem; /* Label dikecilkan */
-            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.7rem; 
+            font-weight: 500; 
             color: #475569;
         }
 
@@ -142,112 +175,121 @@
 
         .input-wrap i.icon-left {
             position: absolute;
-            left: 0.85rem;
+            left: 0.7rem;
             top: 50%;
             transform: translateY(-50%);
             color: #94a3b8;
-            font-size: 0.85rem; /* Ikon dikecilkan */
-            transition: color 0.2s ease;
+            font-size: 0.75rem; 
+        }
+        .input-wrap.textarea-wrap i.icon-left {
+            top: 0.75rem;
+            transform: none;
         }
 
-        input {
+        input, select, textarea {
             width: 100%;
             background: #ffffff;
             border: 1px solid var(--border-light);
             border-radius: var(--radius-sm);
-            padding: 0.6rem 0.8rem 0.6rem 2.2rem; /* Ruang input ditipiskan */
-            font-size: 0.85rem; /* Teks input dikecilkan */
+            padding: 0.45rem 0.6rem 0.45rem 1.8rem; 
+            font-size: 0.8rem; 
             color: var(--text-main);
             transition: all 0.2s ease;
         }
+        
+        textarea { resize: vertical; min-height: 60px; padding-top: 0.55rem; }
+        input[type="file"] { padding: 0.3rem 0.6rem 0.3rem 1.8rem; font-size: 0.7rem; }
+        
+        input[type="file"]::file-selector-button {
+            border: none;
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
 
-        input::placeholder { color: #94a3b8; }
-
-        input:hover { border-color: #94a3b8; }
-
-        input:focus {
+        input::placeholder, textarea::placeholder { color: #cbd5e1; font-weight: 400;}
+        input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--border-focus); /* Cincin fokus lebih tipis */
+            box-shadow: 0 0 0 2px var(--border-focus); 
         }
 
         input:focus + i.icon-left, 
+        select:focus + i.icon-left,
+        textarea:focus + i.icon-left,
         .input-wrap:focus-within i.icon-left {
             color: var(--primary);
         }
 
         .toggle-password {
             position: absolute;
-            right: 0.6rem;
+            right: 0.4rem;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             color: #94a3b8;
             cursor: pointer;
-            font-size: 0.85rem;
-            padding: 0.3rem;
+            font-size: 0.8rem;
+            padding: 0.2rem;
         }
 
-        .toggle-password:hover { color: var(--text-main); }
-
-        /* Checkbox - Disejajarkan Sempurna */
         .terms-wrap {
             display: flex;
             align-items: flex-start;
-            gap: 0.5rem;
-            margin-bottom: 1.25rem;
-            font-size: 0.75rem;
+            gap: 0.4rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.3;
         }
-
         .terms-wrap input[type="checkbox"] {
-            width: 0.85rem;
-            height: 0.85rem;
-            margin-top: 0.15rem; /* Menyelaraskan kotak dengan baris pertama teks */
+            width: 0.75rem;
+            height: 0.75rem;
+            margin-top: 0.1rem; 
             accent-color: var(--primary);
             cursor: pointer;
-            border-radius: 2px;
+        }
+        .terms-wrap a { color: var(--primary); font-weight: 500; }
+        
+        /* Tombol Tipis */
+        .btn-group {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
         }
 
-        .terms-wrap a { color: var(--primary); font-weight: 500; }
-        .terms-wrap a:hover { text-decoration: underline; }
-
-        /* Button - Lebih slim */
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: 0.3rem;
             width: 100%;
-            padding: 0.65rem; /* Tinggi tombol dikurangi */
+            padding: 0.5rem; 
             border-radius: var(--radius-sm);
             font-weight: 600;
-            font-size: 0.85rem; /* Ukuran teks disesuaikan */
+            font-size: 0.8rem; 
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: var(--primary-dark);
-        }
-
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+        .btn-outline { background: #fff; border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-outline:hover { background: var(--bg-body); }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* Message */
         #auth-message {
-            margin-top: 1rem;
-            padding: 0.6rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem;
             border-radius: var(--radius-sm);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             display: none;
             text-align: center;
+            font-weight: 500;
         }
-
         #auth-message.error {
             display: block;
             background: #fef2f2;
@@ -255,89 +297,355 @@
             border: 1px solid #fecaca;
         }
 
-        /* Alt Link */
+        /* Tautan Login - Mepet dengan Card */
         .alt {
-            margin-top: 1.5rem;
+            margin-top: 0.25rem;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            padding-bottom: 2rem;
+        }
+        .alt a { color: var(--primary); font-weight: 600; }
+        .alt a:hover { text-decoration: underline; color: var(--primary-dark); }
+        
+        .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+        /* Pratinjau Logo */
+        .logo-preview-box {
+            display: none;
+            margin-top: 0.4rem;
+            text-align: center;
+            padding: 0.3rem;
+            background: var(--bg-body);
+            border-radius: var(--radius-sm);
+            border: 1px dashed var(--border-light);
+        }
+        .logo-preview-box img {
+            max-width: 50px;
+            max-height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
         }
 
-        .alt a { color: var(--primary); font-weight: 600; }
-        .alt a:hover { text-decoration: underline; }
+        /* --- CUSTOM SEARCHABLE DROPDOWN (Kode Negara) --- */
+        .phone-group {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .custom-select-wrapper {
+            position: relative;
+            width: 105px; 
+        }
+        .custom-select-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .custom-select-trigger:hover { border-color: #94a3b8; }
+        .custom-select-trigger i { font-size: 0.65rem; color: #94a3b8; }
+        
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 220px;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 4px;
+            z-index: 99;
+            display: none;
+            flex-direction: column;
+        }
+        .custom-options.open { display: flex; }
+        
+        .search-box {
+            padding: 0.4rem;
+            border-bottom: 1px solid var(--border-light);
+            background: #f8fafc;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+        }
+        
+        .options-list {
+            list-style: none;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .options-list li {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .options-list li:last-child { border-bottom: none; }
+        .options-list li:hover { background: #f0f9ff; color: var(--primary-dark); }
+        .options-list li span.code { font-weight: 600; color: var(--text-main); }
+        .options-list li span.country { color: var(--text-muted); }
+        
+        .phone-group .input-wrap { flex: 1; min-width: 0; }
 
+        /* Media Query untuk mengatasi kolom yang terhimpit di HP */
+        @media (max-width: 500px) {
+            .row-grid { 
+                grid-template-columns: 1fr; /* Kolom jadi 1 (atas bawah) khusus di layar kecil */
+                gap: 0.7rem; 
+            }
+            .custom-select-wrapper { width: 95px; } /* Sedikit dikecilkan untuk HP */
+        }
     </style>
 </head>
 <body>
     <header class="topbar">
         <a href="https://sitenexs.com/" class="brand" aria-label="Ke halaman utama">
-            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=28&rounded=true';">
+            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=24&rounded=true';">
             <span class="brand-text">Sitenexs</span>
         </a>
-        <a href="https://sitenexs.com/" class="back-link">
-            <i class="fas fa-arrow-left"></i> Kembali
+        <a href="https://account.sitenexs.com/sign-in/" class="back-link">
+            Masuk <i class="fas fa-arrow-right" style="font-size: 0.6rem;"></i>
         </a>
     </header>
 
     <main class="auth-wrap">
-        <section class="card">
-            <div class="header-text">
-                <h1 class="brand-text">Buat Akun</h1>
-                <p class="subtext">Daftar Sitenexs untuk Akses penuh.</p>
+        <form id="register-form" style="width: 100%;">
+            <div class="slider-viewport">
+                <div class="card-track" id="sliderTrack">
+                    
+                    <!-- KARTU 1: Nama Pengguna -->
+                    <div class="slide-wrapper active">
+                        <section class="card">
+                            <div class="header-text">
+                                <div class="step-indicator">Langkah 1 dari 4</div>
+                                <h1>Buat Akun Baru</h1>
+                                <p class="subtext">Informasi Pribadi Anda.</p>
+                            </div>
+                            <div class="row-grid">
+                                <div class="form-group">
+                                    <label for="nama_depan">Nama Depan</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-user icon-left"></i>
+                                        <input id="nama_depan" type="text" placeholder="John" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_belakang">Belakang (Ops)</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-user icon-left"></i>
+                                        <input id="nama_belakang" type="text" placeholder="Doe">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" onclick="nextStep(0)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- KARTU 2: Kontak Pengguna -->
+                    <div class="slide-wrapper">
+                        <section class="card">
+                            <div class="header-text">
+                                <div class="step-indicator">Langkah 2 dari 4</div>
+                                <h1>Data Kontak</h1>
+                                <p class="subtext">Hubungkan sarana komunikasi Anda.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Alamat Email</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-envelope icon-left"></i>
+                                    <input id="email" type="email" autocomplete="email" placeholder="email@contoh.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="no_telepon">Nomor Telepon</label>
+                                <div class="phone-group">
+                                    
+                                    <!-- Custom Select Pencarian Negara -->
+                                    <div class="custom-select-wrapper" id="custom-phone">
+                                        <div class="custom-select-trigger">
+                                            <span class="selected-val" id="selected-code-1">+62</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="search-box">
+                                                <input type="text" placeholder="Cari negara..." class="search-country">
+                                            </div>
+                                            <ul class="options-list"></ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-wrap">
+                                        <i class="fas fa-phone icon-left"></i>
+                                        <input id="no_telepon" type="tel" placeholder="8123456789" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="alamat">Alamat Lengkap</label>
+                                <div class="input-wrap textarea-wrap">
+                                    <i class="fas fa-map-marker-alt icon-left"></i>
+                                    <textarea id="alamat" placeholder="Masukkan alamat domisili" required></textarea>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Kembali</button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep(1)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- KARTU 3: Profil Bisnis -->
+                    <div class="slide-wrapper">
+                        <section class="card">
+                            <div class="header-text">
+                                <div class="step-indicator">Langkah 3 dari 4</div>
+                                <h1>Profil Bisnis</h1>
+                                <p class="subtext">Lengkapi data usaha Sitenexs Anda.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama_bisnis">Nama Bisnis / Usaha</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-store icon-left"></i>
+                                    <input id="nama_bisnis" type="text" placeholder="Nama usaha Anda" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="logo_bisnis">Logo Bisnis (Opsional)</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-image icon-left"></i>
+                                    <input id="logo_bisnis" type="file" accept="image/*">
+                                </div>
+                                <div class="logo-preview-box" id="logoPreviewContainer">
+                                    <img id="logoPreview" src="#" alt="Pratinjau Logo">
+                                </div>
+                            </div>
+
+                            <div class="row-grid">
+                                <div class="form-group">
+                                    <label for="bidang_bisnis">Bidang Usaha</label>
+                                    <div class="input-wrap">
+                                        <i class="fas fa-tags icon-left"></i>
+                                        <select id="bidang_bisnis" required style="padding-left:1.8rem;">
+                                            <option value="" disabled selected>Pilih bidang</option>
+                                            <option value="cafe_resto">Cafe / Resto</option>
+                                            <option value="sekolah">Sekolah / Instansi</option>
+                                            <option value="umkm">UMKM (Ritel)</option>
+                                            <option value="bengkel">Bengkel</option> 
+                                            <option value="perusahaan">Perusahaan</option> 
+                                            <option value="lainnya">Lainnya</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telp_bisnis">Telp Bisnis (Opsional)</label>
+                                    <div class="phone-group">
+                                        <!-- Custom Select Pencarian Negara (Bisnis) -->
+                                        <div class="custom-select-wrapper" id="custom-phone-bisnis">
+                                            <div class="custom-select-trigger">
+                                                <span class="selected-val" id="selected-code-2">+62</span>
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="custom-options">
+                                                <div class="search-box">
+                                                    <input type="text" placeholder="Cari negara..." class="search-country">
+                                                </div>
+                                                <ul class="options-list"></ul>
+                                            </div>
+                                        </div>
+    
+                                        <div class="input-wrap">
+                                            <i class="fas fa-phone-alt icon-left"></i>
+                                            <input id="telp_bisnis" type="tel" placeholder="8xxx">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email_bisnis">Email Bisnis (Opsional)</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-envelope-open-text icon-left"></i>
+                                    <input id="email_bisnis" type="email" placeholder="email@bisnis.com">
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Kembali</button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep(2)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- KARTU 4: Keamanan & Submit -->
+                    <div class="slide-wrapper">
+                        <section class="card">
+                            <div class="header-text">
+                                <div class="step-indicator">Langkah 4 dari 4</div>
+                                <h1>Keamanan Akun</h1>
+                                <p class="subtext">Langkah terakhir, amankan akun Anda.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Buat Kata Sandi</label>
+                                <div class="input-wrap">
+                                    <i class="fas fa-lock icon-left"></i>
+                                    <input id="password" type="password" autocomplete="new-password" minlength="6" placeholder="Min. 6 karakter" required>
+                                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan password">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="terms-wrap">
+                                <input type="checkbox" id="terms" required>
+                                <label for="terms" style="margin:0; cursor:pointer;">
+                                    Saya menyetujui <a href="#">Syarat Layanan</a> dan <a href="#">Kebijakan Privasi</a>.
+                                </label>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Kembali</button>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <span id="btnText">Daftar Sekarang</span>
+                                </button>
+                            </div>
+                            
+                            <div id="auth-message" role="status" aria-live="polite"></div>
+                        </section>
+                    </div>
+
+                </div>
             </div>
+        </form>
 
-            <form id="register-form">
-                <div class="form-group">
-                    <label for="nama">Nama Lengkap</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-user icon-left"></i>
-                        <input id="nama" type="text" autocomplete="name" placeholder="Nama Anda" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Alamat Email</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-envelope icon-left"></i>
-                        <input id="email" type="email" autocomplete="email" placeholder="email@contoh.com" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-lock icon-left"></i>
-                        <input id="password" type="password" autocomplete="new-password" minlength="6" placeholder="Min. 6 karakter" required>
-                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan password">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="terms-wrap">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms" style="margin:0; cursor:pointer;">
-                        Saya setuju dengan <a href="#">Syarat</a> & <a href="#">Ketentuan</a> Sitenexs.
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span id="btnText">Buat Akun Sekarang</span>
-                </button>
-            </form>
-
-            <div id="auth-message" role="status" aria-live="polite"></div>
-
-            <div class="alt">
-                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk</a>
-            </div>
-        </section>
+        <div class="alt">
+            Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
+        </div>
     </main>
     
-    <!-- (Firebase Script) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -349,11 +657,158 @@
             measurementId: 'G-C7YL0Q7YRQ'
         };
 
-        const auth = getAuth(initializeApp(firebaseConfig));
-        const form = document.getElementById('register-form');
-        const message = document.getElementById('auth-message');
-        const submitButton = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // --- Custom Searchable Dropdown Logic ---
+        const countryData = [
+            { code: '+62', name: 'Indonesia' },
+            { code: '+1', name: 'United States' },
+            { code: '+44', name: 'United Kingdom' },
+            { code: '+60', name: 'Malaysia' },
+            { code: '+61', name: 'Australia' },
+            { code: '+65', name: 'Singapore' },
+            { code: '+81', name: 'Japan' },
+            { code: '+82', name: 'South Korea' },
+            { code: '+86', name: 'China' },
+            { code: '+91', name: 'India' },
+            { code: '+966', name: 'Saudi Arabia' },
+            { code: '+971', name: 'United Arab Emirates' },
+            { code: '+7', name: 'Russia' },
+            { code: '+20', name: 'Egypt' },
+            { code: '+27', name: 'South Africa' },
+            { code: '+33', name: 'France' },
+            { code: '+34', name: 'Spain' },
+            { code: '+39', name: 'Italy' },
+            { code: '+49', name: 'Germany' },
+            { code: '+55', name: 'Brazil' },
+            { code: '+66', name: 'Thailand' },
+            { code: '+84', name: 'Vietnam' },
+            { code: '+886', name: 'Taiwan' },
+            { code: '+90', name: 'Turkey' }
+        ];
+
+        function setupCustomSelect(wrapperId, valId) {
+            const wrapper = document.getElementById(wrapperId);
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            const optionsBox = wrapper.querySelector('.custom-options');
+            const list = wrapper.querySelector('.options-list');
+            const searchInput = wrapper.querySelector('.search-country');
+            const valDisplay = document.getElementById(valId);
+
+            // Populate list
+            const renderList = (data) => {
+                list.innerHTML = '';
+                data.forEach(country => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="code">${country.code}</span> <span class="country">${country.name}</span>`;
+                    li.addEventListener('click', () => {
+                        valDisplay.textContent = country.code;
+                        optionsBox.classList.remove('open');
+                        
+                        // Sync Personal Country Code to Business Country Code
+                        if (valId === 'selected-code-1') {
+                            document.getElementById('selected-code-2').textContent = country.code;
+                        }
+                    });
+                    list.appendChild(li);
+                });
+            };
+            renderList(countryData);
+
+            // Toggle Open/Close
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-options').forEach(opt => {
+                    if(opt !== optionsBox) opt.classList.remove('open');
+                });
+                optionsBox.classList.toggle('open');
+                searchInput.value = ''; // Reset search
+                renderList(countryData);
+                if (optionsBox.classList.contains('open')) searchInput.focus();
+            });
+
+            // Search filter
+            searchInput.addEventListener('keyup', (e) => {
+                const keyword = e.target.value.toLowerCase();
+                const filtered = countryData.filter(c => 
+                    c.name.toLowerCase().includes(keyword) || c.code.includes(keyword)
+                );
+                renderList(filtered);
+            });
+        }
+
+        setupCustomSelect('custom-phone', 'selected-code-1');
+        setupCustomSelect('custom-phone-bisnis', 'selected-code-2');
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-options').forEach(opt => opt.classList.remove('open'));
+        });
+        
+        // --- Slider Logic ---
+        const sliderTrack = document.getElementById('sliderTrack');
+        const slideWrappers = document.querySelectorAll('.slide-wrapper');
+        let currentStep = 0;
+
+        window.nextStep = function(index) {
+            const currentInputs = slideWrappers[index].querySelectorAll('input, select, textarea');
+            let isValid = true;
+            
+            currentInputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity(); 
+                    isValid = false;
+                }
+            });
+
+            if (isValid && currentStep < slideWrappers.length - 1) {
+                currentStep++;
+                updateSlider();
+            }
+        };
+
+        window.prevStep = function() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateSlider();
+            }
+        };
+
+        function updateSlider() {
+            sliderTrack.style.transform = `translateX(-${currentStep * 25}%)`;
+            slideWrappers.forEach((wrapper, index) => {
+                if(index === currentStep) {
+                    wrapper.classList.add('active');
+                } else {
+                    wrapper.classList.remove('active');
+                }
+            });
+            document.getElementById('auth-message').style.display = 'none';
+        }
+
+        // Preview Logo Bisnis
+        const logoInput = document.getElementById('logo_bisnis');
+        const logoPreviewContainer = document.getElementById('logoPreviewContainer');
+        const logoPreview = document.getElementById('logoPreview');
+
+        logoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoPreview.src = e.target.result;
+                    logoPreviewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                logoPreview.src = '#';
+                logoPreviewContainer.style.display = 'none';
+            }
+        });
+
+        // Fitur Tampilkan Sandi
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
 
@@ -363,21 +818,73 @@
             this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
 
+        function formatPhoneNumber(valId, numId) {
+            let code = document.getElementById(valId).textContent.trim();
+            let number = document.getElementById(numId).value.trim();
+            if(number && number.startsWith('0')) {
+                number = number.substring(1);
+            }
+            return number ? code + number : "";
+        }
+
+        // Submit Form Final & Integrasi Firebase
+        const form = document.getElementById('register-form');
+        const message = document.getElementById('auth-message');
+        const submitButton = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
             message.textContent = '';
             submitButton.disabled = true;
-            btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value;
+            const namaDepan = document.getElementById('nama_depan').value.trim();
+            const namaBelakang = document.getElementById('nama_belakang').value.trim();
+            const fullName = namaBelakang ? `${namaDepan} ${namaBelakang}` : namaDepan;
+            
+            const noTeleponFinal = formatPhoneNumber('selected-code-1', 'no_telepon');
+            const alamat = document.getElementById('alamat').value.trim();
+            
+            const namaBisnis = document.getElementById('nama_bisnis').value.trim();
+            const bidangBisnis = document.getElementById('bidang_bisnis').value;
+            const telpBisnisFinal = formatPhoneNumber('selected-code-2', 'telp_bisnis');
+            const emailBisnis = document.getElementById('email_bisnis').value.trim();
+            const logoFile = logoInput.files[0];
 
             try {
-                const credential = await createUserWithEmailAndPassword(
-                    auth,
-                    document.getElementById('email').value.trim(),
-                    document.getElementById('password').value
-                );
-                await updateProfile(credential.user, {
-                    displayName: document.getElementById('nama').value.trim()
+                btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                
+                const credential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = credential.user;
+                
+                await updateProfile(user, { displayName: fullName });
+                
+                let logoUrl = "";
+                if (logoFile) {
+                    btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unggah Logo...';
+                    const logoRef = ref(storage, `logos/${user.uid}/${logoFile.name}`);
+                    await uploadBytes(logoRef, logoFile);
+                    logoUrl = await getDownloadURL(logoRef);
+                }
+
+                btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Simpan Data...';
+                await setDoc(doc(db, "users", user.uid), {
+                    namaDepan: namaDepan,
+                    namaBelakang: namaBelakang,
+                    email: email,
+                    noTelepon: noTeleponFinal,
+                    alamat: alamat,
+                    bisnis: {
+                        nama: namaBisnis,
+                        bidang: bidangBisnis,
+                        telepon: telpBisnisFinal,
+                        email: emailBisnis,
+                        logoUrl: logoUrl
+                    },
+                    createdAt: new Date().toISOString()
                 });
                 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
@@ -386,14 +893,15 @@
             } catch (error) {
                 message.className = 'error';
                 const messages = {
-                    'auth/email-already-in-use': 'Email sudah terdaftar. Silakan masuk.',
+                    'auth/email-already-in-use': 'Email sudah terdaftar.',
                     'auth/invalid-email': 'Format email tidak valid.',
-                    'auth/weak-password': 'Password minimal harus 6 karakter.',
-                    'auth/network-request-failed': 'Gagal terhubung ke jaringan.'
+                    'auth/weak-password': 'Sandi minimal 6 karakter.',
+                    'auth/network-request-failed': 'Gagal koneksi internet.'
                 };
-                message.textContent = messages[error.code] || 'Terjadi kesalahan saat mendaftar.';
+                message.textContent = messages[error.code] || 'Terjadi kesalahan: ' + error.message;
+                
                 submitButton.disabled = false;
-                btnText.textContent = 'Buat Akun Sekarang';
+                btnText.textContent = 'Daftar Sekarang';
             }
         });
     </script>
