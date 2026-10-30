@@ -1,1039 +1,316 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun & Buat Dashboard Sitenexs | Registrasi Usaha</title>
-    <meta name="description" content="Daftar akun Sitenexs untuk membuat dashboard bisnis, sistem kasir, presensi, dan layanan digital usaha Anda dengan cepat dan aman.">
-    <meta name="keywords" content="daftar akun Sitenexs, register Sitenexs, buat akun usaha, dashboard bisnis, software kasir, aplikasi restoran, sistem order, layanan UMKM, daftar bisnis">
-    <meta name="author" content="Sitenexs">
-    <meta name="language" content="id-ID">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="theme-color" content="#2563eb">
-    <link rel="canonical" href="https://account.sitenexs.com/register">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="id_ID">
-    <meta property="og:title" content="Daftar Akun & Buat Dashboard Sitenexs | Registrasi Usaha">
-    <meta property="og:description" content="Daftar akun Sitenexs untuk digitalisasi usaha, kasir, presensi, dan layanan bisnis modern Anda.">
-    <meta property="og:site_name" content="Sitenexs">
-    <meta property="og:url" content="https://account.sitenexs.com/register">
-    <meta property="og:image" content="https://sitenexs.com/assets/favicon/favicon.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@Sitenexs">
-    <meta name="twitter:title" content="Daftar Akun & Buat Dashboard Sitenexs | Registrasi Usaha">
-    <meta name="twitter:description" content="Daftarkan usaha Anda di Sitenexs untuk fitur kasir, presensi, booking, dan sistem order digital.">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FY8W3CJKFL"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-FY8W3CJKFL');
-    </script>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://sitenexs.com/assets/favicon/favicon.png">
-
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar - Sitenexs</title>
+    <meta name="description" content="Halaman pendaftaran akun Sitenexs." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --primary-light: #eff6ff;
-            --primary-glow: rgba(37, 99, 235, 0.15);
             --accent: #10b981;
             --bg-body: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card: #ffffff;
             --text-main: #0f172a;
-            --text-muted: #64748b;
+            --text-muted: #475569;
             --border-subtle: #e2e8f0;
-            --border-focus: #3b82f6;
-            --shadow-card: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-            --shadow-btn: 0 4px 12px rgba(37, 99, 235, 0.25);
-            --radius-md: 0.5rem;
+            --border-medium: #cbd5e1;
+            --shadow-md: 0 12px 30px -12px rgba(15,23,42,0.18);
+            --radius-md: 0.75rem;
             --radius-lg: 1rem;
-            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-xl: 1.5rem;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { box-sizing: border-box; }
         body {
+            margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
+            background: linear-gradient(135deg, #eef7ff 0%, #f8fafc 100%);
             color: var(--text-main);
-            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select { font: inherit; }
+
+        .container {
+            width: min(1100px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        .topbar {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 1.5rem 1rem;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+            height: 72px;
         }
-        a { text-decoration: none; color: var(--primary); font-weight: 600; transition: var(--transition); }
-        a:hover { color: var(--primary-dark); }
-        .auth-wrapper { width: 100%; max-width: 460px; animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .auth-card {
-            background-color: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 2.25rem 2rem;
-            box-shadow: var(--shadow-card);
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
         }
-        .auth-header { text-align: center; margin-bottom: 1.5rem; }
-        .logo { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.25rem; color: var(--text-main); margin-bottom: 1rem; }
-        .logo-text {
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #60a5fa 100%);
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(37,99,235,0.2);
+            background: #fff;
+        }
+
+        .brand-text {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .logo-img { height: 32px; width: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
-        .auth-title { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); margin-bottom: 0.3rem; }
-        .auth-desc { font-size: 0.8125rem; color: var(--text-muted); font-weight: 400; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.775rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--text-main); }
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .form-control {
-            width: 100%;
-            padding: 0.65rem 0.875rem 0.65rem 2.45rem;
-            border-radius: var(--radius-md);
+
+        .back-link {
+            color: var(--primary);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .auth-wrap {
+            min-height: calc(100vh - 72px);
+            display: grid;
+            place-items: center;
+            padding: 2rem 0 4rem;
+        }
+
+        .card {
+            width: min(100%, 560px);
+            background: rgba(255,255,255,0.95);
             border: 1px solid var(--border-subtle);
-            background-color: #fafafa;
-            font-size: 0.8125rem;
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.3rem);
+            margin: 0 0 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .subtext {
+            color: var(--text-muted);
+            margin: 0 0 1.5rem;
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-size: 0.85rem;
+            font-weight: 700;
             color: var(--text-main);
-            transition: var(--transition);
-            font-family: inherit;
         }
-        textarea.form-control { resize: vertical; min-height: 70px; padding-top: 0.65rem; }
-        .form-control::placeholder { color: #94a3b8; }
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.875rem center;
-            background-size: 0.875rem;
-            padding-right: 2.25rem;
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap i {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            border: 1px solid var(--border-medium);
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem 0.85rem 2.5rem;
+            transition: 0.2s ease;
+            color: var(--text-main);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: #fff;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.9rem 1.25rem;
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            font-weight: 800;
             cursor: pointer;
+            transition: 0.2s ease;
         }
-        .input-icon { position: absolute; left: 0.875rem; color: var(--text-muted); font-size: 0.85rem; transition: var(--transition); pointer-events: none; z-index: 2; }
-        .textarea-wrapper .input-icon { top: 0.75rem; }
-        .logo-preview-container { display: none; align-items: center; gap: 10px; margin-top: 8px; padding: 8px 12px; background: #f1f5f9; border-radius: var(--radius-md); border: 1px dashed var(--border-subtle); }
-        .logo-preview-container.show { display: flex; }
-        .logo-preview-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .logo-preview-info { flex: 1; font-size: 0.75rem; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .logo-remove-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.85rem; padding: 4px; transition: var(--transition); }
-        .logo-remove-btn:hover { color: #dc2626; }
-        .password-toggle { position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 0.25rem; transition: var(--transition); z-index: 2; }
-        .password-toggle:hover { color: var(--text-main); }
-        .form-control:hover { border-color: #cbd5e1; background-color: #ffffff; }
-        .form-control:focus { outline: none; border-color: var(--border-focus); background-color: #ffffff; box-shadow: 0 0 0 3px var(--primary-glow); transform: translateY(-1px); }
-        .input-wrapper:focus-within .input-icon { color: var(--primary); }
-        .password-strength { margin-top: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
-        .strength-bars { flex: 1; height: 4px; background-color: var(--border-subtle); border-radius: 2px; overflow: hidden; display: flex; gap: 2px; }
-        .strength-bar { flex: 1; height: 100%; background-color: transparent; transition: var(--transition); }
-        .strength-text { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
-        .terms-text { font-size: 0.72rem; color: var(--text-muted); margin: 1.15rem 0; line-height: 1.4; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.7rem 1rem; font-size: 0.8125rem; font-weight: 600; border-radius: var(--radius-md); transition: var(--transition); cursor: pointer; border: 1px solid transparent; text-align: center; width: 100%; font-family: inherit; }
-        .btn-primary { background-color: var(--primary); color: #ffffff; box-shadow: var(--shadow-btn); }
-        .btn-primary:hover { background-color: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35); }
-        .auth-footer { text-align: center; margin-top: 1.25rem; font-size: 0.75rem; color: var(--text-muted); }
-        .back-home { display: flex; align-items: center; justify-content: center; gap: 0.35rem; text-align: center; margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted); }
-        .back-home:hover { color: var(--primary); text-decoration: none; }
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 360px; width: calc(100% - 40px); pointer-events: none; }
-        .toast { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #ffffff; border-radius: var(--radius-md); box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08); border: 1px solid var(--border-subtle); pointer-events: auto; opacity: 0; transform: translateY(-20px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        .toast-icon { font-size: 1.1rem; margin-top: 1px; flex-shrink: 0; }
-        .toast.success .toast-icon { color: var(--accent); }
-        .toast.error .toast-icon { color: #ef4444; }
-        .toast-content { flex: 1; }
-        .toast-title { font-size: 0.825rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
-        .toast-message { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
-        .toast-close { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 0.8rem; padding: 2px; transition: var(--transition); }
-        .toast-close:hover { color: var(--text-main); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(37,99,235,0.2);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        .alt {
+            margin-top: 1.2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .alt a {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .card { padding: 1.25rem 1rem; }
+            .topbar { height: 64px; }
+        }
     </style>
 </head>
 <body>
+    <header class="container topbar">
+        <a href="https://sitenexs.com/" class="brand" aria-label="Ke halaman utama Sitenexs">
+            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=64&rounded=true';">
+            <span class="brand-text">Sitenexs</span>
+        </a>
+        <a href="https://sitenexs.com/" class="back-link"><i class="fas fa-arrow-left"></i> Kembali</a>
+    </header>
 
-    <div id="toast-container"></div>
-
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <div class="auth-header">
-                <a href="https://sitenexs.com" class="logo">
-                    <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="logo-img" onerror="this.style.display='none'">
-                    <span class="logo-text">Sitenexs</span>
-                </a>
-                <h1 class="auth-title">Buat Akun</h1>
-                <p class="auth-desc">Mulai digitalisasi bisnis Anda bersama Sitenexs</p>
-            </div>
+    <main class="auth-wrap">
+        <section class="card">
+            <div class="eyebrow">Bergabung</div>
+            <h1>Daftar</h1>
+            <p class="subtext">Pendaftaran bersifat opsional. Anda tetap bisa menjelajahi situs tanpa membuat akun.</p>
 
             <form id="register-form">
                 <div class="form-group">
-                    <label>Nama Pemilik / Pengelola</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
-                        <input type="text" id="owner-name" required placeholder="Contoh: Budi Santoso" class="form-control">
+                    <label for="nama">Nama Lengkap</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input id="nama" type="text" autocomplete="name" placeholder="Nama Anda" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Nama Usaha / Toko</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-store input-icon"></i>
-                        <input type="text" id="store-name" required placeholder="Masukkan nama bisnis kamu" class="form-control">
+                    <label for="email">Email</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input id="email" type="email" autocomplete="email" placeholder="email@contoh.com" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Logo Bisnis / Toko <span style="font-weight: normal; color: var(--text-muted);">(Opsional, Maks 2MB)</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-image input-icon"></i>
-                        <input type="file" id="store-logo" accept="image/jpeg,image/png,image/webp" class="form-control" style="padding-top: 0.5rem; padding-bottom: 0.5rem; cursor: pointer;">
-                    </div>
-                    <div id="logo-preview-box" class="logo-preview-container">
-                        <img id="logo-preview-img" src="" alt="Pratinjau Logo" class="logo-preview-img">
-                        <div class="logo-preview-info" id="logo-file-name"></div>
-                        <button type="button" id="logo-remove-btn" class="logo-remove-btn" title="Hapus Logo"><i class="fas fa-trash-alt"></i></button>
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input id="password" type="password" autocomplete="new-password" minlength="6" placeholder="Minimal 6 karakter" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Alamat Bisnis / Toko</label>
-                    <div class="input-wrapper textarea-wrapper">
-                        <i class="fas fa-map-marker-alt input-icon"></i>
-                        <textarea id="store-address" required placeholder="Contoh: Jl. Sudirman No. 123, Jakarta" class="form-control"></textarea>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Nama Media Sosial Bisnis <span style="font-weight: normal; color: var(--text-muted);">(Opsional)</span></label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-share-nodes input-icon"></i>
-                        <input type="text" id="store-social" placeholder="Contoh: @tokobudi (Instagram / TikTok)" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Email Aktif</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="email-input" required placeholder="nama@email.com" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>No. WhatsApp Aktif</label>
-                    <div class="input-wrapper">
-                        <i class="fab fa-whatsapp input-icon" style="color: #10b981;"></i>
-                        <input type="tel" id="whatsapp" required placeholder="081234567890" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Layanan yang Diminati</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-cubes input-icon"></i>
-                        <select id="service-select" class="form-control" required>
-                            <option value="" disabled selected>Pilih layanan yang diminati...</option>
-                            <option value="katalog">Website Profil UMKM / Katalog</option>
-                            <option value="presensi">Sistem Presensi Karyawan (GPS)</option>
-                            <option value="kasir">Aplikasi Kasir / POS Toko</option>
-                            <option value="booking">Menu QR Code / Booking System</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Kata Sandi (Password)</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="password-input" required placeholder="Minimal 6 karakter" class="form-control" style="padding-right: 2.35rem;">
-                        <button type="button" id="toggle-password" class="password-toggle" aria-label="Tampilkan Password">
-                            <i class="fas fa-eye" id="eye-icon"></i>
-                        </button>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-bars">
-                            <div class="strength-bar" id="bar-1"></div>
-                            <div class="strength-bar" id="bar-2"></div>
-                            <div class="strength-bar" id="bar-3"></div>
-                        </div>
-                        <span class="strength-text" id="strength-text">Minimal 6 karakter</span>
-                    </div>
-                </div>
-
-                <p class="terms-text">
-                    Dengan mendaftar, Anda menyetujui ketentuan layanan serta kebijakan privasi pendampingan usaha dari Sitenexs.
-                </p>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Daftar Sekarang
-                </button>
+                <button type="submit" class="btn btn-primary">Buat Akun</button>
             </form>
 
-            <div class="auth-footer">
-                Sudah punya akun Sitenexs? <a href="admin-login.html">Masuk di sini</a>
+            <p id="auth-message" role="status" aria-live="polite" style="margin-top:1rem;color:var(--text-muted);"></p>
+
+            <div class="alt">
+                Sudah punya akun? <a href="https://account.sitenexs.com/sign-in/">Masuk di sini</a>
             </div>
-        </div>
-
-        <a href="https://sitenexs.com" class="back-home">
-            <i class="fas fa-arrow-left"></i> Kembali ke Beranda Utama
-        </a>
-    </div>
-
-    <!-- Supabase JS CDN v2 -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script>
-/* =========================================================
-   SITENEXS - REGISTER SYSTEM
-   Supabase Auth + Clients
-========================================================= */
-
-const SUPABASE_URL =
-    "https://mlvzybhlgohekytjeosv.supabase.co";
-
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdnp5YmhsZ29oZWt5dGplb3N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwMTk3ODksImV4cCI6MjEwNjU5NTc4OX0.rCXjNkAbhmyXesE5p9we_V5oUrLaQCQ1sOxhCRK66vk"
-const { createClient } = supabase;
-
-const _supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-        auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: false
-        }
-    }
-);
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(title, message, type = "success") {
-
-    const container =
-        document.getElementById("toast-container");
-
-    const toast =
-        document.createElement("div");
-
-    toast.className =
-        `toast ${type}`;
-
-    const iconClass =
-        type === "success"
-            ? "fa-solid fa-circle-check"
-            : "fa-solid fa-circle-exclamation";
-
-    toast.innerHTML = `
-        <div class="toast-icon">
-            <i class="${iconClass}"></i>
-        </div>
-
-        <div class="toast-content">
-            <div class="toast-title">
-                ${escapeHtml(title)}
-            </div>
-
-            <div class="toast-message">
-                ${escapeHtml(message)}
-            </div>
-        </div>
-
-        <button
-            class="toast-close"
-            aria-label="Tutup">
-
-            <i class="fa-solid fa-xmark"></i>
-
-        </button>
-    `;
-
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.classList.add("show");
-    }, 10);
-
-    toast
-        .querySelector(".toast-close")
-        .addEventListener("click", () => {
-            removeToast(toast);
-        });
-
-    setTimeout(() => {
-        removeToast(toast);
-    }, 5000);
-}
-
-
-function removeToast(toast) {
-
-    toast.classList.remove("show");
-
-    setTimeout(() => {
-        toast.remove();
-    }, 300);
-}
-
-
-/* =========================================================
-   SECURITY HELPER
-========================================================= */
-
-function escapeHtml(value = "") {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const logoInput =
-    document.getElementById("store-logo");
-
-const logoPreviewBox =
-    document.getElementById("logo-preview-box");
-
-const logoPreviewImg =
-    document.getElementById("logo-preview-img");
-
-const logoFileName =
-    document.getElementById("logo-file-name");
-
-const logoRemoveBtn =
-    document.getElementById("logo-remove-btn");
-
-const passwordInput =
-    document.getElementById("password-input");
-
-const togglePasswordBtn =
-    document.getElementById("toggle-password");
-
-const eyeIcon =
-    document.getElementById("eye-icon");
-
-
-/* =========================================================
-   LOGO PREVIEW
-========================================================= */
-
-logoInput.addEventListener("change", function () {
-
-    const file = this.files[0];
-
-    if (!file) return;
-
-    const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-
-        showToast(
-            "Format Tidak Didukung",
-            "Gunakan JPG, PNG, atau WebP.",
-            "error"
-        );
-
-        logoInput.value = "";
-
-        return;
-    }
-
-    if (file.size > 2 * 1024 * 1024) {
-
-        showToast(
-            "Ukuran Terlalu Besar",
-            "Logo maksimal berukuran 2 MB.",
-            "error"
-        );
-
-        logoInput.value = "";
-
-        return;
-    }
-
-    const reader =
-        new FileReader();
-
-    reader.onload = function (e) {
-
-        logoPreviewImg.src =
-            e.target.result;
-
-        logoFileName.textContent =
-            file.name;
-
-        logoPreviewBox
-            .classList
-            .add("show");
-    };
-
-    reader.readAsDataURL(file);
-});
-
-
-logoRemoveBtn.addEventListener("click", function () {
-
-    logoInput.value = "";
-
-    logoPreviewImg.src = "";
-
-    logoFileName.textContent = "";
-
-    logoPreviewBox
-        .classList
-        .remove("show");
-});
-
-
-/* =========================================================
-   LOCAL DRAFT
-========================================================= */
-
-const fields = [
-    "owner-name",
-    "store-name",
-    "store-address",
-    "store-social",
-    "email-input",
-    "whatsapp",
-    "service-select"
-];
-
-fields.forEach(id => {
-
-    const element =
-        document.getElementById(id);
-
-    if (!element) return;
-
-    const saved =
-        localStorage.getItem(
-            "draft_" + id
-        );
-
-    if (saved) {
-        element.value = saved;
-    }
-
-    element.addEventListener(
-        "input",
-        () => {
-
-            localStorage.setItem(
-                "draft_" + id,
-                element.value
-            );
-        }
-    );
-});
-
-
-/* =========================================================
-   PASSWORD TOGGLE
-========================================================= */
-
-togglePasswordBtn.addEventListener(
-    "click",
-    () => {
-
-        const isPassword =
-            passwordInput.type === "password";
-
-        passwordInput.type =
-            isPassword
-                ? "text"
-                : "password";
-
-        eyeIcon.classList.toggle(
-            "fa-eye",
-            !isPassword
-        );
-
-        eyeIcon.classList.toggle(
-            "fa-eye-slash",
-            isPassword
-        );
-    }
-);
-
-
-/* =========================================================
-   PASSWORD STRENGTH
-========================================================= */
-
-const bar1 =
-    document.getElementById("bar-1");
-
-const bar2 =
-    document.getElementById("bar-2");
-
-const bar3 =
-    document.getElementById("bar-3");
-
-const strengthText =
-    document.getElementById("strength-text");
-
-
-passwordInput.addEventListener(
-    "input",
-    () => {
-
-        const value =
-            passwordInput.value;
-
-        bar1.style.backgroundColor =
-            "transparent";
-
-        bar2.style.backgroundColor =
-            "transparent";
-
-        bar3.style.backgroundColor =
-            "transparent";
-
-        if (!value.length) {
-
-            strengthText.textContent =
-                "Minimal 6 karakter";
-
-            return;
-        }
-
-        if (value.length < 6) {
-
-            bar1.style.backgroundColor =
-                "#ef4444";
-
-            strengthText.textContent =
-                "Terlalu pendek";
-
-        } else if (value.length < 8) {
-
-            bar1.style.backgroundColor =
-                "#f59e0b";
-
-            bar2.style.backgroundColor =
-                "#f59e0b";
-
-            strengthText.textContent =
-                "Cukup";
-
-        } else {
-
-            bar1.style.backgroundColor =
-                "#10b981";
-
-            bar2.style.backgroundColor =
-                "#10b981";
-
-            bar3.style.backgroundColor =
-                "#10b981";
-
-            strengthText.textContent =
-                "Kuat";
-        }
-    }
-);
-
-
-/* =========================================================
-   REGISTER
-========================================================= */
-
-document
-    .getElementById("register-form")
-    .addEventListener(
-        "submit",
-        async function (e) {
-
-            e.preventDefault();
-
-            const ownerName =
-                document
-                    .getElementById("owner-name")
-                    .value
-                    .trim();
-
-            const storeName =
-                document
-                    .getElementById("store-name")
-                    .value
-                    .trim();
-
-            const storeAddress =
-                document
-                    .getElementById("store-address")
-                    .value
-                    .trim();
-
-            const storeSocial =
-                document
-                    .getElementById("store-social")
-                    .value
-                    .trim();
-
-            const email =
-                document
-                    .getElementById("email-input")
-                    .value
-                    .trim();
-
-            const whatsapp =
-                document
-                    .getElementById("whatsapp")
-                    .value
-                    .trim();
-
-            const selectedService =
-                document
-                    .getElementById("service-select")
-                    .value;
-
-            const password =
-                passwordInput.value;
-
-
-            /* VALIDASI */
-
-            if (!ownerName ||
-                !storeName ||
-                !storeAddress ||
-                !email ||
-                !whatsapp ||
-                !selectedService) {
-
-                showToast(
-                    "Data Belum Lengkap",
-                    "Silakan lengkapi semua data wajib.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            if (password.length < 6) {
-
-                showToast(
-                    "Password Tidak Valid",
-                    "Password minimal 6 karakter.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            const submitBtn =
-                e.target.querySelector(
-                    'button[type="submit"]'
-                );
-
-            submitBtn.disabled = true;
-
-            submitBtn.style.opacity =
-                "0.7";
-
-            submitBtn.innerHTML =
-                '<i class="fas fa-spinner fa-spin"></i> Membuat Akun...';
-
+        </section>
+    </main>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
+            authDomain: 'sitenexs-62919.firebaseapp.com',
+            projectId: 'sitenexs-62919',
+            storageBucket: 'sitenexs-62919.firebasestorage.app',
+            messagingSenderId: '1060348110644',
+            appId: '1:1060348110644:web:e45af14d5f26a9cf8e6761',
+            measurementId: 'G-C7YL0Q7YRQ'
+        };
+
+        const auth = getAuth(initializeApp(firebaseConfig));
+        const form = document.getElementById('register-form');
+        const message = document.getElementById('auth-message');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            message.textContent = '';
+            submitButton.disabled = true;
 
             try {
-
-                /* =========================================
-                   1. SUPABASE AUTH
-                ========================================= */
-
-                const {
-                    data: authData,
-                    error: authError
-                } =
-                    await _supabase.auth.signUp({
-                        email,
-                        password
-                    });
-
-
-                if (authError) {
-
-                    const message =
-                        authError.message
-                            .toLowerCase();
-
-                    if (
-                        message.includes(
-                            "already registered"
-                        )
-                    ) {
-
-                        throw new Error(
-                            "Email ini sudah terdaftar. Silakan masuk."
-                        );
-                    }
-
-                    if (
-                        message.includes(
-                            "rate limit"
-                        )
-                    ) {
-
-                        throw new Error(
-                            "Batas pendaftaran tercapai. Silakan coba beberapa saat lagi."
-                        );
-                    }
-
-                    throw authError;
-                }
-
-
-                if (!authData.user) {
-
-                    throw new Error(
-                        "User ID tidak ditemukan."
-                    );
-                }
-
-
-                /*
-                 * Jika email confirmation aktif,
-                 * session belum tersedia.
-                 */
-
-                if (!authData.session) {
-
-                    showToast(
-                        "Cek Email",
-                        "Akun berhasil dibuat. Silakan konfirmasi email Anda terlebih dahulu.",
-                        "success"
-                    );
-
-                    submitBtn.innerHTML =
-                        '<i class="fas fa-envelope"></i> Cek Email Anda';
-
-                    return;
-                }
-
-
-                const userId =
-                    authData.user.id;
-
-
-                /* =========================================
-                   2. UPLOAD LOGO
-                ========================================= */
-
-                let logoUrl = null;
-
-                const logoFile =
-                    logoInput.files[0];
-
-                if (logoFile) {
-
-                    const fileExt =
-                        logoFile.name
-                            .split(".")
-                            .pop()
-                            .toLowerCase();
-
-                    const fileName =
-                        `${userId}/${Date.now()}.${fileExt}`;
-
-
-                    const {
-                        error: uploadError
-                    } =
-                        await _supabase.storage
-                            .from("business-logos")
-                            .upload(
-                                fileName,
-                                logoFile,
-                                {
-                                    cacheControl:
-                                        "3600",
-                                    upsert:
-                                        false
-                                }
-                            );
-
-
-                    if (!uploadError) {
-
-                        const {
-                            data: publicData
-                        } =
-                            _supabase.storage
-                                .from(
-                                    "business-logos"
-                                )
-                                .getPublicUrl(
-                                    fileName
-                                );
-
-                        logoUrl =
-                            publicData
-                                ?.publicUrl ||
-                            null;
-
-                    } else {
-
-                        console.warn(
-                            "Logo gagal diupload:",
-                            uploadError.message
-                        );
-                    }
-                }
-
-
-                /* =========================================
-                   3. SIMPAN CLIENT
-                ========================================= */
-
-                const {
-                    error: dbError
-                } =
-                    await _supabase
-                        .from("clients")
-                        .insert([{
-
-                            uid: userId,
-
-                            owner_name:
-                                ownerName,
-
-                            store_name:
-                                storeName,
-
-                            store_logo:
-                                logoUrl,
-
-                            store_address:
-                                storeAddress,
-
-                            store_social:
-                                storeSocial ||
-                                null,
-
-                            email:
-
-                                email,
-
-                            whatsapp:
-                                whatsapp,
-
-                            service:
-                                selectedService,
-
-                            payment_status:
-                                "unpaid",
-
-                            subscription_status:
-                                "trial",
-
-                            expires_at:
-                                null,
-
-                            current_package:
-                                null,
-
-                            paid_at:
-                                null,
-
-                            paid_amount:
-                                0
-
-                        }]);
-
-
-                if (dbError) {
-
-                    throw new Error(
-                        "Gagal menyimpan profil: " +
-                        dbError.message
-                    );
-                }
-
-
-                /* =========================================
-                   4. BERSIHKAN DRAFT
-                ========================================= */
-
-                fields.forEach(id => {
-
-                    localStorage.removeItem(
-                        "draft_" + id
-                    );
+                const credential = await createUserWithEmailAndPassword(
+                    auth,
+                    document.getElementById('email').value.trim(),
+                    document.getElementById('password').value
+                );
+                await updateProfile(credential.user, {
+                    displayName: document.getElementById('nama').value.trim()
                 });
-
-
-                /* =========================================
-                   5. BERHASIL
-                ========================================= */
-
-                showToast(
-                    "Pendaftaran Berhasil",
-                    "Akun berhasil dibuat. Mengalihkan ke dashboard...",
-                    "success"
-                );
-
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        "dashboard.html";
-
-                }, 1500);
-
-
+                window.location.assign('/profile/');
             } catch (error) {
-
-                console.error(
-                    "Register Error:",
-                    error
-                );
-
-                showToast(
-                    "Pendaftaran Gagal",
-                    error.message ||
-                    "Terjadi kesalahan.",
-                    "error"
-                );
-
-                submitBtn.disabled =
-                    false;
-
-                submitBtn.style.opacity =
-                    "1";
-
-                submitBtn.innerHTML =
-                    '<i class="fas fa-user-plus"></i> Daftar Sekarang';
+                const messages = {
+                    'auth/email-already-in-use': 'Email ini sudah terdaftar. Silakan masuk.',
+                    'auth/invalid-email': 'Masukkan alamat email yang valid.',
+                    'auth/weak-password': 'Password terlalu lemah. Gunakan minimal 6 karakter.',
+                    'auth/network-request-failed': 'Koneksi bermasalah. Periksa internet Anda.'
+                };
+                message.textContent = messages[error.code] || 'Pendaftaran gagal. Silakan coba lagi.';
+                console.error('Firebase registration failed:', error);
+            } finally {
+                submitButton.disabled = false;
             }
-        }
-    );
-</script>
+        });
+    </script>
 </body>
 </html>
