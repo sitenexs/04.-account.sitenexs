@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Saya - Sitenexs</title>
+    <meta name="description" content="Halaman profil akun pengguna Sitenexs." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #10b981;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-subtle: #e2e8f0;
+            --border-medium: #cbd5e1;
+            --shadow-sm: 0 8px 20px -12px rgba(15,23,42,0.18);
+            --shadow-md: 0 16px 35px -18px rgba(15,23,42,0.3);
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+            color: var(--text-main);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font: inherit; }
+
+        .container {
+            width: min(1100px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 10;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(37,99,235,0.2);
+            background: #fff;
+        }
+
+        .brand-text {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .nav a {
+            transition: 0.2s ease;
+        }
+
+        .nav a:hover { color: var(--primary); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 800;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(37,99,235,0.2);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--text-main);
+            border-color: var(--border-medium);
+        }
+
+        .page {
+            padding: 2.5rem 0 4rem;
+        }
+
+        .profile-shell {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar {
+            padding: 1.5rem;
+        }
+
+        .avatar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(37,99,235,0.08);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #dbeafe, #f8fafc);
+            display: grid;
+            place-items: center;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .role {
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-top: 0.9rem;
+            background: rgba(16, 185, 129, 0.12);
+            color: #047857;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 999px;
+            padding: 0.45rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .meta {
+            list-style: none;
+            margin: 1.5rem 0 0;
+            padding: 0;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .meta li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.8rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            background: #f8fafc;
+            font-size: 0.88rem;
+        }
+
+        .meta i {
+            width: 18px;
+            color: var(--primary);
+        }
+
+        .main-panel {
+            padding: 1.5rem;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            letter-spacing: -0.03em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            padding: 1rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stat-value {
+            margin-top: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .grid-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .info-box {
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1rem;
+            background: #fff;
+        }
+
+        .info-box h3 {
+            margin: 0 0 0.8rem;
+            font-size: 1rem;
+        }
+
+        .info-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.7rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .info-list li strong {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 860px) {
+            .profile-shell { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 560px) {
+            .stats, .grid-info { grid-template-columns: 1fr; }
+            .header-row { flex-direction: column; align-items: flex-start; }
+            .nav { gap: 0.6rem; font-size: 0.85rem; }
+            .main-panel, .sidebar { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+            <a href="https://sitenexs.com/" class="brand" aria-label="Kembali ke halaman utama">
+                <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=64&rounded=true';">
+                <span class="brand-text">Sitenexs</span>
+            </a>
+
+            <nav class="nav" aria-label="Navigasi profil">
+                <a href="https://sitenexs.com/">Beranda</a>
+                <button id="sign-out" class="btn btn-secondary" type="button">Keluar</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container profile-shell">
+            <aside class="panel sidebar">
+                <div class="avatar-wrap">
+                    <div id="avatar" class="avatar" aria-hidden="true">SN</div>
+                    <h2 id="profile-name" class="name">Memuat profil...</h2>
+                    <div class="role">Akun Sitenexs</div>
+                    <div class="status"><i class="fas fa-circle" style="font-size:0.55rem;"></i> <span id="profile-status">Memeriksa sesi</span></div>
+                </div>
+
+                <ul class="meta">
+                    <li><i class="fas fa-envelope"></i> <span id="profile-email"></span></li>
+                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid"></span></li>
+                </ul>
+            </aside>
+
+            <section class="panel main-panel">
+                <div class="header-row">
+                    <h1>Profil Saya</h1>
+                    <button id="edit-profile" class="btn btn-primary" type="button"><i class="fas fa-pen"></i> Ubah Nama</button>
+                </div>
+
+                <div class="grid-info">
+                    <div class="info-box">
+                        <h3>Informasi Akun</h3>
+                        <ul class="info-list">
+                            <li><strong>Nama:</strong> <span id="account-name"></span></li>
+                            <li><strong>Email:</strong> <span id="account-email"></span></li>
+                            <li><strong>Status email:</strong> <span id="email-status"></span></li>
+                            <li><strong>Login:</strong> Firebase Authentication</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3>Tentang Akun</h3>
+                        <ul class="info-list">
+                            <li>Akun dapat digunakan untuk mengakses fitur yang membutuhkan login.</li>
+                            <li>Anda tetap dapat menjelajahi halaman utama Sitenexs tanpa login.</li>
+                        </ul>
+                    </div>
+                </div>
+                <p id="profile-message" role="status" aria-live="polite" style="margin-top:1rem;color:var(--text-muted);"></p>
+            </section>
+        </div>
+    </main>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut,
+            updateProfile
+        } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
+            authDomain: 'sitenexs-62919.firebaseapp.com',
+            projectId: 'sitenexs-62919',
+            storageBucket: 'sitenexs-62919.firebasestorage.app',
+            messagingSenderId: '1060348110644',
+            appId: '1:1060348110644:web:e45af14d5f26a9cf8e6761',
+            measurementId: 'G-C7YL0Q7YRQ'
+        };
+
+        const auth = getAuth(initializeApp(firebaseConfig));
+        const message = document.getElementById('profile-message');
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace('https://account.sitenexs.com/sign-in/');
+                return;
+            }
+
+            currentUser = user;
+            const name = user.displayName || 'Pengguna Sitenexs';
+            const initials = name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
+            document.getElementById('avatar').textContent = initials || 'S';
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('profile-email').textContent = user.email || '-';
+            document.getElementById('profile-uid').textContent = `ID: ${user.uid}`;
+            document.getElementById('profile-status').textContent = 'Sesi aktif';
+            document.getElementById('account-name').textContent = name;
+            document.getElementById('account-email').textContent = user.email || '-';
+            document.getElementById('email-status').textContent = user.emailVerified ? 'Terverifikasi' : 'Belum terverifikasi';
+        }, (error) => {
+            message.textContent = 'Tidak dapat memeriksa sesi akun. Silakan coba masuk kembali.';
+            console.error('Firebase auth state check failed:', error);
+        });
+
+        document.getElementById('sign-out').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.assign('https://sitenexs.com/');
+            } catch (error) {
+                message.textContent = 'Gagal keluar dari akun. Silakan coba lagi.';
+                console.error('Firebase sign-out failed:', error);
+            }
+        });
+
+        document.getElementById('edit-profile').addEventListener('click', async () => {
+            if (!currentUser) return;
+            const nextName = window.prompt('Masukkan nama baru:', currentUser.displayName || '');
+            if (nextName === null) return;
+            if (!nextName.trim()) {
+                message.textContent = 'Nama tidak boleh kosong.';
+                return;
+            }
+
+            try {
+                await updateProfile(currentUser, { displayName: nextName.trim() });
+                document.getElementById('profile-name').textContent = nextName.trim();
+                document.getElementById('account-name').textContent = nextName.trim();
+                document.getElementById('avatar').textContent = nextName.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
+                message.textContent = 'Nama profil berhasil diperbarui.';
+            } catch (error) {
+                message.textContent = 'Gagal memperbarui nama profil. Silakan coba lagi.';
+                console.error('Firebase profile update failed:', error);
+            }
+        });
+    </script>
+</body>
+</html>
