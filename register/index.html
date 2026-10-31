@@ -426,7 +426,7 @@
     </header>
 
     <main class="auth-wrap">
-        <form id="register-form" style="width: 100%;">
+        <form id="register-form" style="width: 100%;" novalidate>
             <div class="slider-viewport">
                 <div class="card-track" id="sliderTrack">
                     
@@ -653,8 +653,8 @@
     
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -667,7 +667,7 @@
         };
 
         const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxY2J5YW14aWVrZHh5dG50bG5vIiwiaWF0IjoxNzkwNDEzNjQyLCJleHAiOjIxMDU5ODk2NDJ9.pkytlWwjfKOQT9bWNS-nuNZReE7jFUi3ITk5ageyrkM';
+        const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
         const logoBucket = 'profile-photos';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -756,6 +756,7 @@
         
         // --- Slider Logic ---
         const sliderTrack = document.getElementById('sliderTrack');
+        const sliderViewport = document.querySelector('.slider-viewport');
         const slideWrappers = document.querySelectorAll('.slide-wrapper');
         let currentStep = 0;
 
@@ -784,6 +785,7 @@
         };
 
         function updateSlider() {
+            sliderViewport.scrollLeft = 0;
             sliderTrack.style.transform = `translateX(-${currentStep * 25}%)`;
             slideWrappers.forEach((wrapper, index) => {
                 if(index === currentStep) {
@@ -792,7 +794,9 @@
                     wrapper.classList.remove('active');
                 }
             });
-            document.getElementById('auth-message').style.display = 'none';
+            const message = document.getElementById('auth-message');
+            message.className = '';
+            message.textContent = '';
         }
 
         const logoInput = document.getElementById('logo_bisnis');
@@ -841,6 +845,20 @@
             event.preventDefault();
             message.className = '';
             message.textContent = '';
+
+            for (let stepIndex = 0; stepIndex < slideWrappers.length; stepIndex++) {
+                const invalidInput = [...slideWrappers[stepIndex].querySelectorAll('input, select, textarea')]
+                    .find((input) => !input.checkValidity());
+                if (invalidInput) {
+                    currentStep = stepIndex;
+                    updateSlider();
+                    message.className = 'error';
+                    message.textContent = `Periksa kembali data pada langkah ${stepIndex + 1}.`;
+                    invalidInput.focus({ preventScroll: true });
+                    return;
+                }
+            }
+
             submitButton.disabled = true;
             
             const email = document.getElementById('email').value.trim();
@@ -877,8 +895,20 @@
             try {
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
                 
-                const credential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = credential.user;
+                let user;
+                try {
+                    const credential = await createUserWithEmailAndPassword(auth, email, password);
+                    user = credential.user;
+                } catch (error) {
+                    if (error.code !== 'auth/email-already-in-use') throw error;
+
+                    const credential = await signInWithEmailAndPassword(auth, email, password);
+                    user = credential.user;
+                    const existingProfile = await getDoc(doc(db, 'users', user.uid));
+                    if (existingProfile.exists()) {
+                        throw new Error('Email ini sudah terdaftar dan profilnya sudah lengkap. Silakan masuk melalui halaman login.');
+                    }
+                }
                 
                 await updateProfile(user, { displayName: fullName });
                 
@@ -889,8 +919,7 @@
                     const response = await fetch(`${supabaseUrl}/storage/v1/object/${logoBucket}/${objectPath}`, {
                         method: 'POST',
                         headers: {
-                            apikey: supabaseAnonKey,
-                            Authorization: `Bearer ${supabaseAnonKey}`,
+                            apikey: supabasePublishableKey,
                             'Content-Type': logoFile.type,
                             'x-upsert': 'true'
                         },
@@ -931,9 +960,14 @@
                     'auth/email-already-in-use': 'Email sudah terdaftar.',
                     'auth/invalid-email': 'Format email tidak valid.',
                     'auth/weak-password': 'Sandi minimal 6 karakter.',
-                    'auth/network-request-failed': 'Gagal koneksi internet.'
+                    'auth/network-request-failed': 'Gagal koneksi internet.',
+                    'auth/invalid-credential': 'Email atau kata sandi salah. Periksa kembali data login Anda.',
+                    'auth/wrong-password': 'Kata sandi salah untuk email yang sudah terdaftar.',
+                    'auth/user-not-found': 'Akun dengan email tersebut tidak ditemukan.',
+                    'auth/too-many-requests': 'Terlalu banyak percobaan. Tunggu beberapa saat lalu coba lagi.'
                 };
-                message.textContent = messages[error.code] || 'Terjadi kesalahan: ' + error.message;
+                message.textContent = messages[error.code] || error.message || 'Pendaftaran gagal. Silakan coba lagi.';
+                console.error('Registration failed:', error);
                 
                 submitButton.disabled = false;
                 btnText.textContent = 'Daftar Sekarang';
