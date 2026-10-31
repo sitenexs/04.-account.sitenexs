@@ -195,6 +195,61 @@
             font-size: 0.75rem;
         }
 
+        .crop-dialog {
+            width: min(420px, calc(100% - 2rem));
+            padding: 1.5rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            color: var(--text-main);
+            box-shadow: var(--shadow-md);
+        }
+
+        .crop-dialog::backdrop {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(3px);
+        }
+
+        .crop-dialog h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .crop-instructions {
+            margin: 0 0 1rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .crop-canvas {
+            display: block;
+            width: min(280px, 100%);
+            height: auto;
+            aspect-ratio: 1;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .crop-canvas:active { cursor: grabbing; }
+
+        .crop-zoom {
+            display: grid;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .crop-zoom input { width: 100%; }
+
+        .crop-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
         .name {
             font-size: 1.3rem;
             font-weight: 800;
@@ -405,6 +460,19 @@
             </section>
         </div>
     </main>
+    <dialog id="avatar-crop-dialog" class="crop-dialog" aria-labelledby="crop-title">
+        <h2 id="crop-title">Sesuaikan foto profil</h2>
+        <p class="crop-instructions">Geser foto untuk memilih bagian yang tampil. Perbesar atau perkecil dengan penggeser.</p>
+        <canvas id="crop-canvas" class="crop-canvas" width="280" height="280" aria-label="Pratinjau potongan foto profil yang berbentuk lingkaran"></canvas>
+        <label class="crop-zoom" for="crop-zoom">
+            <span>Perbesar foto</span>
+            <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1">
+        </label>
+        <div class="crop-actions">
+            <button id="cancel-crop" class="btn btn-secondary" type="button">Batal</button>
+            <button id="apply-crop" class="btn btn-primary" type="button">Gunakan foto</button>
+        </div>
+    </dialog>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import {
@@ -433,7 +501,114 @@
         const avatarInitials = document.getElementById('avatar-initials');
         const avatarFile = document.getElementById('avatar-file');
         const uploadAvatarButton = document.getElementById('upload-avatar');
+        const cropDialog = document.getElementById('avatar-crop-dialog');
+        const cropCanvas = document.getElementById('crop-canvas');
+        const cropContext = cropCanvas.getContext('2d');
+        const cropZoomInput = document.getElementById('crop-zoom');
+        const applyCropButton = document.getElementById('apply-crop');
+        const cancelCropButton = document.getElementById('cancel-crop');
+        const cropSize = cropCanvas.width;
         let currentUser = null;
+        let cropImage = null;
+        let cropBaseScale = 1;
+        let cropZoom = 1;
+        let cropX = 0;
+        let cropY = 0;
+        let dragPosition = null;
+
+        function clampCropPosition() {
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropX = Math.min(0, Math.max(cropSize - drawnWidth, cropX));
+            cropY = Math.min(0, Math.max(cropSize - drawnHeight, cropY));
+        }
+
+        function drawCropPreview() {
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropContext.clearRect(0, 0, cropSize, cropSize);
+            cropContext.drawImage(cropImage, cropX, cropY, drawnWidth, drawnHeight);
+        }
+
+        function releaseCropImage() {
+            if (cropImage) cropImage.close();
+            cropImage = null;
+            dragPosition = null;
+            avatarFile.value = '';
+        }
+
+        function setCropZoom(nextZoom) {
+            const oldScale = cropBaseScale * cropZoom;
+            const imageCenterX = (cropSize / 2 - cropX) / oldScale;
+            const imageCenterY = (cropSize / 2 - cropY) / oldScale;
+            cropZoom = Number(nextZoom);
+            const nextScale = cropBaseScale * cropZoom;
+            cropX = cropSize / 2 - imageCenterX * nextScale;
+            cropY = cropSize / 2 - imageCenterY * nextScale;
+            clampCropPosition();
+            drawCropPreview();
+        }
+
+        async function openCropEditor(file) {
+            try {
+                cropImage = await createImageBitmap(file);
+                cropBaseScale = cropSize / Math.min(cropImage.width, cropImage.height);
+                cropZoom = 1;
+                cropX = (cropSize - cropImage.width * cropBaseScale) / 2;
+                cropY = (cropSize - cropImage.height * cropBaseScale) / 2;
+                cropZoomInput.value = '1';
+                drawCropPreview();
+                cropDialog.showModal();
+            } catch (error) {
+                releaseCropImage();
+                message.textContent = 'Foto tidak dapat dibuka. Pilih file gambar lain.';
+                console.error('Profile photo could not be opened for cropping:', error);
+            }
+        }
+
+        async function uploadCroppedPhoto() {
+            if (!cropImage || !currentUser) return;
+
+            applyCropButton.disabled = true;
+            cancelCropButton.disabled = true;
+            message.textContent = 'Menyiapkan foto profil...';
+            try {
+                const croppedPhoto = await new Promise((resolve, reject) => {
+                    cropCanvas.toBlob((blob) => {
+                        if (blob) resolve(blob);
+                        else reject(new Error('Could not create cropped profile photo.'));
+                    }, 'image/jpeg', 0.9);
+                });
+                message.textContent = 'Mengunggah foto profil...';
+                const objectPath = `${encodeURIComponent(currentUser.uid)}/profile-photo`;
+                const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: supabaseAnonKey,
+                        Authorization: `Bearer ${supabaseAnonKey}`,
+                        'Content-Type': 'image/jpeg',
+                        'x-upsert': 'true'
+                    },
+                    body: croppedPhoto
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase Storage upload failed (${response.status}): ${details}`);
+                }
+
+                avatarImage.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                avatarImage.hidden = false;
+                avatarInitials.hidden = true;
+                cropDialog.close();
+                message.textContent = 'Foto profil berhasil diperbarui.';
+            } catch (error) {
+                message.textContent = 'Gagal mengunggah foto profil. Periksa konfigurasi Supabase dan izin bucket, lalu coba lagi.';
+                console.error('Supabase profile photo upload failed:', error);
+            } finally {
+                applyCropButton.disabled = false;
+                cancelCropButton.disabled = false;
+            }
+        }
 
         function renderAvatar(user) {
             const name = user.displayName || 'Pengguna Sitenexs';
@@ -519,37 +694,34 @@
                 return;
             }
 
-            uploadAvatarButton.disabled = true;
-            message.textContent = 'Mengunggah foto profil...';
-            try {
-                const objectPath = `${encodeURIComponent(currentUser.uid)}/profile-photo`;
-                const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
-                    method: 'POST',
-                    headers: {
-                        apikey: supabaseAnonKey,
-                        Authorization: `Bearer ${supabaseAnonKey}`,
-                        'Content-Type': file.type,
-                        'x-upsert': 'true'
-                    },
-                    body: file
-                });
-                if (!response.ok) {
-                    const details = await response.text();
-                    throw new Error(`Supabase Storage upload failed (${response.status}): ${details}`);
-                }
-
-                avatarImage.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
-                avatarImage.hidden = false;
-                avatarInitials.hidden = true;
-                message.textContent = 'Foto profil berhasil diperbarui.';
-            } catch (error) {
-                message.textContent = 'Gagal mengunggah foto profil. Periksa konfigurasi Supabase dan izin bucket, lalu coba lagi.';
-                console.error('Supabase profile photo upload failed:', error);
-            } finally {
-                uploadAvatarButton.disabled = false;
-                avatarFile.value = '';
-            }
+            await openCropEditor(file);
         });
+
+        cropZoomInput.addEventListener('input', () => setCropZoom(cropZoomInput.value));
+
+        cropCanvas.addEventListener('pointerdown', (event) => {
+            if (!cropImage) return;
+            cropCanvas.setPointerCapture(event.pointerId);
+            dragPosition = { x: event.clientX, y: event.clientY };
+        });
+
+        cropCanvas.addEventListener('pointermove', (event) => {
+            if (!dragPosition || !cropImage) return;
+            const bounds = cropCanvas.getBoundingClientRect();
+            const scaleX = cropSize / bounds.width;
+            const scaleY = cropSize / bounds.height;
+            cropX += (event.clientX - dragPosition.x) * scaleX;
+            cropY += (event.clientY - dragPosition.y) * scaleY;
+            dragPosition = { x: event.clientX, y: event.clientY };
+            clampCropPosition();
+            drawCropPreview();
+        });
+
+        cropCanvas.addEventListener('pointerup', () => { dragPosition = null; });
+        cropCanvas.addEventListener('pointercancel', () => { dragPosition = null; });
+        applyCropButton.addEventListener('click', uploadCroppedPhoto);
+        cancelCropButton.addEventListener('click', () => cropDialog.close());
+        cropDialog.addEventListener('close', releaseCropImage);
     </script>
 </body>
 </html>
