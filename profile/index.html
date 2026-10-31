@@ -189,12 +189,6 @@
             border: 0;
         }
 
-        .avatar-help {
-            margin: 0;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
         .crop-dialog {
             width: min(420px, calc(100% - 2rem));
             padding: 1.5rem;
@@ -380,6 +374,13 @@
             color: var(--text-main);
         }
 
+        .business-logo {
+            max-width: 90px;
+            max-height: 60px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
         @media (max-width: 860px) {
             .profile-shell { grid-template-columns: 1fr; }
         }
@@ -418,7 +419,6 @@
                     <div class="avatar-controls">
                         <input id="avatar-file" class="avatar-input" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Pilih foto profil">
                         <button id="upload-avatar" class="btn btn-secondary" type="button"><i class="fas fa-camera"></i> Ganti Foto</button>
-                        <p class="avatar-help">JPG, PNG, atau WEBP, maksimal 5 MB</p>
                     </div>
                     <h2 id="profile-name" class="name">Memuat profil...</h2>
                     <div class="role">Akun Sitenexs</div>
@@ -442,8 +442,17 @@
                         <h3>Informasi Akun</h3>
                         <ul class="info-list">
                             <li><strong>Nama:</strong> <span id="account-name"></span></li>
+                            <li><strong>Nama depan:</strong> <span id="account-first-name">Memuat...</span></li>
+                            <li><strong>Nama belakang:</strong> <span id="account-last-name">Memuat...</span></li>
                             <li><strong>Email:</strong> <span id="account-email"></span></li>
                             <li><strong>Status email:</strong> <span id="email-status"></span></li>
+                            <li><strong>Telepon:</strong> <span id="account-phone">Memuat...</span></li>
+                            <li><strong>Alamat:</strong> <span id="account-address">Memuat...</span></li>
+                            <li><strong>Bisnis:</strong> <span id="business-name">Memuat...</span></li>
+                            <li><strong>Bidang usaha:</strong> <span id="business-field">Memuat...</span></li>
+                            <li><strong>Telepon bisnis:</strong> <span id="business-phone">Memuat...</span></li>
+                            <li><strong>Email bisnis:</strong> <span id="business-email">Memuat...</span></li>
+                            <li id="business-logo-row" hidden><strong>Logo bisnis:</strong> <img id="business-logo" class="business-logo" alt="Logo bisnis"></li>
                             <li><strong>Login:</strong> Firebase Authentication</li>
                         </ul>
                     </div>
@@ -481,6 +490,7 @@
             signOut,
             updateProfile
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        import { doc, getDoc, getFirestore, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
             authDomain: 'sitenexs-62919.firebaseapp.com',
@@ -496,6 +506,7 @@
         const avatarBucket = 'profile-photos';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const message = document.getElementById('profile-message');
         const avatarImage = document.getElementById('avatar-image');
         const avatarInitials = document.getElementById('avatar-initials');
@@ -620,6 +631,30 @@
             avatarInitials.hidden = true;
         }
 
+        async function loadRegistrationData(user) {
+            try {
+                const userSnapshot = await getDoc(doc(db, 'users', user.uid));
+                const userData = userSnapshot.exists() ? userSnapshot.data() : {};
+                const business = userData.bisnis || {};
+                const nameParts = (userData.namaLengkap || user.displayName || '').trim().split(/\s+/);
+                document.getElementById('account-first-name').textContent = userData.namaDepan || nameParts.shift() || '-';
+                document.getElementById('account-last-name').textContent = userData.namaBelakang || nameParts.join(' ') || '-';
+                document.getElementById('account-phone').textContent = userData.noTelepon || '-';
+                document.getElementById('account-address').textContent = userData.alamat || '-';
+                document.getElementById('business-name').textContent = business.nama || '-';
+                document.getElementById('business-field').textContent = business.bidang || '-';
+                document.getElementById('business-phone').textContent = business.telepon || '-';
+                document.getElementById('business-email').textContent = business.email || '-';
+                if (business.logoUrl) {
+                    document.getElementById('business-logo').src = business.logoUrl;
+                    document.getElementById('business-logo-row').hidden = false;
+                }
+            } catch (error) {
+                message.textContent = 'Data pendaftaran tidak dapat dimuat. Silakan muat ulang halaman.';
+                console.error('Firebase registration data could not be loaded:', error);
+            }
+        }
+
         avatarImage.addEventListener('error', () => {
             avatarImage.hidden = true;
             avatarInitials.hidden = false;
@@ -640,6 +675,7 @@
             document.getElementById('account-name').textContent = name;
             document.getElementById('account-email').textContent = user.email || '-';
             document.getElementById('email-status').textContent = user.emailVerified ? 'Terverifikasi' : 'Belum terverifikasi';
+            loadRegistrationData(user);
         }, (error) => {
             message.textContent = 'Tidak dapat memeriksa sesi akun. Silakan coba masuk kembali.';
             console.error('Firebase auth state check failed:', error);
@@ -665,7 +701,14 @@
             }
 
             try {
+                const nameParts = nextName.trim().split(/\s+/);
+                const firstName = nameParts.shift();
                 await updateProfile(currentUser, { displayName: nextName.trim() });
+                await setDoc(doc(db, 'users', currentUser.uid), {
+                    namaDepan: firstName,
+                    namaBelakang: nameParts.join(' '),
+                    namaLengkap: nextName.trim()
+                }, { merge: true });
                 document.getElementById('profile-name').textContent = nextName.trim();
                 document.getElementById('account-name').textContent = nextName.trim();
                 renderAvatar(currentUser);
@@ -684,7 +727,7 @@
 
             const allowedTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
             if (!allowedTypes.has(file.type)) {
-                message.textContent = 'Pilih foto berformat JPG, PNG, atau WEBP.';
+                message.textContent = 'Format foto tidak didukung.';
                 avatarFile.value = '';
                 return;
             }
