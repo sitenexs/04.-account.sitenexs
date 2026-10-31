@@ -502,7 +502,7 @@
         };
 
         const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxY2J5YW14aWVrZHh5dG50bG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MTM2NDIsImV4cCI6MjEwNTk4OTY0Mn0.pkytlWwjfKOQT9bWNS-nuNZReE7jFUi3ITk5ageyrkM';
+        const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
         const avatarBucket = 'profile-photos';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -595,8 +595,7 @@
                 const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
                     method: 'POST',
                     headers: {
-                        apikey: supabaseAnonKey,
-                        Authorization: `Bearer ${supabaseAnonKey}`,
+                        apikey: supabasePublishableKey,
                         'Content-Type': 'image/jpeg',
                         'x-upsert': 'true'
                     },
@@ -768,3 +767,4 @@
     </script>
 </body>
 </html>
+
