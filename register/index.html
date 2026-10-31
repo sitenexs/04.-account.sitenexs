@@ -875,6 +875,8 @@
 
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Simpan Data...';
                 await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    namaLengkap: fullName,
                     namaDepan: namaDepan,
                     namaBelakang: namaBelakang,
                     email: email,
@@ -891,7 +893,7 @@
                 });
                 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
-                window.location.assign('/profile/');
+                window.location.assign('https://sitenexs.com/');
                 
             } catch (error) {
                 message.className = 'error';
