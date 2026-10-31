@@ -522,13 +522,12 @@
             uploadAvatarButton.disabled = true;
             message.textContent = 'Mengunggah foto profil...';
             try {
-                const userToken = await currentUser.getIdToken();
                 const objectPath = `${encodeURIComponent(currentUser.uid)}/profile-photo`;
                 const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
                     method: 'POST',
                     headers: {
                         apikey: supabaseAnonKey,
-                        Authorization: `Bearer ${userToken}`,
+                        Authorization: `Bearer ${supabaseAnonKey}`,
                         'Content-Type': file.type,
                         'x-upsert': 'true'
                     },
