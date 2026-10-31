@@ -655,7 +655,6 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
-        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -667,10 +666,12 @@
             measurementId: 'G-C7YL0Q7YRQ'
         };
 
+        const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxY2J5YW14aWVrZHh5dG50bG5vIiwiaWF0IjoxNzkwNDEzNjQyLCJleHAiOjIxMDU5ODk2NDJ9.pkytlWwjfKOQT9bWNS-nuNZReE7jFUi3ITk5ageyrkM';
+        const logoBucket = 'profile-photos';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         // --- Custom Searchable Dropdown Logic ---
         const countryData = [
@@ -857,6 +858,22 @@
             const emailBisnis = document.getElementById('email_bisnis').value.trim();
             const logoFile = logoInput.files[0];
 
+            const allowedLogoTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
+            if (logoFile && !allowedLogoTypes.has(logoFile.type)) {
+                message.className = 'error';
+                message.textContent = 'Logo harus berformat JPG, PNG, atau WEBP.';
+                submitButton.disabled = false;
+                btnText.textContent = 'Daftar Sekarang';
+                return;
+            }
+            if (logoFile && logoFile.size > 5 * 1024 * 1024) {
+                message.className = 'error';
+                message.textContent = 'Ukuran logo maksimal 5 MB.';
+                submitButton.disabled = false;
+                btnText.textContent = 'Daftar Sekarang';
+                return;
+            }
+
             try {
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
                 
@@ -868,9 +885,22 @@
                 let logoUrl = "";
                 if (logoFile) {
                     btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unggah Logo...';
-                    const logoRef = ref(storage, `logos/${user.uid}/${logoFile.name}`);
-                    await uploadBytes(logoRef, logoFile);
-                    logoUrl = await getDownloadURL(logoRef);
+                    const objectPath = `business-logos/${encodeURIComponent(user.uid)}/logo`;
+                    const response = await fetch(`${supabaseUrl}/storage/v1/object/${logoBucket}/${objectPath}`, {
+                        method: 'POST',
+                        headers: {
+                            apikey: supabaseAnonKey,
+                            Authorization: `Bearer ${supabaseAnonKey}`,
+                            'Content-Type': logoFile.type,
+                            'x-upsert': 'true'
+                        },
+                        body: logoFile
+                    });
+                    if (!response.ok) {
+                        const details = await response.text();
+                        throw new Error(`Supabase Storage logo upload failed (${response.status}): ${details}`);
+                    }
+                    logoUrl = `${supabaseUrl}/storage/v1/object/public/${logoBucket}/${objectPath}`;
                 }
 
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Simpan Data...';
