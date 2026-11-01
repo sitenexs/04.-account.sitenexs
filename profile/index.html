@@ -248,6 +248,17 @@
             font-size: 1.3rem;
             font-weight: 800;
             margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* Lencana Verifikasi di Sidebar */
+        .verification-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            display: none;
         }
 
         .role {
@@ -420,7 +431,12 @@
                         <input id="avatar-file" class="avatar-input" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Pilih foto profil">
                         <button id="upload-avatar" class="btn btn-secondary" type="button"><i class="fas fa-camera"></i> Ganti Foto</button>
                     </div>
-                    <h2 id="profile-name" class="name">Memuat profil...</h2>
+                    
+                    <h2 class="name">
+                        <span id="profile-name">Memuat profil...</span>
+                        <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" class="verification-icon">
+                    </h2>
+                    
                     <div class="role">Akun Sitenexs</div>
                     <div class="status"><i class="fas fa-circle" style="font-size:0.55rem;"></i> <span id="profile-status">Memeriksa sesi</span></div>
                 </div>
@@ -453,6 +469,7 @@
                             <li><strong>Telepon bisnis:</strong> <span id="business-phone">Memuat...</span></li>
                             <li><strong>Email bisnis:</strong> <span id="business-email">Memuat...</span></li>
                             <li id="business-logo-row" hidden><strong>Logo bisnis:</strong> <img id="business-logo" class="business-logo" alt="Logo bisnis"></li>
+                            <li><strong>Status Akun:</strong> <span id="account-verified-status">Standar</span></li>
                             <li><strong>Login:</strong> Firebase Authentication</li>
                         </ul>
                     </div>
@@ -462,6 +479,9 @@
                         <ul class="info-list">
                             <li>Akun dapat digunakan untuk mengakses fitur yang membutuhkan login.</li>
                             <li>Anda tetap dapat menjelajahi halaman utama Sitenexs tanpa login.</li>
+                            <li style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border-subtle);">
+                                <i class="fas fa-info-circle text-primary"></i> <i>Lencana terverifikasi (centang biru) diberikan secara eksklusif oleh administrator Sitenexs untuk mitra terpilih.</i>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -491,6 +511,7 @@
             updateProfile
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         import { doc, getDoc, getFirestore, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
             authDomain: 'sitenexs-62919.firebaseapp.com',
@@ -504,14 +525,17 @@
         const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
         const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
         const avatarBucket = 'profile-photos';
+        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
         const message = document.getElementById('profile-message');
         const avatarImage = document.getElementById('avatar-image');
         const avatarInitials = document.getElementById('avatar-initials');
         const avatarFile = document.getElementById('avatar-file');
         const uploadAvatarButton = document.getElementById('upload-avatar');
+        
         const cropDialog = document.getElementById('avatar-crop-dialog');
         const cropCanvas = document.getElementById('crop-canvas');
         const cropContext = cropCanvas.getContext('2d');
@@ -519,6 +543,7 @@
         const applyCropButton = document.getElementById('apply-crop');
         const cancelCropButton = document.getElementById('cancel-crop');
         const cropSize = cropCanvas.width;
+        
         let currentUser = null;
         let cropImage = null;
         let cropBaseScale = 1;
@@ -634,8 +659,11 @@
             try {
                 const userSnapshot = await getDoc(doc(db, 'users', user.uid));
                 const userData = userSnapshot.exists() ? userSnapshot.data() : {};
+                
                 const business = userData.bisnis || {};
                 const nameParts = (userData.namaLengkap || user.displayName || '').trim().split(/\s+/);
+                
+                // Set text fields
                 document.getElementById('account-first-name').textContent = userData.namaDepan || nameParts.shift() || '-';
                 document.getElementById('account-last-name').textContent = userData.namaBelakang || nameParts.join(' ') || '-';
                 document.getElementById('account-phone').textContent = userData.noTelepon || '-';
@@ -644,10 +672,19 @@
                 document.getElementById('business-field').textContent = business.bidang || '-';
                 document.getElementById('business-phone').textContent = business.telepon || '-';
                 document.getElementById('business-email').textContent = business.email || '-';
+                
+                // Show business logo if available
                 if (business.logoUrl) {
                     document.getElementById('business-logo').src = business.logoUrl;
                     document.getElementById('business-logo-row').hidden = false;
                 }
+
+                // Cek status isVerified dan tampilkan badge centang biru jika true
+                if (userData.isVerified === true) {
+                    document.getElementById('profile-verified').style.display = 'inline-block';
+                    document.getElementById('account-verified-status').innerHTML = '<span style="color:#2563eb; font-weight:700;"><i class="fas fa-check-circle"></i> Terverifikasi</span>';
+                }
+
             } catch (error) {
                 message.textContent = 'Data pendaftaran tidak dapat dimuat. Silakan muat ulang halaman.';
                 console.error('Firebase registration data could not be loaded:', error);
@@ -667,13 +704,15 @@
             currentUser = user;
             const name = user.displayName || 'Pengguna Sitenexs';
             renderAvatar(user);
+            
             document.getElementById('profile-name').textContent = name;
             document.getElementById('profile-email').textContent = user.email || '-';
             document.getElementById('profile-uid').textContent = `ID: ${user.uid}`;
-            document.getElementById('profile-status').textContent = 'Langganan';
+            document.getElementById('profile-status').textContent = 'Langganan Aktif';
             document.getElementById('account-name').textContent = name;
             document.getElementById('account-email').textContent = user.email || '-';
             document.getElementById('email-status').textContent = user.emailVerified ? 'Terverifikasi' : 'Belum terverifikasi';
+            
             loadRegistrationData(user);
         }, (error) => {
             message.textContent = 'Tidak dapat memeriksa sesi akun. Silakan coba masuk kembali.';
@@ -767,4 +806,3 @@
     </script>
 </body>
 </html>
-
