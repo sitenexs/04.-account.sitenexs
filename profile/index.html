@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Saya - Sitenexs Enterprise</title>
+    <title>Profil Saya - Sitenexs</title>
     <meta name="description" content="Manajemen profil dan bisnis akun pengguna Sitenexs." />
     
     <!-- Fonts & Icons -->
@@ -14,23 +14,23 @@
     
     <style>
         :root {
-            /* Warna Enterprise Sitenexs */
-            --primary: #1d4ed8; 
-            --primary-hover: #1e40af;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
             --primary-light: #eff6ff;
-            --success: #059669;
+            --accent: #10b981;
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
-            
-            /* Tipografi & Garis */
             --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-light: #e2e8f0;
-            --border-dark: #cbd5e1;
+            --text-muted: #475569;
+            --border-subtle: #e2e8f0;
+            --border-medium: #cbd5e1;
+            --shadow-sm: 0 8px 20px -12px rgba(15,23,42,0.18);
+            --shadow-md: 0 16px 35px -18px rgba(15,23,42,0.3);
             
-            /* Radius Tajam (Maks 3px) */
-            --radius-sharp: 3px;
-            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+            /* Dikembalikan ke sudut melengkung (rounded) */
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
         }
 
         * { box-sizing: border-box; }
@@ -38,7 +38,7 @@
         body {
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-body);
+            background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
         }
@@ -47,45 +47,46 @@
         button { font: inherit; outline: none; border: none; }
         
         .container {
-            width: min(1080px, calc(100% - 2rem));
+            width: min(1100px, calc(100% - 2rem));
             margin: 0 auto;
         }
 
         /* --- TOPBAR NAVIGASI --- */
         .topbar {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-light);
-            height: 64px;
-            display: flex;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 40;
-        }
-
-        .topbar-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 40;
         }
 
         .brand {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.75rem;
             font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--primary);
-            letter-spacing: -0.02em;
+            font-size: 1.2rem;
         }
 
-        .brand img {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sharp);
-            object-fit: contain;
-            border: 1px solid var(--border-light);
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(37,99,235,0.2);
+            background: #fff;
+        }
+
+        .brand-text {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-actions { display: flex; gap: 1rem; align-items: center; }
@@ -94,38 +95,42 @@
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border-radius: var(--radius-sharp);
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 0.7rem 1.1rem;
+            border-radius: 999px; /* Melengkung seperti awal */
+            font-weight: 800;
             border: 1px solid transparent;
+            cursor: pointer;
+            transition: 0.2s ease;
         }
 
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(37,99,235,0.2);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
 
         .btn-outline {
             background: #fff;
-            border-color: var(--border-dark);
             color: var(--text-main);
+            border-color: var(--border-medium);
         }
         .btn-outline:hover { background: var(--bg-body); border-color: var(--text-muted); }
 
-        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-        .btn-icon { padding: 0.3rem 0.5rem; font-size: 0.8rem; border-color: transparent; color: var(--text-muted); }
-        .btn-icon:hover { color: var(--primary); background: var(--primary-light); border-color: var(--primary-light); }
+        .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.85rem; font-weight: 700; }
+        .btn-icon { padding: 0.4rem 0.6rem; font-size: 0.85rem; border-color: transparent; color: var(--text-muted); border-radius: 999px; }
+        .btn-icon:hover { color: var(--primary); background: var(--primary-light); }
 
         /* --- TATA LETAK UTAMA --- */
-        .page-header { padding: 2.5rem 0 1.5rem; }
-        .page-header h1 { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
-        .page-header p { margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem; }
+        .page-header { padding: 2.5rem 0 2rem; }
+        .page-header h1 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; }
+        .page-header p { margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.95rem; }
 
         .layout-grid {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
             gap: 1.5rem;
             padding-bottom: 4rem;
         }
@@ -133,20 +138,20 @@
         /* --- KARTU (PANELS) --- */
         .panel {
             background: var(--bg-card);
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-sharp);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl); /* Melengkung seperti awal */
             box-shadow: var(--shadow-sm);
         }
         
         .panel-header {
             padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .panel-title { margin: 0; font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .panel-title { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
         .panel-body { padding: 1.5rem; }
 
         /* --- SIDEBAR PROFIL --- */
@@ -154,18 +159,17 @@
         
         .avatar-container {
             position: relative;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 1.25rem;
         }
 
         .avatar {
             width: 100%;
             height: 100%;
-            border-radius: 50%; /* Lingkaran penuh agar ikon pensil nempel sempurna */
-            background: var(--primary-light);
-            border: 1px solid var(--border-dark);
-            object-fit: cover;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dbeafe, #f8fafc);
+            border: 4px solid rgba(37,99,235,0.08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,20 +186,20 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: #fff;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: grid;
             place-items: center;
             cursor: pointer;
-            border: 2px solid var(--bg-card);
+            border: 3px solid var(--bg-card);
             box-shadow: var(--shadow-sm);
             transition: 0.2s ease;
             font-size: 0.85rem;
         }
-        .badge-edit-photo:hover { background: var(--primary-hover); transform: scale(1.05); }
+        .badge-edit-photo:hover { transform: scale(1.05); }
 
         .profile-name-group {
             display: flex;
@@ -205,27 +209,27 @@
             margin-bottom: 0.25rem;
         }
 
-        .profile-name { font-size: 1.15rem; font-weight: 700; margin: 0; }
-        .badge-verified { width: 16px; height: 16px; display: none; }
+        .profile-name { font-size: 1.3rem; font-weight: 800; margin: 0; }
+        .badge-verified { width: 18px; height: 18px; display: none; object-fit: contain; }
 
         .profile-id {
             color: var(--text-muted);
-            font-size: 0.75rem;
-            font-family: monospace;
+            font-size: 0.8rem;
             background: var(--bg-body);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sharp);
-            border: 1px solid var(--border-light);
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
             display: inline-block;
-            margin-top: 0.75rem;
+            margin-top: 0.8rem;
             word-break: break-all;
+            font-weight: 600;
         }
 
         /* --- BIO PROFIL --- */
         .bio-section {
             margin-top: 1.5rem;
             padding-top: 1.5rem;
-            border-top: 1px dashed var(--border-light);
+            border-top: 1px dashed var(--border-subtle);
             text-align: left;
         }
         .bio-header {
@@ -233,34 +237,34 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.5rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-main);
         }
         .bio-text {
-            font-size: 0.875rem;
-            color: var(--text-main);
-            line-height: 1.5;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
             white-space: pre-wrap;
         }
 
-        /* --- TABEL DATA ENTERPRISE --- */
+        /* --- TABEL DATA --- */
         .data-list { display: flex; flex-direction: column; }
         .data-row {
             display: grid;
-            grid-template-columns: 140px 1fr;
+            grid-template-columns: 160px 1fr;
             padding: 1rem 0;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-subtle);
             align-items: center;
         }
         .data-row:last-child { border-bottom: none; padding-bottom: 0; }
         .data-row:first-child { padding-top: 0; }
 
-        .data-label { font-size: 0.875rem; color: var(--text-muted); font-weight: 600; }
+        .data-label { font-size: 0.88rem; color: var(--text-muted); font-weight: 700; }
         .data-value {
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: var(--text-main);
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -269,48 +273,49 @@
         /* --- LOGO BISNIS --- */
         .business-logo-wrap { display: flex; align-items: center; gap: 1rem; }
         .biz-logo-img {
-            width: 64px; height: 64px;
-            border: 1px dashed var(--border-dark);
-            border-radius: var(--radius-sharp);
+            width: 70px; height: 70px;
+            border: 1px dashed var(--border-medium);
+            border-radius: var(--radius-md);
             object-fit: contain;
             background: var(--bg-body);
             display: grid; place-items: center;
-            font-size: 0.75rem; color: var(--text-muted);
+            font-size: 0.8rem; color: var(--text-muted);
         }
 
         /* --- NOTIFIKASI --- */
         .alert {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-sharp);
-            font-size: 0.875rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
             margin-top: 1rem;
             display: none;
-            font-weight: 600;
+            font-weight: 700;
         }
-        .alert-info { background: var(--primary-light); color: var(--primary); border: 1px solid #bfdbfe; }
+        .alert-info { background: var(--primary-light); color: var(--primary-dark); border: 1px solid #bfdbfe; }
         .alert-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
 
         /* --- DIALOG CROP --- */
         .crop-dialog {
-            width: min(400px, calc(100% - 2rem));
+            width: min(420px, calc(100% - 2rem));
             padding: 1.5rem;
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-sharp);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
         }
-        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.7); }
+        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); }
         .crop-canvas {
             display: block; width: 100%; max-width: 280px; aspect-ratio: 1;
-            margin: 1rem auto; border: 1px solid var(--border-dark); border-radius: 50%;
+            margin: 1rem auto; border-radius: 50%;
             cursor: grab; background: #e2e8f0;
         }
         .crop-canvas:active { cursor: grabbing; }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
+        @media (max-width: 860px) {
             .layout-grid { grid-template-columns: 1fr; }
-            .data-row { grid-template-columns: 1fr; gap: 0.25rem; align-items: flex-start; }
-            .data-label { font-size: 0.8rem; }
+        }
+        @media (max-width: 600px) {
+            .data-row { grid-template-columns: 1fr; gap: 0.4rem; align-items: flex-start; }
             .data-value { justify-content: flex-start; gap: 1rem; }
         }
     </style>
@@ -319,10 +324,10 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-        <div class="container topbar-inner">
-            <a href="https://sitenexs.com/" class="brand">
-                <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs" onerror="this.src='https://ui-avatars.com/api/?name=Sitenexs&background=1d4ed8&color=fff&size=64&rounded=false';">
-                Sitenexs
+        <div class="container" style="display:flex; align-items:center; justify-content:space-between;">
+            <a href="https://sitenexs.com/" class="brand" aria-label="Kembali ke halaman utama">
+                <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=64&rounded=true';">
+                <span class="brand-text">Sitenexs</span>
             </a>
             <div class="nav-actions">
                 <a href="https://sitenexs.com/" class="btn btn-outline btn-sm"><i class="fas fa-home"></i> Beranda</a>
@@ -333,7 +338,7 @@
 
     <main class="container">
         <div class="page-header">
-            <h1>Manajemen Profil</h1>
+            <h1>Profil Saya</h1>
             <p>Kelola identitas akun, bio, dan informasi bisnis Anda.</p>
             <div id="global-alert" class="alert"></div>
         </div>
@@ -359,7 +364,7 @@
                         <h2 class="profile-name" id="profile-name">Memuat...</h2>
                         <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" class="badge-verified" title="Akun Terverifikasi">
                     </div>
-                    <div style="color: var(--text-muted); font-size: 0.85rem;" id="profile-email">Memuat...</div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;" id="profile-email">Memuat...</div>
                     <div class="profile-id" id="profile-uid">ID: -</div>
 
                     <!-- BIO SECTION -->
@@ -392,7 +397,7 @@
                                 <div class="data-label">Alamat Email</div>
                                 <div class="data-value">
                                     <span id="account-email">-</span>
-                                    <span id="email-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: var(--bg-body); border-radius: var(--radius-sharp); border: 1px solid var(--border-dark);">Status</span>
+                                    <span id="email-status" style="font-size: 0.75rem; padding: 0.3rem 0.6rem; background: rgba(16, 185, 129, 0.12); color: #047857; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.2);">Status</span>
                                 </div>
                             </div>
                             <div class="data-row">
@@ -449,13 +454,13 @@
 
     <!-- DIALOG CROP FOTO PROFIL -->
     <dialog id="avatar-crop-dialog" class="crop-dialog">
-        <h3 style="margin-top:0; font-size:1.1rem;">Sesuaikan Foto</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1rem;">Geser untuk memposisikan area foto.</p>
+        <h3 style="margin-top:0; font-size:1.25rem;">Sesuaikan Foto</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 1rem;">Geser foto untuk menyesuaikan letak.</p>
         
         <canvas id="crop-canvas" class="crop-canvas" width="280" height="280"></canvas>
         
         <div style="margin-bottom: 1.5rem;">
-            <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:0.5rem;">Perbesar</label>
+            <label style="font-size:0.9rem; font-weight:700; display:block; margin-bottom:0.5rem; color:var(--text-muted);">Perbesar</label>
             <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1" style="width: 100%;">
         </div>
         
@@ -533,7 +538,7 @@
                 }
 
                 if (data.isVerified === true) {
-                    document.getElementById('profile-verified').style.display = 'block';
+                    document.getElementById('profile-verified').style.display = 'inline-block';
                 }
             } catch (error) {
                 console.error(error);
@@ -558,11 +563,14 @@
             const emailStatus = document.getElementById('email-status');
             if(user.emailVerified) {
                 emailStatus.textContent = 'Terverifikasi';
-                emailStatus.style.color = 'var(--success)';
-                emailStatus.style.borderColor = '#a7f3d0';
-                emailStatus.style.background = '#ecfdf5';
+                emailStatus.style.color = '#047857';
+                emailStatus.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                emailStatus.style.background = 'rgba(16, 185, 129, 0.12)';
             } else {
                 emailStatus.textContent = 'Belum Verifikasi';
+                emailStatus.style.color = '#b91c1c';
+                emailStatus.style.borderColor = '#fecaca';
+                emailStatus.style.background = '#fef2f2';
             }
             
             loadFirestoreData(user);
@@ -606,7 +614,7 @@
             const bioPlaceholder = currentBio === 'Belum ada bio profil.' ? '' : currentBio;
             
             const nextBio = window.prompt('Tulis bio singkat tentang Anda:', bioPlaceholder);
-            if (nextBio === null) return; // Batal ditekan
+            if (nextBio === null) return; 
 
             try {
                 await setDoc(doc(db, 'users', currentUser.uid), {
