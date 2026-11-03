@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Saya - Sitenexs Enterprise</title>
-    <meta name="description" content="Manajemen profil dan bisnis akun pengguna Sitenexs." />
+    <title>Profil Saya - Sitenexs</title>
+    <meta name="description" content="Halaman profil akun pengguna Sitenexs." />
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,25 +14,32 @@
     
     <style>
         :root {
-            /* Warna Enterprise Sitenexs */
-            --primary: #1d4ed8; 
-            --primary-hover: #1e40af;
+            /* Warna Utama */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
             --primary-light: #eff6ff;
-            --success: #059669;
-            --bg-body: #f1f5f9;
+            --accent: #10b981;
+            
+            /* Warna Latar & Teks */
+            --bg-body: #f8fafc;
             --bg-card: #ffffff;
-            
-            /* Tipografi & Garis */
             --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-light: #e2e8f0;
-            --border-dark: #cbd5e1;
+            --text-muted: #475569;
             
-            /* Radius Tajam (Sesuai Preferensi UI Dashboard) */
-            --radius-sharp: 3px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            /* Border & Bayangan */
+            --border-subtle: #e2e8f0;
+            --border-medium: #cbd5e1;
+            --shadow-sm: 0 4px 6px -1px rgba(15,23,42,0.1);
+            --shadow-md: 0 10px 15px -3px rgba(15,23,42,0.1);
+            
+            /* Radius Tajam/Tegas */
+            --radius-sm: 2px;
+            --radius-md: 3px;
+            --radius-lg: 3px;
+            --radius-xl: 3px;
         }
 
+        /* --- RESET & BASE --- */
         * { box-sizing: border-box; }
         
         body {
@@ -40,502 +47,577 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
         }
 
         a { text-decoration: none; color: inherit; }
-        button { font: inherit; outline: none; }
-        
+        button { font: inherit; }
+
         .container {
-            width: min(1080px, calc(100% - 2rem));
+            width: min(1100px, calc(100% - 2rem));
             margin: 0 auto;
         }
 
-        /* --- TOPBAR NAVIGASI --- */
+        /* --- TOPBAR --- */
         .topbar {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-dark);
-            height: 64px;
-            display: flex;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .topbar-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 10;
         }
 
         .brand {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.75rem;
             font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--primary);
-            letter-spacing: -0.02em;
+            font-size: 1.2rem;
         }
 
-        .brand img {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sharp);
-            object-fit: contain;
-            border: 1px solid var(--border-light);
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md); /* Dibuat lebih tegas */
+            object-fit: cover;
+            border: 1px solid var(--border-subtle);
+            background: #fff;
         }
 
-        .nav-actions {
+        .brand-text {
+            color: var(--primary-dark);
+        }
+
+        .nav {
             display: flex;
-            gap: 1rem;
             align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
         }
 
-        /* --- TOMBOL (BUTTONS) --- */
+        .nav a:hover { color: var(--primary); }
+
+        /* --- BUTTONS --- */
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border-radius: var(--radius-sharp);
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.9rem;
             border: 1px solid transparent;
+            cursor: pointer;
+            transition: 0.2s ease;
         }
 
         .btn-primary {
             background: var(--primary);
             color: #fff;
         }
-        .btn-primary:hover { background: var(--primary-hover); }
 
-        .btn-outline {
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary {
             background: #fff;
-            border-color: var(--border-dark);
             color: var(--text-main);
-        }
-        .btn-outline:hover {
-            background: var(--bg-body);
-            border-color: var(--text-muted);
+            border-color: var(--border-medium);
         }
 
-        .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+        .btn-secondary:hover { background: var(--bg-body); }
 
-        /* --- TATA LETAK UTAMA --- */
-        .page-header {
-            padding: 2.5rem 0 1.5rem;
+        /* --- LAYOUT PROFIL --- */
+        .page { padding: 2rem 0 4rem; }
+
+        .profile-shell {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
         }
-        .page-header h1 {
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { padding: 1.5rem; }
+
+        .avatar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 1rem;
+            background: var(--primary-light);
+            display: grid;
+            place-items: center;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+            overflow: hidden;
+        }
+
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-controls {
+            display: grid;
+            justify-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .name {
+            font-size: 1.25rem;
+            font-weight: 800;
             margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
         }
-        .page-header p {
-            margin: 0.25rem 0 0;
+
+        .verification-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            display: none;
+        }
+
+        .role {
+            margin-top: 0.25rem;
             color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 1.5rem;
-            padding-bottom: 4rem;
-        }
-
-        /* --- KARTU (PANELS) --- */
-        .panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-sharp);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .panel-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
+        .status {
+            display: inline-flex;
             align-items: center;
-        }
-        
-        .panel-title {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-        
-        .panel-body { padding: 1.5rem; }
-
-        /* --- SIDEBAR PROFIL --- */
-        .profile-card { text-align: center; }
-        
-        .avatar-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1.25rem;
-        }
-
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: var(--radius-sharp);
-            background: var(--border-light);
-            border: 1px solid var(--border-dark);
-            object-fit: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            overflow: hidden;
-        }
-        
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        .btn-edit-avatar {
-            position: absolute;
-            bottom: -8px;
-            right: -8px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-dark);
-            color: var(--text-main);
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sharp);
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-        }
-        .btn-edit-avatar:hover { background: var(--bg-body); }
-
-        .profile-name-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .profile-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .badge-verified {
-            width: 18px;
-            height: 18px;
-            display: none;
-        }
-
-        .profile-id {
-            color: var(--text-muted);
+            gap: 0.45rem;
+            margin-top: 0.9rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #047857;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.8rem;
             font-size: 0.8rem;
-            font-family: monospace;
-            background: var(--bg-body);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sharp);
-            border: 1px solid var(--border-light);
-            display: inline-block;
-            margin-top: 0.75rem;
-            word-break: break-all;
+            font-weight: 700;
         }
 
-        /* --- TABEL DATA ENTERPRISE --- */
-        .data-list {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .data-row {
+        .meta {
+            list-style: none;
+            margin: 0;
+            padding: 1.5rem 0 0;
+            border-top: 1px solid var(--border-subtle);
             display: grid;
-            grid-template-columns: 140px 1fr;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .data-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .data-row:first-child { padding-top: 0; }
-
-        .data-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-weight: 600;
+            gap: 0.75rem;
         }
 
-        .data-value {
-            font-size: 0.875rem;
-            color: var(--text-main);
-            font-weight: 500;
+        .meta li {
             display: flex;
             align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .meta i {
+            width: 16px;
+            color: var(--primary);
+        }
+
+        /* --- MAIN PANEL --- */
+        .main-panel { padding: 1.5rem; }
+
+        .header-row {
+            display: flex;
             justify-content: space-between;
-        }
-
-        /* --- BAGIAN LOGO BISNIS --- */
-        .business-logo-wrap {
-            display: flex;
             align-items: center;
-            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .biz-logo-img {
-            width: 64px;
-            height: 64px;
-            border: 1px dashed var(--border-dark);
-            border-radius: var(--radius-sharp);
-            object-fit: contain;
-            background: var(--bg-body);
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .grid-info {
             display: grid;
-            place-items: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
 
-        /* --- NOTIFIKASI --- */
-        .alert {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-sharp);
-            font-size: 0.875rem;
-            margin-top: 1rem;
-            display: none;
-            font-weight: 600;
+        .info-box h3 {
+            margin: 0 0 1rem;
+            font-size: 1rem;
+            color: var(--text-main);
         }
-        .alert-info { background: var(--primary-light); color: var(--primary); border: 1px solid #bfdbfe; }
-        .alert-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        .info-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .info-list li strong {
+            color: var(--text-main);
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .business-logo {
+            max-width: 90px;
+            max-height: 60px;
+            object-fit: contain;
+            vertical-align: middle;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+        }
 
         /* --- DIALOG CROP --- */
         .crop-dialog {
-            width: min(400px, calc(100% - 2rem));
+            width: min(420px, calc(100% - 2rem));
             padding: 1.5rem;
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-sharp);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            color: var(--text-main);
+            box-shadow: var(--shadow-md);
         }
-        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.7); }
+
+        .crop-dialog::backdrop {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
         .crop-canvas {
             display: block;
-            width: 100%;
-            max-width: 280px;
+            width: min(280px, 100%);
+            height: auto;
             aspect-ratio: 1;
             margin: 1rem auto;
-            border: 1px solid var(--border-dark);
-            border-radius: var(--radius-sharp);
-            cursor: grab;
+            border-radius: 50%;
             background: #e2e8f0;
+            cursor: grab;
         }
+        
         .crop-canvas:active { cursor: grabbing; }
 
+        .crop-zoom input { width: 100%; margin-top: 0.5rem; }
+
+        .crop-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
         /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .layout-grid { grid-template-columns: 1fr; }
-            .data-row { grid-template-columns: 1fr; gap: 0.25rem; }
-            .data-label { font-size: 0.8rem; }
-            .data-value { justify-content: flex-start; gap: 1rem; }
+        @media (max-width: 860px) {
+            .profile-shell { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .grid-info { grid-template-columns: 1fr; }
+            .header-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .info-list li strong { display: block; margin-bottom: 0.2rem; }
         }
     </style>
 </head>
 <body>
-
-    <!-- TOPBAR -->
+    
+    <!-- Header -->
     <header class="topbar">
-        <div class="container topbar-inner">
-            <a href="https://sitenexs.com/" class="brand">
-                <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs" onerror="this.src='https://ui-avatars.com/api/?name=Sitenexs&background=1d4ed8&color=fff&size=64&rounded=false';">
-                Sitenexs
+        <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+            <a href="https://sitenexs.com/" class="brand" aria-label="Kembali ke halaman utama">
+                <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=64&rounded=true';">
+                <span class="brand-text">Sitenexs</span>
             </a>
-            <div class="nav-actions">
-                <a href="https://sitenexs.com/" class="btn btn-outline btn-sm"><i class="fas fa-home"></i> Beranda</a>
-                <button id="sign-out" class="btn btn-outline btn-sm"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-            </div>
+            <nav class="nav">
+                <a href="https://sitenexs.com/">Beranda</a>
+                <button id="sign-out" class="btn btn-secondary" type="button">Keluar</button>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
-        <div class="page-header">
-            <h1>Manajemen Profil</h1>
-            <p>Kelola identitas akun dan informasi bisnis Anda.</p>
-            <div id="global-alert" class="alert"></div>
-        </div>
-
-        <div class="layout-grid">
+    <!-- Konten Profil -->
+    <main class="page">
+        <div class="container profile-shell">
             
-            <!-- KOLOM KIRI: RINGKASAN AKUN -->
-            <aside class="panel profile-card">
-                <div class="panel-body">
-                    <div class="avatar-container">
-                        <div id="avatar" class="avatar">
-                            <img id="avatar-image" alt="" hidden>
-                            <span id="avatar-initials">SN</span>
-                        </div>
-                        <!-- Input tersembunyi untuk foto profil -->
-                        <input id="avatar-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
-                        <button id="upload-avatar" class="btn-edit-avatar" title="Ubah Foto Profil">
-                            <i class="fas fa-camera"></i>
-                        </button>
-                    </div>
-
-                    <div class="profile-name-group">
-                        <h2 class="profile-name" id="profile-name">Memuat...</h2>
-                        <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" class="badge-verified" title="Akun Terverifikasi">
+            <!-- Sidebar -->
+            <aside class="panel sidebar">
+                <div class="avatar-wrap">
+                    <div id="avatar" class="avatar" aria-hidden="true">
+                        <img id="avatar-image" class="avatar-image" alt="" hidden>
+                        <span id="avatar-initials">SN</span>
                     </div>
                     
-                    <div style="color: var(--text-muted); font-size: 0.875rem;" id="profile-email">Memuat...</div>
-                    <div class="profile-id" id="profile-uid">ID: -</div>
+                    <div class="avatar-controls">
+                        <input id="avatar-file" class="avatar-input" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Pilih foto profil">
+                        <button id="upload-avatar" class="btn btn-secondary" type="button">
+                            <i class="fas fa-camera"></i> Ganti Foto
+                        </button>
+                    </div>
+                    
+                    <h2 class="name">
+                        <span id="profile-name">Memuat...</span>
+                        <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" class="verification-icon">
+                    </h2>
+                    
+                    <div class="role">Akun Sitenexs</div>
+                    <div class="status"><i class="fas fa-circle" style="font-size:0.55rem;"></i> <span id="profile-status">Memeriksa sesi</span></div>
                 </div>
+
+                <ul class="meta">
+                    <li><i class="fas fa-envelope"></i> <span id="profile-email"></span></li>
+                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid" style="word-break: break-all;"></span></li>
+                </ul>
             </aside>
 
-            <!-- KOLOM KANAN: DATA DETAIL -->
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- Panel Utama -->
+            <section class="panel main-panel">
+                <div class="header-row">
+                    <h1>Profil Saya</h1>
+                    <button id="edit-profile" class="btn btn-primary" type="button">
+                        <i class="fas fa-pen"></i> Ubah Nama
+                    </button>
+                </div>
+
+                <div class="grid-info">
+                    <div class="info-box">
+                        <h3>Informasi Pribadi & Bisnis</h3>
+                        <ul class="info-list">
+                            <li><strong>Nama Lengkap:</strong> <span id="account-name"></span></li>
+                            <li><strong>Email:</strong> <span id="account-email"></span></li>
+                            <li><strong>Status Email:</strong> <span id="email-status"></span></li>
+                            <li><strong>Telepon:</strong> <span id="account-phone">Memuat...</span></li>
+                            <li><strong>Alamat:</strong> <span id="account-address">Memuat...</span></li>
+                            <li style="margin-top: 0.5rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem;"></li>
+                            <li><strong>Bisnis:</strong> <span id="business-name">Memuat...</span></li>
+                            <li><strong>Bidang Usaha:</strong> <span id="business-field">Memuat...</span></li>
+                            <li><strong>Telepon Bisnis:</strong> <span id="business-phone">Memuat...</span></li>
+                            <li><strong>Email Bisnis:</strong> <span id="business-email">Memuat...</span></li>
+                            <li id="business-logo-row" hidden>
+                                <strong>Logo Bisnis:</strong> 
+                                <img id="business-logo" class="business-logo" alt="Logo bisnis">
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3>Status Akun</h3>
+                        <ul class="info-list">
+                            <li><strong>Verifikasi:</strong> <span id="account-verified-status">Standar</span></li>
+                            <li><strong>Login via:</strong> Firebase Authentication</li>
+                            <li style="margin-top: 1rem; padding: 1rem; background: var(--bg-body); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                                <i class="fas fa-info-circle" style="color: var(--primary);"></i> 
+                                <span style="font-size: 0.85rem;">Lencana terverifikasi (centang biru) diberikan secara eksklusif oleh administrator Sitenexs untuk mitra terpilih.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 
-                <!-- PANEL: INFORMASI PRIBADI -->
-                <section class="panel">
-                    <header class="panel-header">
-                        <h3 class="panel-title">Informasi Pribadi</h3>
-                        <button id="edit-profile" class="btn btn-outline btn-sm"><i class="fas fa-pen"></i> Ubah Nama</button>
-                    </header>
-                    <div class="panel-body">
-                        <div class="data-list">
-                            <div class="data-row">
-                                <div class="data-label">Nama Lengkap</div>
-                                <div class="data-value" id="account-name">-</div>
-                            </div>
-                            <div class="data-row">
-                                <div class="data-label">Alamat Email</div>
-                                <div class="data-value">
-                                    <span id="account-email">-</span>
-                                    <span id="email-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: var(--bg-body); border-radius: var(--radius-sharp); border: 1px solid var(--border-dark);">Status</span>
-                                </div>
-                            </div>
-                            <div class="data-row">
-                                <div class="data-label">No. Telepon</div>
-                                <div class="data-value" id="account-phone">-</div>
-                            </div>
-                            <div class="data-row">
-                                <div class="data-label">Alamat Lengkap</div>
-                                <div class="data-value" id="account-address">-</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- PANEL: INFORMASI BISNIS -->
-                <section class="panel">
-                    <header class="panel-header">
-                        <h3 class="panel-title">Profil Bisnis UMKM</h3>
-                    </header>
-                    <div class="panel-body">
-                        <div class="data-list">
-                            <div class="data-row">
-                                <div class="data-label">Nama Bisnis</div>
-                                <div class="data-value" id="business-name">-</div>
-                            </div>
-                            <div class="data-row">
-                                <div class="data-label">Bidang Usaha</div>
-                                <div class="data-value" id="business-field">-</div>
-                            </div>
-                            
-                            <!-- LOGO BISNIS -->
-                            <div class="data-row" style="align-items: center;">
-                                <div class="data-label">Logo Bisnis</div>
-                                <div class="data-value">
-                                    <div class="business-logo-wrap">
-                                        <img id="business-logo" class="biz-logo-img" alt="Tanpa Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                                        <div id="biz-logo-placeholder" class="biz-logo-img">Kosong</div>
-                                        
-                                        <!-- Input tersembunyi untuk logo bisnis -->
-                                        <input id="business-logo-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
-                                        <button id="btn-edit-biz-logo" class="btn btn-outline btn-sm">
-                                            <i class="fas fa-upload"></i> Unggah Logo
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-
-            </div>
+                <p id="profile-message" role="status" aria-live="polite" style="margin-top:1.5rem; color:var(--text-muted); font-size: 0.9rem;"></p>
+            </section>
         </div>
     </main>
 
-    <!-- DIALOG CROP FOTO PROFIL -->
-    <dialog id="avatar-crop-dialog" class="crop-dialog">
-        <h3 style="margin-top:0; font-size:1.1rem;">Sesuaikan Foto Profil</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1rem;">Geser untuk memposisikan area gambar.</p>
+    <!-- Dialog Crop -->
+    <dialog id="avatar-crop-dialog" class="crop-dialog" aria-labelledby="crop-title">
+        <h2 id="crop-title" style="margin-top:0;">Sesuaikan Foto</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
         
         <canvas id="crop-canvas" class="crop-canvas" width="280" height="280"></canvas>
         
-        <div style="margin-bottom: 1.5rem;">
-            <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:0.5rem;">Perbesar (Zoom)</label>
-            <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1" style="width: 100%;">
-        </div>
+        <label class="crop-zoom" for="crop-zoom" style="display:block; margin-bottom:1.5rem;">
+            <span style="font-size:0.9rem;">Perbesar</span>
+            <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1">
+        </label>
         
-        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-            <button id="cancel-crop" class="btn btn-outline">Batal</button>
-            <button id="apply-crop" class="btn btn-primary">Terapkan Foto</button>
+        <div class="crop-actions">
+            <button id="cancel-crop" class="btn btn-secondary" type="button">Batal</button>
+            <button id="apply-crop" class="btn btn-primary" type="button">Gunakan</button>
         </div>
     </dialog>
 
+    <!-- Script Utama -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
-        // Tambahkan updateDoc untuk mengedit spesifik field (logo bisnis)
-        import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut,
+            updateProfile
+        } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        import { doc, getDoc, getFirestore, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
         
-        // --- KONFIGURASI FIREBASE & SUPABASE ---
+        // --- KONFIGURASI ---
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
             authDomain: 'sitenexs-62919.firebaseapp.com',
             projectId: 'sitenexs-62919',
             storageBucket: 'sitenexs-62919.firebasestorage.app',
             messagingSenderId: '1060348110644',
-            appId: '1:1060348110644:web:e45af14d5f26a9cf8e6761'
+            appId: '1:1060348110644:web:e45af14d5f26a9cf8e6761',
+            measurementId: 'G-C7YL0Q7YRQ'
         };
+
+        const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
+        const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
+        const avatarBucket = 'profile-photos';
+        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
-        const supabaseKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
-        const bucketName = 'profile-photos'; // Menggunakan bucket yg sama utk penyimpanan media publik
         
-        // --- UTILS: NOTIFIKASI ---
-        const alertBox = document.getElementById('global-alert');
-        function showAlert(msg, isError = false) {
-            alertBox.textContent = msg;
-            alertBox.className = `alert ${isError ? 'alert-error' : 'alert-info'}`;
-            alertBox.style.display = 'block';
-            setTimeout(() => { alertBox.style.display = 'none'; }, 5000);
+        // --- VARIABEL DOM ---
+        const message = document.getElementById('profile-message');
+        const avatarImage = document.getElementById('avatar-image');
+        const avatarInitials = document.getElementById('avatar-initials');
+        const avatarFile = document.getElementById('avatar-file');
+        
+        const cropDialog = document.getElementById('avatar-crop-dialog');
+        const cropCanvas = document.getElementById('crop-canvas');
+        const cropContext = cropCanvas.getContext('2d');
+        const cropZoomInput = document.getElementById('crop-zoom');
+        const applyCropButton = document.getElementById('apply-crop');
+        const cancelCropButton = document.getElementById('cancel-crop');
+        
+        let currentUser = null;
+        let cropImage = null;
+        let cropBaseScale = 1, cropZoom = 1;
+        let cropX = 0, cropY = 0;
+        let dragPosition = null;
+        const cropSize = cropCanvas.width;
+
+        // --- FUNGSI CROP GAMBAR ---
+        function clampCropPosition() {
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropX = Math.min(0, Math.max(cropSize - drawnWidth, cropX));
+            cropY = Math.min(0, Math.max(cropSize - drawnHeight, cropY));
         }
 
-        let currentUser = null;
+        function drawCropPreview() {
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropContext.clearRect(0, 0, cropSize, cropSize);
+            cropContext.drawImage(cropImage, cropX, cropY, drawnWidth, drawnHeight);
+        }
 
-        // --- RENDER DATA ---
+        function releaseCropImage() {
+            if (cropImage) cropImage.close();
+            cropImage = null;
+            dragPosition = null;
+            avatarFile.value = '';
+        }
+
+        function setCropZoom(nextZoom) {
+            const oldScale = cropBaseScale * cropZoom;
+            const imageCenterX = (cropSize / 2 - cropX) / oldScale;
+            const imageCenterY = (cropSize / 2 - cropY) / oldScale;
+            cropZoom = Number(nextZoom);
+            const nextScale = cropBaseScale * cropZoom;
+            cropX = cropSize / 2 - imageCenterX * nextScale;
+            cropY = cropSize / 2 - imageCenterY * nextScale;
+            clampCropPosition();
+            drawCropPreview();
+        }
+
+        async function openCropEditor(file) {
+            try {
+                cropImage = await createImageBitmap(file);
+                cropBaseScale = cropSize / Math.min(cropImage.width, cropImage.height);
+                cropZoom = 1;
+                cropX = (cropSize - cropImage.width * cropBaseScale) / 2;
+                cropY = (cropSize - cropImage.height * cropBaseScale) / 2;
+                cropZoomInput.value = '1';
+                drawCropPreview();
+                cropDialog.showModal();
+            } catch (error) {
+                releaseCropImage();
+                message.textContent = 'Foto tidak dapat dibuka.';
+            }
+        }
+
+        // --- FUNGSI UPLOAD & RENDER ---
+        async function uploadCroppedPhoto() {
+            if (!cropImage || !currentUser) return;
+            
+            applyCropButton.disabled = true;
+            message.textContent = 'Mengunggah foto profil...';
+            
+            try {
+                const croppedPhoto = await new Promise(resolve => cropCanvas.toBlob(resolve, 'image/jpeg', 0.9));
+                const objectPath = `${encodeURIComponent(currentUser.uid)}/profile-photo`;
+                
+                const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: supabasePublishableKey,
+                        'Content-Type': 'image/jpeg',
+                        'x-upsert': 'true'
+                    },
+                    body: croppedPhoto
+                });
+                
+                if (!response.ok) throw new Error('Upload failed');
+
+                avatarImage.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                avatarImage.hidden = false;
+                avatarInitials.hidden = true;
+                cropDialog.close();
+                message.textContent = 'Foto berhasil diperbarui.';
+            } catch (error) {
+                message.textContent = 'Gagal mengunggah foto.';
+            } finally {
+                applyCropButton.disabled = false;
+            }
+        }
+
         function renderAvatar(user) {
             const name = user.displayName || 'Pengguna';
             const initials = name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
-            document.getElementById('avatar-initials').textContent = initials || 'S';
-            
-            const img = document.getElementById('avatar-image');
-            img.src = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${user.uid}/profile-photo?t=${Date.now()}`;
-            img.hidden = false;
-            document.getElementById('avatar-initials').hidden = true;
+            avatarInitials.textContent = initials || 'S';
+            avatarImage.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo`;
+            avatarImage.hidden = false;
+            avatarInitials.hidden = true;
         }
 
-        async function loadFirestoreData(user) {
+        async function loadRegistrationData(user) {
             try {
                 const snap = await getDoc(doc(db, 'users', user.uid));
                 const data = snap.exists() ? snap.data() : {};
@@ -545,25 +627,24 @@
                 document.getElementById('account-address').textContent = data.alamat || '-';
                 document.getElementById('business-name').textContent = business.nama || '-';
                 document.getElementById('business-field').textContent = business.bidang || '-';
+                document.getElementById('business-phone').textContent = business.telepon || '-';
+                document.getElementById('business-email').textContent = business.email || '-';
                 
-                // Tampilkan Logo Bisnis
                 if (business.logoUrl) {
-                    const bizImg = document.getElementById('business-logo');
-                    bizImg.src = business.logoUrl;
-                    bizImg.style.display = 'block';
-                    document.getElementById('biz-logo-placeholder').style.display = 'none';
+                    document.getElementById('business-logo').src = business.logoUrl;
+                    document.getElementById('business-logo-row').hidden = false;
                 }
 
-                if (data.isVerified === true) {
-                    document.getElementById('profile-verified').style.display = 'block';
+                if (data.isVerified) {
+                    document.getElementById('profile-verified').style.display = 'inline-block';
+                    document.getElementById('account-verified-status').innerHTML = '<span style="color:var(--primary); font-weight:700;"><i class="fas fa-check-circle"></i> Terverifikasi</span>';
                 }
             } catch (error) {
-                console.error(error);
-                showAlert('Gagal memuat data detail dari server.', true);
+                console.error('Gagal memuat data:', error);
             }
         }
 
-        // --- AUTH STATE ---
+        // --- EVENT LISTENERS ---
         onAuthStateChanged(auth, (user) => {
             if (!user) return window.location.replace('https://account.sitenexs.com/sign-in/');
             
@@ -573,24 +654,15 @@
             document.getElementById('profile-name').textContent = user.displayName || 'Pengguna';
             document.getElementById('profile-email').textContent = user.email || '-';
             document.getElementById('profile-uid').textContent = `ID: ${user.uid}`;
+            document.getElementById('profile-status').textContent = 'Sesi Aktif';
             
             document.getElementById('account-name').textContent = user.displayName || '-';
             document.getElementById('account-email').textContent = user.email || '-';
+            document.getElementById('email-status').textContent = user.emailVerified ? 'Terverifikasi' : 'Belum Verifikasi';
             
-            const emailStatus = document.getElementById('email-status');
-            if(user.emailVerified) {
-                emailStatus.textContent = 'Terverifikasi';
-                emailStatus.style.color = 'var(--success)';
-                emailStatus.style.borderColor = '#a7f3d0';
-                emailStatus.style.background = '#ecfdf5';
-            } else {
-                emailStatus.textContent = 'Belum Verifikasi';
-            }
-            
-            loadFirestoreData(user);
+            loadRegistrationData(user);
         });
 
-        // --- AKSI PENGGUNA ---
         document.getElementById('sign-out').addEventListener('click', async () => {
             await signOut(auth);
             window.location.assign('https://sitenexs.com/');
@@ -598,14 +670,12 @@
 
         document.getElementById('edit-profile').addEventListener('click', async () => {
             if (!currentUser) return;
-            const nextName = window.prompt('Masukkan nama lengkap baru:', currentUser.displayName || '');
+            const nextName = window.prompt('Masukkan nama baru:', currentUser.displayName || '');
             if (!nextName?.trim()) return;
 
             try {
                 const nameParts = nextName.trim().split(/\s+/);
                 await updateProfile(currentUser, { displayName: nextName.trim() });
-                
-                // Update Firestore
                 await setDoc(doc(db, 'users', currentUser.uid), {
                     namaDepan: nameParts[0],
                     namaBelakang: nameParts.slice(1).join(' '),
@@ -615,153 +685,43 @@
                 document.getElementById('profile-name').textContent = nextName.trim();
                 document.getElementById('account-name').textContent = nextName.trim();
                 renderAvatar(currentUser);
-                showAlert('Nama profil berhasil diperbarui.');
             } catch (error) {
-                showAlert('Gagal memperbarui nama.', true);
+                message.textContent = 'Gagal perbarui nama.';
             }
         });
 
-        // --- UPLOAD LOGO BISNIS (DIRECT UPLOAD) ---
-        const btnEditBizLogo = document.getElementById('btn-edit-biz-logo');
-        const fileBizLogo = document.getElementById('business-logo-file');
-
-        btnEditBizLogo.addEventListener('click', () => fileBizLogo.click());
-        fileBizLogo.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file || !currentUser) return;
-            if (file.size > 2 * 1024 * 1024) return showAlert('Maksimal ukuran logo bisnis adalah 2MB.', true);
-
-            btnEditBizLogo.disabled = true;
-            btnEditBizLogo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengunggah...';
-            
-            try {
-                // Path unik untuk logo agar cache tidak bentrok
-                const path = `${currentUser.uid}/business-logo-${Date.now()}.jpg`;
-                
-                const res = await fetch(`${supabaseUrl}/storage/v1/object/${bucketName}/${path}`, {
-                    method: 'POST',
-                    headers: { 'apikey': supabaseKey, 'Content-Type': file.type },
-                    body: file
-                });
-                
-                if (!res.ok) throw new Error('Supabase upload failed');
-                
-                const logoUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${path}`;
-                
-                // Update specific nested field di Firestore
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    'bisnis.logoUrl': logoUrl
-                });
-
-                // Update UI
-                const img = document.getElementById('business-logo');
-                img.src = logoUrl;
-                img.style.display = 'block';
-                document.getElementById('biz-logo-placeholder').style.display = 'none';
-                
-                showAlert('Logo bisnis berhasil diubah.');
-            } catch (err) {
-                console.error(err);
-                showAlert('Gagal mengunggah logo bisnis.', true);
-            } finally {
-                btnEditBizLogo.disabled = false;
-                btnEditBizLogo.innerHTML = '<i class="fas fa-upload"></i> Unggah Logo';
-                fileBizLogo.value = '';
+        document.getElementById('upload-avatar').addEventListener('click', () => avatarFile.click());
+        avatarFile.addEventListener('change', async () => {
+            const file = avatarFile.files[0];
+            if (file && ['image/jpeg', 'image/png', 'image/webp'].includes(file.type) && file.size <= 5242880) {
+                await openCropEditor(file);
             }
         });
 
-        // --- CROP FOTO PROFIL (AVATAR) ---
-        const cropDialog = document.getElementById('avatar-crop-dialog');
-        const cropCanvas = document.getElementById('crop-canvas');
-        const cropCtx = cropCanvas.getContext('2d');
-        const cropSize = cropCanvas.width;
-        let cropImg = null, cropBase = 1, cropZoom = 1, cropX = 0, cropY = 0, dragPos = null;
-
-        document.getElementById('upload-avatar').addEventListener('click', () => document.getElementById('avatar-file').click());
-        document.getElementById('avatar-file').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) return showAlert('Maksimal ukuran foto 5MB.', true);
-
-            try {
-                cropImg = await createImageBitmap(file);
-                cropBase = cropSize / Math.min(cropImg.width, cropImg.height);
-                cropZoom = 1;
-                cropX = (cropSize - cropImg.width * cropBase) / 2;
-                cropY = (cropSize - cropImg.height * cropBase) / 2;
-                document.getElementById('crop-zoom').value = '1';
-                drawCrop();
-                cropDialog.showModal();
-            } catch (err) {
-                showAlert('Gagal memuat foto untuk di-crop.', true);
-            }
+        // Crop Events
+        cropZoomInput.addEventListener('input', () => setCropZoom(cropZoomInput.value));
+        cropCanvas.addEventListener('pointerdown', (e) => {
+            if (!cropImage) return;
+            cropCanvas.setPointerCapture(e.pointerId);
+            dragPosition = { x: e.clientX, y: e.clientY };
         });
-
-        function clampCrop() {
-            const w = cropImg.width * cropBase * cropZoom;
-            const h = cropImg.height * cropBase * cropZoom;
-            cropX = Math.min(0, Math.max(cropSize - w, cropX));
-            cropY = Math.min(0, Math.max(cropSize - h, cropY));
-        }
-
-        function drawCrop() {
-            const w = cropImg.width * cropBase * cropZoom;
-            const h = cropImg.height * cropBase * cropZoom;
-            cropCtx.clearRect(0, 0, cropSize, cropSize);
-            cropCtx.drawImage(cropImg, cropX, cropY, w, h);
-        }
-
-        document.getElementById('crop-zoom').addEventListener('input', (e) => {
-            const oldZ = cropZoom;
-            cropZoom = Number(e.target.value);
-            const cx = (cropSize / 2 - cropX) / (cropBase * oldZ);
-            const cy = (cropSize / 2 - cropY) / (cropBase * oldZ);
-            cropX = cropSize / 2 - cx * (cropBase * cropZoom);
-            cropY = cropSize / 2 - cy * (cropBase * cropZoom);
-            clampCrop(); drawCrop();
+        cropCanvas.addEventListener('pointermove', (e) => {
+            if (!dragPosition || !cropImage) return;
+            const bounds = cropCanvas.getBoundingClientRect();
+            cropX += (e.clientX - dragPosition.x) * (cropSize / bounds.width);
+            cropY += (e.clientY - dragPosition.y) * (cropSize / bounds.height);
+            dragPosition = { x: e.clientX, y: e.clientY };
+            clampCropPosition();
+            drawCropPreview();
         });
-
-        cropCanvas.addEventListener('pointerdown', e => { dragPos = {x: e.clientX, y: e.clientY}; cropCanvas.setPointerCapture(e.pointerId); });
-        cropCanvas.addEventListener('pointermove', e => {
-            if(!dragPos) return;
-            cropX += (e.clientX - dragPos.x) * (cropSize / cropCanvas.getBoundingClientRect().width);
-            cropY += (e.clientY - dragPos.y) * (cropSize / cropCanvas.getBoundingClientRect().height);
-            dragPos = {x: e.clientX, y: e.clientY};
-            clampCrop(); drawCrop();
-        });
-        cropCanvas.addEventListener('pointerup', () => dragPos = null);
-
-        document.getElementById('cancel-crop').addEventListener('click', () => cropDialog.close());
-        document.getElementById('apply-crop').addEventListener('click', async () => {
-            if (!currentUser) return;
-            const btn = document.getElementById('apply-crop');
-            btn.disabled = true;
-            btn.textContent = 'Memproses...';
-            
-            try {
-                const blob = await new Promise(res => cropCanvas.toBlob(res, 'image/jpeg', 0.9));
-                const path = `${currentUser.uid}/profile-photo`;
-                
-                await fetch(`${supabaseUrl}/storage/v1/object/${bucketName}/${path}`, {
-                    method: 'POST',
-                    headers: { 'apikey': supabaseKey, 'Content-Type': 'image/jpeg', 'x-upsert': 'true' },
-                    body: blob
-                });
-                
-                renderAvatar(currentUser);
-                showAlert('Foto profil berhasil diubah.');
-                cropDialog.close();
-            } catch (err) {
-                showAlert('Gagal mengunggah foto profil.', true);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Terapkan Foto';
-            }
-        });
-
-        document.getElementById('avatar-image').addEventListener('error', (e) => {
-            e.target.hidden = true;
-            document.getElementById('avatar-initials').hidden = false;
+        cropCanvas.addEventListener('pointerup', () => dragPosition = null);
+        
+        applyCropButton.addEventListener('click', uploadCroppedPhoto);
+        cancelCropButton.addEventListener('click', () => cropDialog.close());
+        cropDialog.addEventListener('close', releaseCropImage);
+        avatarImage.addEventListener('error', () => {
+            avatarImage.hidden = true;
+            avatarInitials.hidden = false;
         });
     </script>
 </body>
