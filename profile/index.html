@@ -165,7 +165,6 @@
             text-align: center;
         }
 
-        /* Baris Foto Profil & Logo Usaha Berdampingan Simetris */
         .identity-row {
             display: flex;
             align-items: center;
@@ -338,7 +337,6 @@
             gap: 0.4rem;
         }
 
-        /* Kerapian List Data Agar Sempurna Kiri-Kanan */
         .info-list {
             list-style: none;
             margin: 0;
@@ -377,7 +375,7 @@
             max-width: 62%;
         }
 
-        /* --- TOMBOL KELUAR DI PALING BAWAH BANGET (DILUAR PANEL) --- */
+        /* --- TOMBOL KELUAR DI PALING BAWAH BANGET --- */
         .logout-container {
             width: 100%;
             margin-top: 0.5rem;
@@ -531,7 +529,7 @@
                 <p id="profile-message" role="status" aria-live="polite" style="margin-top:1rem; color:var(--text-muted); font-size: 0.8rem; text-align: center;"></p>
             </section>
 
-            <!-- Tombol Keluar di Paling Bawah Banget (Diluar Panel Atas/Bawah) -->
+            <!-- Tombol Keluar di Paling Bawah Banget -->
             <div class="logout-container">
                 <button id="sign-out" class="btn btn-danger" type="button">
                     <i class="fas fa-sign-out-alt"></i> Keluar Akun
@@ -570,7 +568,6 @@
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         import { doc, getDoc, getFirestore, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
         
-        // --- KONFIGURASI ---
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
             authDomain: 'sitenexs-62919.firebaseapp.com',
@@ -589,7 +586,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // --- VARIABEL DOM ---
         const message = document.getElementById('profile-message');
         const avatarImage = document.getElementById('avatar-image');
         const avatarInitials = document.getElementById('avatar-initials');
@@ -612,7 +608,6 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
-        // --- FUNGSI CROP GAMBAR ---
         function clampCropPosition() {
             const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
             const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
@@ -662,7 +657,6 @@
             }
         }
 
-        // --- FUNGSI UPLOAD & RENDER ---
         async function uploadCroppedPhoto() {
             if (!cropImage || !currentUser) return;
             
@@ -736,15 +730,13 @@
                     document.getElementById('account-verified-status').innerHTML = '<span style="color:var(--primary); font-weight:700;"><i class="fas fa-check-circle"></i> Terverifikasi</span>';
                 }
 
-                if (data.paket) {
-                    document.getElementById('profile-package').textContent = data.paket;
-                }
+                const activePackage = data.paketLangganan || data.paket || 'Paket UMKM Pro';
+                document.getElementById('profile-package').textContent = activePackage;
             } catch (error) {
                 console.error('Gagal memuat data:', error);
             }
         }
 
-        // --- EVENT LISTENERS ---
         onAuthStateChanged(auth, (user) => {
             if (!user) return window.location.replace('https://account.sitenexs.com/sign-in/');
             
@@ -762,7 +754,6 @@
             loadRegistrationData(user);
         });
 
-        // Tombol Keluar dengan Konfirmasi
         document.getElementById('sign-out').addEventListener('click', async () => {
             const confirmed = window.confirm('Apakah Anda yakin ingin keluar dari akun Sitenexs?');
             if (!confirmed) return;
@@ -772,7 +763,6 @@
             window.location.assign('https://sitenexs.com/');
         });
 
-        // Edit Nama & BIO
         document.getElementById('edit-profile').addEventListener('click', async () => {
             if (!currentUser) return;
             const nextName = window.prompt('Masukkan nama baru:', currentUser.displayName || '');
@@ -806,7 +796,6 @@
             }
         });
 
-        // Ganti Foto Profil
         document.getElementById('upload-avatar').addEventListener('click', () => avatarFile.click());
         avatarFile.addEventListener('change', async () => {
             const file = avatarFile.files[0];
@@ -815,7 +804,6 @@
             }
         });
 
-        // Ganti Logo Bisnis Langsung dari Samping Foto Profil
         editBusinessLogoBtn.addEventListener('click', () => businessLogoFile.click());
         businessLogoFile.addEventListener('change', async () => {
             const file = businessLogoFile.files[0];
@@ -856,7 +844,6 @@
             }
         });
 
-        // Crop Events
         cropZoomInput.addEventListener('input', () => setCropZoom(cropZoomInput.value));
         cropCanvas.addEventListener('pointerdown', (e) => {
             if (!cropImage) return;
