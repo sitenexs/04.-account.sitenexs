@@ -663,10 +663,17 @@
             loadRegistrationData(user);
         });
 
-        document.getElementById('sign-out').addEventListener('click', async () => {
+                document.getElementById('sign-out').addEventListener('click', async () => {
+            // 1. Hapus cookie status login dari perangkat
+            document.cookie = "isLoggedIn=; domain=.sitenexs.com; path=/; max-age=0";
+            
+            // 2. Proses keluar dari Firebase
             await signOut(auth);
+            
+            // 3. Arahkan kembali ke halaman utama
             window.location.assign('https://sitenexs.com/');
         });
+
 
         document.getElementById('edit-profile').addEventListener('click', async () => {
             if (!currentUser) return;
