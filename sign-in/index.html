@@ -402,8 +402,12 @@
             message.className = type;
         }
 
-                form.addEventListener('submit', async (event) => {
-            // ... kode sebelumnya ...
+            form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            message.className = '';
+            message.textContent = '';
+            submitButton.disabled = true;
+            btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             try {
                 const persistence = document.getElementById('rememberMe').checked
                     ? browserLocalPersistence
