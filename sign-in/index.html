@@ -402,13 +402,8 @@
             message.className = type;
         }
 
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            message.className = '';
-            message.textContent = '';
-            submitButton.disabled = true;
-            btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-
+                form.addEventListener('submit', async (event) => {
+            // ... kode sebelumnya ...
             try {
                 const persistence = document.getElementById('rememberMe').checked
                     ? browserLocalPersistence
@@ -421,21 +416,17 @@
                     document.getElementById('password').value
                 );
                 
+                // === TAMBAHKAN KODE INI SESUAI SARAN ANDA ===
+                // Menyimpan data "isLoggedIn=true" ke penyimpanan perangkat browser 
+                // agar bisa dibaca seketika oleh sitenexs.com
+                document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
+                // ============================================
+
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
                 window.location.assign('/profile/');
             } catch (error) {
-                const messages = {
-                    'auth/invalid-credential': 'Email atau password salah.',
-                    'auth/invalid-email': 'Masukkan alamat email yang valid.',
-                    'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi nanti.',
-                    'auth/network-request-failed': 'Koneksi bermasalah. Periksa internet Anda.'
-                };
-                showMessage(messages[error.code] || 'Terjadi kesalahan saat masuk.', 'error');
-                
-                submitButton.disabled = false;
-                btnText.textContent = 'Masuk';
-            }
-        });
+               // ... kode catch error ...
+
 
         document.getElementById('reset-password').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
