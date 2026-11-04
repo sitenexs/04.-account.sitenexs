@@ -159,7 +159,7 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* --- SIDEBAR SEBELAH KIRI (DETAIL BISNIS & KEAMANAN) --- */
+        /* --- SIDEBAR SEBELAH KIRI --- */
         .sidebar {
             padding: 1.5rem 1.15rem;
             display: flex;
@@ -319,7 +319,7 @@
             justify-content: center;
         }
 
-        .verification-icon { width: 15px; height: 15px; object-fit: contain; display: none; }
+        .verification-icon { width: 14px; height: 14px; object-fit: contain; display: none; }
         .role { margin-top: 0.15rem; color: var(--text-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
 
         .status-badge {
@@ -522,7 +522,6 @@
                     <div class="sidebar-info-box">
                         <h3><i class="fas fa-shield-alt" style="color:var(--primary);"></i> Keamanan & Verifikasi</h3>
                         <ul class="sidebar-info-list">
-                            <!-- Status verifikasi disamakan dengan centang biru menggunakan elemen gambar / lencana yang sama -->
                             <li><span>Verifikasi Akun</span> <strong id="account-verified-status"><span style="color: var(--text-muted);">Standar</span></strong></li>
                             <li><span>Sistem Akun</span> <strong>Sitenexs Secure Auth</strong></li>
                         </ul>
@@ -541,8 +540,9 @@
                         <div class="avatar-box-wrapper">
                             <div class="avatar-container">
                                 <div id="avatar" class="avatar" aria-hidden="true">
+                                    <!-- Foto profil diset loading bawaan asli (inisial / spinner) -->
                                     <img id="avatar-image" class="avatar-image" alt="" hidden>
-                                    <span id="avatar-initials">SN</span>
+                                    <span id="avatar-initials"><i class="fas fa-spinner fa-spin" style="font-size: 1.1rem;"></i></span>
                                 </div>
                                 <button id="upload-avatar" class="edit-badge-btn" type="button" title="Ganti Foto Profil">
                                     <i class="fas fa-pencil"></i>
@@ -572,8 +572,10 @@
                         <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" class="verification-icon">
                     </h2>
                     
-                    <div class="role" id="profile-bio-label">BIO</div>
-                    <div class="status-badge"><i class="fas fa-box-open" style="font-size:0.65rem;"></i> <span id="profile-package">Paket UMKM Pro</span></div>
+                    <!-- Bio status loading -->
+                    <div class="role" id="profile-bio-label"><i class="fas fa-spinner fa-spin" style="font-size: 0.65rem;"></i> Memuat...</div>
+                    <!-- Paket status loading -->
+                    <div class="status-badge"><i class="fas fa-spinner fa-spin" style="font-size:0.6rem;"></i> <span id="profile-package">Memuat...</span></div>
 
                     <!-- Tombol Edit Terpisah -->
                     <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center;">
@@ -592,27 +594,27 @@
                     <div class="main-info-grid">
                         <div class="main-card-box">
                             <span>Nama Lengkap</span>
-                            <strong id="main-name">-</strong>
+                            <strong id="main-name">Memuat...</strong>
                         </div>
                         <div class="main-card-box">
                             <span>Status Email</span>
-                            <strong id="main-email-status">-</strong>
+                            <strong id="main-email-status">Memuat...</strong>
                         </div>
                         <div class="main-card-box">
                             <span>No. Telepon</span>
-                            <strong id="main-phone">-</strong>
+                            <strong id="main-phone">Memuat...</strong>
                         </div>
                         <div class="main-card-box">
                             <span>Alamat Pengguna</span>
-                            <strong id="main-address">-</strong>
+                            <strong id="main-address">Memuat...</strong>
                         </div>
                     </div>
                 </div>
 
                 <!-- Email & UID -->
                 <ul class="meta">
-                    <li><i class="fas fa-envelope"></i> <span id="profile-email">-</span></li>
-                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid">-</span></li>
+                    <li><i class="fas fa-envelope"></i> <span id="profile-email">Memuat...</span></li>
+                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid">Memuat...</span></li>
                 </ul>
 
                 <!-- Tombol Keluar di Paling Bawah Halaman Utama -->
@@ -828,10 +830,20 @@
         function renderAvatar(user) {
             const name = user.displayName || 'Pengguna';
             const initials = name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
-            avatarInitials.textContent = initials || 'S';
-            avatarImage.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo`;
-            avatarImage.hidden = false;
-            avatarInitials.hidden = true;
+            
+            // Cek URL gambar avatar dari Supabase secara langsung dengan penanganan error agar kembali ke inisial jika belum ada foto
+            const profilePhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo?t=${Date.now()}`;
+            
+            avatarImage.onload = () => {
+                avatarImage.hidden = false;
+                avatarInitials.hidden = true;
+            };
+            avatarImage.onerror = () => {
+                avatarImage.hidden = true;
+                avatarInitials.textContent = initials || 'S';
+                avatarInitials.hidden = false;
+            };
+            avatarImage.src = profilePhotoUrl;
         }
 
         async function loadRegistrationData(user) {
@@ -857,20 +869,22 @@
                     document.getElementById('sb-business-logo').src = business.logoUrl;
                 }
 
-                if (data.bio) {
-                    document.getElementById('profile-bio-label').textContent = data.bio;
-                }
+                // Loading Bio menjadi memuat lalu diisi data asli
+                const bioElement = document.getElementById('profile-bio-label');
+                bioElement.textContent = data.bio || 'Founder Sitenexs';
 
                 if (data.isVerified) {
                     document.getElementById('profile-verified').style.display = 'inline-block';
-                    // Status verifikasi di bagian bawah disamakan menggunakan ikon centang biru yang sama
                     document.getElementById('account-verified-status').innerHTML = '<span style="color:var(--primary); font-weight:700; display: inline-flex; align-items: center; gap: 0.35rem;">Terverifikasi <img src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" style="width:14px; height:14px; object-fit:contain;"></span>';
                 }
 
+                // Loading Paket menjadi memuat lalu diisi data asli
                 const activePackage = data.paketLangganan || data.paket || 'Paket UMKM Pro';
                 document.getElementById('profile-package').textContent = activePackage;
             } catch (error) {
                 console.error('Gagal memuat data:', error);
+                document.getElementById('profile-bio-label').textContent = 'Founder Sitenexs';
+                document.getElementById('profile-package').textContent = 'Paket UMKM Pro';
             }
         }
 
