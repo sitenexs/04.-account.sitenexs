@@ -23,20 +23,22 @@
             /* Warna Latar & Teks */
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
+            --bg-alt: #f1f5f9;
             --text-main: #0f172a;
             --text-muted: #475569;
             
             /* Border & Bayangan */
             --border-subtle: #e2e8f0;
             --border-medium: #cbd5e1;
-            --shadow-sm: 0 4px 6px -1px rgba(15,23,42,0.1);
-            --shadow-md: 0 10px 15px -3px rgba(15,23,42,0.1);
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
             
-            /* Radius Tajam/Tegas */
-            --radius-sm: 2px;
-            --radius-md: 3px;
-            --radius-lg: 3px;
-            --radius-xl: 3px;
+            /* Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.625rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- RESET & BASE --- */
@@ -45,29 +47,37 @@
         body {
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-body);
+            background-color: var(--bg-body);
+            background-image: 
+                linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
+            background-size: 28px 28px;
             color: var(--text-main);
+            line-height: 1.6;
         }
 
         a { text-decoration: none; color: inherit; }
-        button { font: inherit; }
+        button { font: inherit; outline: none; }
 
         .container {
             width: min(1100px, calc(100% - 2rem));
             margin: 0 auto;
         }
 
-        /* --- TOPBAR --- */
+        /* --- TOPBAR GLASSMORPHISM --- */
         .topbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 74px;
+            height: 75px;
             position: sticky;
             top: 0;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
-            z-index: 10;
+            box-shadow: var(--shadow-sm);
+            z-index: 100;
         }
 
         .brand {
@@ -75,30 +85,34 @@
             align-items: center;
             gap: 0.75rem;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .brand-mark {
-            width: 38px;
-            height: 38px;
-            border-radius: var(--radius-md); /* Dibuat lebih tegas */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             object-fit: cover;
-            border: 1px solid var(--border-subtle);
-            background: #fff;
+            border: 2px solid #fff;
+            box-shadow: var(--shadow-sm);
         }
 
         .brand-text {
-            color: var(--primary-dark);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-weight: 700;
+            gap: 1.5rem;
+            font-weight: 600;
             color: var(--text-muted);
         }
 
+        .nav a { transition: var(--transition); }
         .nav a:hover { color: var(--primary); }
 
         /* --- BUTTONS --- */
@@ -107,32 +121,43 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: var(--radius-md);
+            padding: 0.6rem 1.25rem;
+            border-radius: 9999px;
             font-weight: 700;
             font-size: 0.9rem;
             border: 1px solid transparent;
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: var(--transition);
         }
+
+        .btn-sm { padding: 0.4rem 1rem; font-size: 0.85rem; }
 
         .btn-primary {
-            background: var(--primary);
-            color: #fff;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
 
-        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        }
 
         .btn-secondary {
             background: #fff;
             color: var(--text-main);
             border-color: var(--border-medium);
+            box-shadow: var(--shadow-sm);
         }
 
-        .btn-secondary:hover { background: var(--bg-body); }
+        .btn-secondary:hover { 
+            border-color: var(--primary); 
+            color: var(--primary); 
+            transform: translateY(-2px); 
+        }
 
         /* --- LAYOUT PROFIL --- */
-        .page { padding: 2rem 0 4rem; }
+        .page { padding: 3rem 0 5rem; }
 
         .profile-shell {
             display: grid;
@@ -145,10 +170,13 @@
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
+        
+        .panel:hover { box-shadow: var(--shadow-md); border-color: var(--border-medium); }
 
         /* --- SIDEBAR --- */
-        .sidebar { padding: 1.5rem; }
+        .sidebar { padding: 2rem 1.5rem; }
 
         .avatar-wrap {
             display: flex;
@@ -158,17 +186,22 @@
             margin-bottom: 1.5rem;
         }
 
+        .avatar-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
         .avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 1rem;
-            background: var(--primary-light);
+            border: 4px solid #fff;
+            box-shadow: var(--shadow-md);
+            background: linear-gradient(135deg, var(--primary-light) 0%, #e0e7ff 100%);
             display: grid;
             place-items: center;
             color: var(--primary);
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 800;
             overflow: hidden;
         }
@@ -178,32 +211,41 @@
             height: 100%;
             object-fit: cover;
         }
-
-        .avatar-controls {
-            display: grid;
-            justify-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .avatar-input {
+        
+        /* Tombol Pensil Ganti Foto */
+        .edit-avatar-btn {
             position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            border: 3px solid #fff;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            font-size: 0.85rem;
         }
+        
+        .edit-avatar-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .avatar-input { display: none; }
 
         .name {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 800;
             margin: 0;
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
+            color: var(--text-main);
         }
 
         .verification-icon {
@@ -217,6 +259,7 @@
             margin-top: 0.25rem;
             color: var(--text-muted);
             font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .status {
@@ -224,11 +267,11 @@
             align-items: center;
             gap: 0.45rem;
             margin-top: 0.9rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: #047857;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: var(--radius-sm);
-            padding: 0.4rem 0.8rem;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 9999px;
+            padding: 0.4rem 1rem;
             font-size: 0.8rem;
             font-weight: 700;
         }
@@ -237,9 +280,9 @@
             list-style: none;
             margin: 0;
             padding: 1.5rem 0 0;
-            border-top: 1px solid var(--border-subtle);
+            border-top: 1px dashed var(--border-medium);
             display: grid;
-            gap: 0.75rem;
+            gap: 0.85rem;
         }
 
         .meta li {
@@ -251,37 +294,40 @@
         }
 
         .meta i {
-            width: 16px;
+            width: 18px;
             color: var(--primary);
+            text-align: center;
         }
 
         /* --- MAIN PANEL --- */
-        .main-panel { padding: 1.5rem; }
+        .main-panel { padding: 2rem; }
 
         .header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px dashed var(--border-medium);
         }
 
         h1 {
             margin: 0;
             font-size: 1.5rem;
+            font-weight: 800;
         }
 
         .grid-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .info-box h3 {
             margin: 0 0 1rem;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-main);
+            font-weight: 800;
         }
 
         .info-list {
@@ -289,7 +335,7 @@
             margin: 0;
             padding: 0;
             display: grid;
-            gap: 0.75rem;
+            gap: 0.85rem;
             color: var(--text-muted);
             font-size: 0.9rem;
         }
@@ -297,16 +343,27 @@
         .info-list li strong {
             color: var(--text-main);
             display: inline-block;
-            min-width: 120px;
+            min-width: 130px;
+        }
+
+        .business-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            background: var(--bg-alt);
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
         }
 
         .business-logo {
-            max-width: 90px;
-            max-height: 60px;
+            width: 80px;
+            height: 60px;
             object-fit: contain;
-            vertical-align: middle;
-            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
+            background: #fff;
+            border: 1px solid var(--border-medium);
         }
 
         /* --- DIALOG CROP --- */
@@ -314,14 +371,12 @@
             width: min(420px, calc(100% - 2rem));
             padding: 1.5rem;
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             color: var(--text-main);
             box-shadow: var(--shadow-md);
         }
 
-        .crop-dialog::backdrop {
-            background: rgba(15, 23, 42, 0.6);
-        }
+        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px); }
 
         .crop-canvas {
             display: block;
@@ -330,30 +385,28 @@
             aspect-ratio: 1;
             margin: 1rem auto;
             border-radius: 50%;
-            background: #e2e8f0;
+            background: var(--bg-alt);
             cursor: grab;
+            border: 2px dashed var(--border-medium);
         }
         
         .crop-canvas:active { cursor: grabbing; }
-
-        .crop-zoom input { width: 100%; margin-top: 0.5rem; }
+        .crop-zoom input { width: 100%; margin-top: 0.5rem; accent-color: var(--primary); }
 
         .crop-actions {
             display: flex;
             justify-content: flex-end;
             gap: 0.75rem;
-            margin-top: 1.25rem;
+            margin-top: 1.5rem;
         }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 860px) {
-            .profile-shell { grid-template-columns: 1fr; }
-        }
-
+        @media (max-width: 860px) { .profile-shell { grid-template-columns: 1fr; } }
         @media (max-width: 600px) {
-            .grid-info { grid-template-columns: 1fr; }
+            .grid-info { grid-template-columns: 1fr; gap: 1.5rem; }
             .header-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
             .info-list li strong { display: block; margin-bottom: 0.2rem; }
+            .business-logo-container { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -367,8 +420,8 @@
                 <span class="brand-text">Sitenexs</span>
             </a>
             <nav class="nav">
-                <a href="https://sitenexs.com/">Beranda</a>
-                <button id="sign-out" class="btn btn-secondary" type="button">Keluar</button>
+                <a href="https://sitenexs.com/"><i class="fas fa-home" style="margin-right: 0.3rem;"></i> Beranda</a>
+                <button id="sign-out" class="btn btn-secondary btn-sm" type="button"><i class="fas fa-sign-out-alt"></i> Keluar</button>
             </nav>
         </div>
     </header>
@@ -380,16 +433,16 @@
             <!-- Sidebar -->
             <aside class="panel sidebar">
                 <div class="avatar-wrap">
-                    <div id="avatar" class="avatar" aria-hidden="true">
-                        <img id="avatar-image" class="avatar-image" alt="" hidden>
-                        <span id="avatar-initials">SN</span>
-                    </div>
-                    
-                    <div class="avatar-controls">
-                        <input id="avatar-file" class="avatar-input" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Pilih foto profil">
-                        <button id="upload-avatar" class="btn btn-secondary" type="button">
-                            <i class="fas fa-camera"></i> Ganti Foto
+                    <div class="avatar-container">
+                        <div id="avatar" class="avatar" aria-hidden="true">
+                            <img id="avatar-image" class="avatar-image" alt="" hidden>
+                            <span id="avatar-initials">SN</span>
+                        </div>
+                        <!-- Tombol Pensil -->
+                        <button id="upload-avatar" class="edit-avatar-btn" type="button" title="Ganti foto profil">
+                            <i class="fas fa-pencil-alt"></i>
                         </button>
+                        <input id="avatar-file" class="avatar-input" type="file" accept="image/png,image/jpeg,image/webp">
                     </div>
                     
                     <h2 class="name">
@@ -397,13 +450,15 @@
                         <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" class="verification-icon">
                     </h2>
                     
-                    <div class="role">Akun Sitenexs</div>
-                    <div class="status"><i class="fas fa-circle" style="font-size:0.55rem;"></i> <span id="profile-status">Memeriksa sesi</span></div>
+                    <div class="role">Mitra Sitenexs</div>
+                    <div id="status-badge" class="status">
+                        <i class="fas fa-box" style="font-size:0.8rem;"></i> Paket: <span id="profile-package">Memuat...</span>
+                    </div>
                 </div>
 
                 <ul class="meta">
                     <li><i class="fas fa-envelope"></i> <span id="profile-email"></span></li>
-                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid" style="word-break: break-all;"></span></li>
+                    <li><i class="fas fa-fingerprint"></i> <span id="profile-uid" style="word-break: break-all; font-size: 0.8rem;"></span></li>
                 </ul>
             </aside>
 
@@ -411,7 +466,7 @@
             <section class="panel main-panel">
                 <div class="header-row">
                     <h1>Profil Saya</h1>
-                    <button id="edit-profile" class="btn btn-primary" type="button">
+                    <button id="edit-profile" class="btn btn-primary btn-sm" type="button">
                         <i class="fas fa-pen"></i> Ubah Nama
                     </button>
                 </div>
@@ -425,14 +480,23 @@
                             <li><strong>Status Email:</strong> <span id="email-status"></span></li>
                             <li><strong>Telepon:</strong> <span id="account-phone">Memuat...</span></li>
                             <li><strong>Alamat:</strong> <span id="account-address">Memuat...</span></li>
-                            <li style="margin-top: 0.5rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem;"></li>
+                            <li style="margin-top: 1rem; border-top: 1px dashed var(--border-medium); padding-top: 1rem;"></li>
                             <li><strong>Bisnis:</strong> <span id="business-name">Memuat...</span></li>
                             <li><strong>Bidang Usaha:</strong> <span id="business-field">Memuat...</span></li>
-                            <li><strong>Telepon Bisnis:</strong> <span id="business-phone">Memuat...</span></li>
-                            <li><strong>Email Bisnis:</strong> <span id="business-email">Memuat...</span></li>
-                            <li id="business-logo-row" hidden>
+                            
+                            <!-- LOGO BISNIS UPLOADER -->
+                            <li>
                                 <strong>Logo Bisnis:</strong> 
-                                <img id="business-logo" class="business-logo" alt="Logo bisnis">
+                                <div class="business-logo-container">
+                                    <img id="business-logo" class="business-logo" src="https://ui-avatars.com/api/?name=Logo+Bisnis&background=cbd5e1&color=fff&size=150" alt="Logo bisnis">
+                                    <div>
+                                        <button id="upload-logo-btn" class="btn btn-secondary btn-sm" type="button">
+                                            <i class="fas fa-upload"></i> Unggah Logo
+                                        </button>
+                                        <div style="font-size: 0.75rem; margin-top: 0.3rem; color: var(--text-muted);">Format: JPG, PNG, WEBP (Max 5MB)</div>
+                                    </div>
+                                    <input id="logo-file" type="file" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -442,28 +506,28 @@
                         <ul class="info-list">
                             <li><strong>Verifikasi:</strong> <span id="account-verified-status">Standar</span></li>
                             <li><strong>Login via:</strong> Firebase Authentication</li>
-                            <li style="margin-top: 1rem; padding: 1rem; background: var(--bg-body); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-                                <i class="fas fa-info-circle" style="color: var(--primary);"></i> 
+                            <li style="margin-top: 1rem; padding: 1rem; background: var(--bg-alt); border-radius: var(--radius-md); border: 1px solid var(--border-medium);">
+                                <i class="fas fa-info-circle" style="color: var(--primary); margin-bottom: 0.5rem; display: block;"></i> 
                                 <span style="font-size: 0.85rem;">Lencana terverifikasi (centang biru) diberikan secara eksklusif oleh administrator Sitenexs untuk mitra terpilih.</span>
                             </li>
                         </ul>
                     </div>
                 </div>
                 
-                <p id="profile-message" role="status" aria-live="polite" style="margin-top:1.5rem; color:var(--text-muted); font-size: 0.9rem;"></p>
+                <p id="profile-message" role="status" aria-live="polite" style="margin-top:1.5rem; color:var(--primary); font-size: 0.9rem; font-weight: 600; text-align: center;"></p>
             </section>
         </div>
     </main>
 
     <!-- Dialog Crop -->
     <dialog id="avatar-crop-dialog" class="crop-dialog" aria-labelledby="crop-title">
-        <h2 id="crop-title" style="margin-top:0;">Sesuaikan Foto</h2>
+        <h2 id="crop-title" style="margin-top:0; font-weight: 800;">Sesuaikan Foto</h2>
         <p style="color:var(--text-muted); font-size:0.9rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
         
         <canvas id="crop-canvas" class="crop-canvas" width="280" height="280"></canvas>
         
         <label class="crop-zoom" for="crop-zoom" style="display:block; margin-bottom:1.5rem;">
-            <span style="font-size:0.9rem;">Perbesar</span>
+            <span style="font-size:0.9rem; font-weight: 600;">Perbesar</span>
             <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1">
         </label>
         
@@ -497,7 +561,7 @@
 
         const supabaseUrl = 'https://xqcbyamxiekdxytntlno.supabase.co';
         const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
-        const avatarBucket = 'profile-photos';
+        const avatarBucket = 'profile-photos'; // Digunakan juga untuk logo bisnis
         
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -509,6 +573,10 @@
         const avatarInitials = document.getElementById('avatar-initials');
         const avatarFile = document.getElementById('avatar-file');
         
+        const logoFile = document.getElementById('logo-file');
+        const businessLogoImg = document.getElementById('business-logo');
+        const uploadLogoBtn = document.getElementById('upload-logo-btn');
+
         const cropDialog = document.getElementById('avatar-crop-dialog');
         const cropCanvas = document.getElementById('crop-canvas');
         const cropContext = cropCanvas.getContext('2d');
@@ -523,7 +591,9 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
-        // --- FUNGSI CROP GAMBAR ---
+        function notify(msg) { message.textContent = msg; setTimeout(() => { message.textContent = ''; }, 4000); }
+
+        // --- FUNGSI CROP GAMBAR (UNTUK AVATAR) ---
         function clampCropPosition() {
             const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
             const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
@@ -569,11 +639,11 @@
                 cropDialog.showModal();
             } catch (error) {
                 releaseCropImage();
-                message.textContent = 'Foto tidak dapat dibuka.';
+                notify('Foto tidak dapat dibuka.');
             }
         }
 
-        // --- FUNGSI UPLOAD & RENDER ---
+        // --- FUNGSI UPLOAD AVATAR ---
         async function uploadCroppedPhoto() {
             if (!cropImage || !currentUser) return;
             
@@ -600,13 +670,54 @@
                 avatarImage.hidden = false;
                 avatarInitials.hidden = true;
                 cropDialog.close();
-                message.textContent = 'Foto berhasil diperbarui.';
+                notify('Foto profil berhasil diperbarui!');
             } catch (error) {
-                message.textContent = 'Gagal mengunggah foto.';
+                notify('Gagal mengunggah foto profil.');
             } finally {
                 applyCropButton.disabled = false;
             }
         }
+
+        // --- FUNGSI UPLOAD LOGO BISNIS ---
+        uploadLogoBtn.addEventListener('click', () => logoFile.click());
+
+        logoFile.addEventListener('change', async () => {
+            const file = logoFile.files[0];
+            if (!file || !currentUser) return;
+            if (file.size > 5242880) return notify('Ukuran logo maksimal 5MB.');
+
+            message.textContent = 'Mengunggah logo bisnis...';
+            try {
+                const objectPath = `${encodeURIComponent(currentUser.uid)}/business-logo`;
+                
+                const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: supabasePublishableKey,
+                        'Content-Type': file.type,
+                        'x-upsert': 'true'
+                    },
+                    body: file
+                });
+                
+                if (!response.ok) throw new Error('Upload logo failed');
+
+                const publicUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                
+                // Simpan URL Logo ke Firestore
+                await setDoc(doc(db, 'users', currentUser.uid), {
+                    bisnis: { logoUrl: publicUrl }
+                }, { merge: true });
+
+                businessLogoImg.src = publicUrl;
+                notify('Logo bisnis berhasil diperbarui!');
+            } catch (error) {
+                console.error(error);
+                notify('Gagal mengunggah logo bisnis.');
+            } finally {
+                logoFile.value = '';
+            }
+        });
 
         function renderAvatar(user) {
             const name = user.displayName || 'Pengguna';
@@ -623,16 +734,32 @@
                 const data = snap.exists() ? snap.data() : {};
                 const business = data.bisnis || {};
                 
+                // UI Data Update
                 document.getElementById('account-phone').textContent = data.noTelepon || '-';
                 document.getElementById('account-address').textContent = data.alamat || '-';
                 document.getElementById('business-name').textContent = business.nama || '-';
                 document.getElementById('business-field').textContent = business.bidang || '-';
-                document.getElementById('business-phone').textContent = business.telepon || '-';
-                document.getElementById('business-email').textContent = business.email || '-';
                 
                 if (business.logoUrl) {
-                    document.getElementById('business-logo').src = business.logoUrl;
-                    document.getElementById('business-logo-row').hidden = false;
+                    businessLogoImg.src = business.logoUrl;
+                } else if(business.nama) {
+                    businessLogoImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(business.nama)}&background=cbd5e1&color=fff&size=150`;
+                }
+
+                // Render Badge Paket Langganan
+                const packageLevel = data.paketLangganan || 'Basic';
+                document.getElementById('profile-package').textContent = packageLevel;
+                
+                const statusBadge = document.getElementById('status-badge');
+                if(packageLevel.toLowerCase() === 'pro' || packageLevel.toLowerCase() === 'premium') {
+                    statusBadge.style.background = 'rgba(234, 179, 8, 0.15)';
+                    statusBadge.style.color = '#a16207';
+                    statusBadge.style.borderColor = 'rgba(234, 179, 8, 0.3)';
+                    statusBadge.innerHTML = `<i class="fas fa-crown" style="font-size:0.8rem;"></i> Paket: <span>${packageLevel}</span>`;
+                } else {
+                    statusBadge.style.background = 'rgba(37, 99, 235, 0.1)';
+                    statusBadge.style.color = 'var(--primary)';
+                    statusBadge.style.borderColor = 'rgba(37, 99, 235, 0.2)';
                 }
 
                 if (data.isVerified) {
@@ -654,7 +781,6 @@
             document.getElementById('profile-name').textContent = user.displayName || 'Pengguna';
             document.getElementById('profile-email').textContent = user.email || '-';
             document.getElementById('profile-uid').textContent = `ID: ${user.uid}`;
-            document.getElementById('profile-status').textContent = 'Sesi Aktif';
             
             document.getElementById('account-name').textContent = user.displayName || '-';
             document.getElementById('account-email').textContent = user.email || '-';
@@ -663,17 +789,12 @@
             loadRegistrationData(user);
         });
 
-                document.getElementById('sign-out').addEventListener('click', async () => {
-            // 1. Hapus cookie status login dari perangkat
+        document.getElementById('sign-out').addEventListener('click', async () => {
+            // Hapus cookie login agar halaman utama langsung tahu sesi berakhir
             document.cookie = "isLoggedIn=; domain=.sitenexs.com; path=/; max-age=0";
-            
-            // 2. Proses keluar dari Firebase
             await signOut(auth);
-            
-            // 3. Arahkan kembali ke halaman utama
             window.location.assign('https://sitenexs.com/');
         });
-
 
         document.getElementById('edit-profile').addEventListener('click', async () => {
             if (!currentUser) return;
@@ -692,8 +813,9 @@
                 document.getElementById('profile-name').textContent = nextName.trim();
                 document.getElementById('account-name').textContent = nextName.trim();
                 renderAvatar(currentUser);
+                notify('Nama berhasil diperbarui.');
             } catch (error) {
-                message.textContent = 'Gagal perbarui nama.';
+                notify('Gagal perbarui nama.');
             }
         });
 
@@ -702,6 +824,8 @@
             const file = avatarFile.files[0];
             if (file && ['image/jpeg', 'image/png', 'image/webp'].includes(file.type) && file.size <= 5242880) {
                 await openCropEditor(file);
+            } else {
+                notify('Pastikan format gambar JPG/PNG dan maksimal 5MB.');
             }
         });
 
@@ -726,6 +850,7 @@
         applyCropButton.addEventListener('click', uploadCroppedPhoto);
         cancelCropButton.addEventListener('click', () => cropDialog.close());
         cropDialog.addEventListener('close', releaseCropImage);
+        
         avatarImage.addEventListener('error', () => {
             avatarImage.hidden = true;
             avatarInitials.hidden = false;
