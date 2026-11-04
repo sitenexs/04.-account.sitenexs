@@ -159,9 +159,119 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* --- SIDEBAR DI SEBELAH KIRI --- */
+        /* --- SIDEBAR SEBELAH KIRI (ISI UTAMA SEBELUMNYA) --- */
         .sidebar {
             padding: 1.5rem 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-subtle);
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        h1 { margin: 0; font-size: 1.1rem; font-weight: 800; }
+
+        .grid-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .info-box {
+            background: var(--bg-body);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+        }
+
+        .info-box h3 {
+            margin: 0 0 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .info-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.65rem;
+            font-size: 0.8rem;
+        }
+
+        .info-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px dashed var(--border-subtle);
+        }
+
+        .info-list li:last-child { border-bottom: none; padding-bottom: 0; }
+        .info-list li span:first-child { color: var(--text-muted); flex-shrink: 0; font-weight: 500; }
+        .info-list li strong, .info-list li span:last-child { color: var(--text-main); text-align: right; word-break: break-all; font-weight: 600; max-width: 62%; }
+
+        /* Logo Usaha di Sidebar */
+        .main-business-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #fff;
+            padding: 0.65rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 0.75rem;
+        }
+
+        .main-logo-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-medium);
+            background: var(--bg-body);
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .main-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .main-logo-edit-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 0.65rem;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .main-logo-container:hover .main-logo-edit-overlay { opacity: 1; }
+
+        /* --- HALAMAN UTAMA SEBELAH KANAN (ISI SIDEBAR SEBELUMNYA) --- */
+        .main-panel {
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -176,8 +286,8 @@
 
         .avatar-container {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             margin-bottom: 0.5rem;
         }
 
@@ -220,7 +330,7 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .sidebar-header-info {
+        .main-header-info {
             text-align: center;
             border-bottom: 1px solid var(--border-subtle);
             padding-bottom: 0.85rem;
@@ -228,7 +338,7 @@
         }
 
         .name {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 800;
             margin: 0;
             display: inline-flex;
@@ -237,26 +347,25 @@
             justify-content: center;
         }
 
-        .verification-icon { width: 14px; height: 14px; object-fit: contain; display: none; }
-        .role { margin-top: 0.15rem; color: var(--text-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .verification-icon { width: 15px; height: 15px; object-fit: contain; display: none; }
+        .role { margin-top: 0.2rem; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.35rem;
             margin-top: 0.4rem;
             background: rgba(16, 185, 129, 0.1);
             color: #047857;
             border: 1px solid rgba(16, 185, 129, 0.2);
             border-radius: var(--radius-sm);
-            padding: 0.2rem 0.5rem;
-            font-size: 0.68rem;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.7rem;
             font-weight: 700;
         }
 
-        /* Informasi Pribadi di Sidebar */
         .sidebar-section-title {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: var(--text-main);
             margin-bottom: 0.4rem;
@@ -270,10 +379,10 @@
             margin: 0;
             padding: 0;
             display: grid;
-            gap: 0.45rem;
-            font-size: 0.78rem;
+            gap: 0.5rem;
+            font-size: 0.82rem;
             border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 0.75rem;
+            padding-bottom: 0.85rem;
         }
 
         .sidebar-info-item {
@@ -286,13 +395,12 @@
         .sidebar-info-item span:first-child { font-weight: 500; }
         .sidebar-info-item strong, .sidebar-info-item span:last-child { color: var(--text-main); text-align: right; word-break: break-all; font-weight: 600; }
 
-        /* Card Alamat Terpisah di Sidebar */
         .sidebar-address-card {
             background: var(--bg-body);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            padding: 0.65rem 0.75rem;
-            font-size: 0.78rem;
+            padding: 0.75rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
         }
         .sidebar-address-card strong {
@@ -309,123 +417,17 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
-            font-size: 0.75rem;
+            gap: 0.4rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border-subtle);
-            padding-top: 0.75rem;
+            padding-top: 0.85rem;
         }
 
-        .meta li { display: flex; align-items: center; gap: 0.4rem; word-break: break-all; }
+        .meta li { display: flex; align-items: center; gap: 0.5rem; word-break: break-all; }
         .meta i { color: var(--primary); flex-shrink: 0; }
 
-        /* --- MAIN PANEL --- */
-        .main-panel { padding: 1.25rem 1rem; }
-
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border-subtle);
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        h1 { margin: 0; font-size: 1.2rem; font-weight: 800; }
-
-        .grid-info {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .info-box {
-            background: var(--bg-body);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 1rem;
-        }
-
-        .info-box h3 {
-            margin: 0 0 0.75rem;
-            font-size: 0.88rem;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .info-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            gap: 0.65rem;
-            font-size: 0.82rem;
-        }
-
-        .info-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 0.45rem;
-            border-bottom: 1px dashed var(--border-subtle);
-        }
-
-        .info-list li:last-child { border-bottom: none; padding-bottom: 0; }
-        .info-list li span:first-child { color: var(--text-muted); flex-shrink: 0; font-weight: 500; }
-        .info-list li strong, .info-list li span:last-child { color: var(--text-main); text-align: right; word-break: break-all; font-weight: 600; max-width: 62%; }
-
-        /* Logo Usaha di Halaman Utama */
-        .main-business-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: #fff;
-            padding: 0.75rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 1rem;
-        }
-
-        .main-logo-container {
-            position: relative;
-            width: 55px;
-            height: 55px;
-            min-width: 55px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-medium);
-            background: var(--bg-body);
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-        }
-
-        .main-logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #fff;
-        }
-
-        .main-logo-edit-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.5);
-            color: #fff;
-            display: grid;
-            place-items: center;
-            font-size: 0.7rem;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .main-logo-container:hover .main-logo-edit-overlay { opacity: 1; }
-
-        /* --- MODAL / POP-UP CUSTOM (MODERN & BAGUS) --- */
+        /* --- MODAL / POP-UP CUSTOM --- */
         .custom-dialog {
             width: min(400px, calc(100% - 2rem));
             padding: 1.5rem;
@@ -433,7 +435,7 @@
             border-radius: var(--radius-xl);
             background: #ffffff;
             color: var(--text-main);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
         .custom-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
         .custom-dialog h3 { margin-top: 0; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; }
@@ -447,17 +449,11 @@
             font-size: 0.95rem;
             margin-bottom: 1.25rem;
             outline: none;
-            transition: 0.2s;
         }
         .dialog-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+        .dialog-actions { display: flex; justify-content: flex-end; gap: 0.75rem; }
 
-        .dialog-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-        }
-
-        /* --- DIALOG CROP (DIOPTIMALKAN AGAR TIDAK NGELAG) --- */
+        /* --- DIALOG CROP --- */
         .crop-dialog {
             width: min(360px, calc(100% - 2rem));
             padding: 1.25rem;
@@ -476,7 +472,7 @@
             border-radius: 50%;
             background: #e2e8f0;
             cursor: grab;
-            touch-action: none; /* Mencegah lag scroll HP saat digeser */
+            touch-action: none;
         }
         .crop-canvas:active { cursor: grabbing; }
         .crop-zoom input { width: 100%; margin-top: 0.4rem; }
@@ -487,12 +483,11 @@
             .burger-btn { display: block; }
             .profile-shell { grid-template-columns: 1fr; }
             
-            /* Sidebar dari Sebelah Kiri */
             .sidebar {
                 position: fixed;
                 top: 0;
                 left: -100%;
-                width: 300px;
+                width: 310px;
                 height: 100vh;
                 background: var(--bg-card);
                 z-index: 1000;
@@ -525,7 +520,6 @@
             
             <div class="nav-right">
                 <a href="https://sitenexs.com/" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Beranda</a>
-                <!-- Tombol Burger Sidebar Kiri -->
                 <button id="burger-toggle" class="burger-btn" aria-label="Menu Sidebar">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -540,7 +534,7 @@
     <main class="page">
         <div class="container profile-shell">
             
-            <!-- SIDEBAR DI SEBELAH KIRI -->
+            <!-- SIDEBAR KIRI (Berisi Profil, Informasi Pribadi, Alamat, Email, UID, & Tombol Keluar) -->
             <aside id="sidebar-panel" class="panel sidebar">
                 <div class="avatar-wrap-center">
                     <div class="avatar-container">
@@ -555,7 +549,7 @@
                     </div>
                 </div>
                 
-                <div class="sidebar-header-info">
+                <div class="main-header-info">
                     <h2 class="name">
                         <span id="profile-name">Memuat...</span>
                         <img id="profile-verified" src="https://sitenexs.com/assets/logo/verified.png" alt="Verified" class="verification-icon">
@@ -564,7 +558,6 @@
                     <div class="status-badge"><i class="fas fa-box-open" style="font-size:0.65rem;"></i> <span id="profile-package">Paket UMKM Pro</span></div>
                 </div>
 
-                <!-- Informasi Pribadi di dalam Sidebar -->
                 <div>
                     <div class="sidebar-section-title"><i class="fas fa-user-circle text-primary"></i> Informasi Pribadi</div>
                     <ul class="sidebar-info-list">
@@ -574,7 +567,6 @@
                     </ul>
                 </div>
 
-                <!-- Alamat Dibuat Card Terpisah di Sidebar -->
                 <div>
                     <div class="sidebar-section-title"><i class="fas fa-map-marker-alt text-primary"></i> Alamat Pengguna</div>
                     <div class="sidebar-address-card">
@@ -582,13 +574,11 @@
                     </div>
                 </div>
 
-                <!-- Email & UID di Sidebar -->
                 <ul class="meta">
                     <li><i class="fas fa-envelope"></i> <span id="profile-email">-</span></li>
                     <li><i class="fas fa-fingerprint"></i> <span id="profile-uid">-</span></li>
                 </ul>
 
-                <!-- Tombol Keluar di Paling Bawah Sidebar -->
                 <div style="margin-top: auto; padding-top: 0.5rem;">
                     <button id="sign-out" class="btn btn-danger" type="button">
                         <i class="fas fa-sign-out-alt"></i> Keluar Akun
@@ -596,7 +586,7 @@
                 </div>
             </aside>
 
-            <!-- Panel Utama -->
+            <!-- HALAMAN UTAMA KANAN (Berisi Pengaturan Profil, Ubah Nama, Ubah BIO, Logo Usaha, Detail Bisnis, & Keamanan) -->
             <section class="panel main-panel">
                 <div class="header-row">
                     <h1>Pengaturan Profil</h1>
@@ -610,7 +600,7 @@
                     </div>
                 </div>
 
-                <!-- Logo Bisnis Berada di Halaman Utama & Bisa Diedit -->
+                <!-- Logo Usaha di Halaman Utama -->
                 <div class="main-business-header">
                     <div class="main-logo-container" id="edit-business-logo-btn" title="Ganti Logo Usaha">
                         <img id="sb-business-logo" class="main-logo-img" src="" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=Logo&background=f1f5f9&color=64748b&size=64';">
@@ -618,13 +608,12 @@
                     </div>
                     <input id="business-logo-file" type="file" accept="image/png,image/jpeg,image/webp" style="display: none;">
                     <div>
-                        <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Logo Usaha Utama</div>
-                        <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);" id="main-biz-title">Kelola Logo Bisnis Anda</div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Logo Usaha Utama</div>
+                        <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-main);" id="main-biz-title">Kelola Logo Bisnis Anda</div>
                     </div>
                 </div>
 
                 <div class="grid-info">
-                    <!-- Informasi Bisnis Lengkap -->
                     <div class="info-box">
                         <h3><i class="fas fa-briefcase" style="color:var(--primary);"></i> Detail Bisnis UMKM</h3>
                         <ul class="info-list">
@@ -635,7 +624,6 @@
                         </ul>
                     </div>
 
-                    <!-- Status Akun -->
                     <div class="info-box">
                         <h3><i class="fas fa-shield-alt" style="color:var(--primary);"></i> Keamanan & Verifikasi</h3>
                         <ul class="info-list">
@@ -654,7 +642,7 @@
         </div>
     </main>
 
-    <!-- POP-UP MODAL EDIT NAMA (YANG LEBIH BAGUS) -->
+    <!-- POP-UP MODAL EDIT NAMA -->
     <dialog id="name-modal" class="custom-dialog">
         <h3>Ubah Nama Lengkap</h3>
         <p>Masukkan nama lengkap baru yang ingin ditampilkan pada akun Anda.</p>
@@ -665,7 +653,7 @@
         </div>
     </dialog>
 
-    <!-- POP-UP MODAL EDIT BIO (YANG LEBIH BAGUS) -->
+    <!-- POP-UP MODAL EDIT BIO -->
     <dialog id="bio-modal" class="custom-dialog">
         <h3>Ubah BIO / Peran</h3>
         <p>Perbarui status atau jabatan peran profesional Anda (Contoh: Founder Sitenexs).</p>
@@ -676,7 +664,7 @@
         </div>
     </dialog>
 
-    <!-- Dialog Crop Foto Profil (Dioptimalkan Agar Tidak Ngelag) -->
+    <!-- Dialog Crop Foto Profil -->
     <dialog id="avatar-crop-dialog" class="crop-dialog" aria-labelledby="crop-title">
         <h2 id="crop-title" style="margin-top:0; font-size: 1.1rem;">Sesuaikan Foto Profil</h2>
         <p style="color:var(--text-muted); font-size:0.8rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
@@ -733,18 +721,16 @@
         
         const cropDialog = document.getElementById('avatar-crop-dialog');
         const cropCanvas = document.getElementById('crop-canvas');
-        const cropContext = cropCanvas.getContext('2d', { alpha: false }); // Dioptimalkan untuk performa rendering
+        const cropContext = cropCanvas.getContext('2d', { alpha: false });
         const cropZoomInput = document.getElementById('crop-zoom');
         const applyCropButton = document.getElementById('apply-crop');
         const cancelCropButton = document.getElementById('cancel-crop');
         
-        // Modal Elemen
         const nameModal = document.getElementById('name-modal');
         const bioModal = document.getElementById('bio-modal');
         const nameInput = document.getElementById('name-input');
         const bioInput = document.getElementById('bio-input');
 
-        // Burger Sidebar Mobile
         const burgerToggle = document.getElementById('burger-toggle');
         const sidebarPanel = document.getElementById('sidebar-panel');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
@@ -924,7 +910,6 @@
             window.location.assign('https://sitenexs.com/');
         });
 
-        // Event Tombol Ubah Nama (Terpisah)
         document.getElementById('edit-name-btn').addEventListener('click', () => {
             if (!currentUser) return;
             nameInput.value = currentUser.displayName || '';
@@ -955,7 +940,6 @@
             }
         });
 
-        // Event Tombol Ubah BIO (Terpisah)
         document.getElementById('edit-bio-btn').addEventListener('click', () => {
             if (!currentUser) return;
             bioInput.value = document.getElementById('profile-bio-label').textContent;
@@ -1023,7 +1007,6 @@
             }
         });
 
-        // Crop Events yang Dioptimalkan Agar Anti-Ngelag (Menggunakan requestAnimationFrame)
         cropZoomInput.addEventListener('input', () => setCropZoom(cropZoomInput.value));
         
         cropCanvas.addEventListener('pointerdown', (e) => {
