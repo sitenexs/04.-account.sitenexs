@@ -535,7 +535,7 @@
         </div>
     </dialog>
 
-    <!-- Script Utama (Tidak ada yang dirubah) -->
+    <!-- Script Utama -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import {
@@ -737,6 +737,8 @@
                 document.getElementById('account-address').textContent = data.alamat || '-';
                 document.getElementById('business-name').textContent = business.nama || '-';
                 document.getElementById('business-field').textContent = business.bidang || '-';
+                document.getElementById('business-phone').textContent = business.telepon || '-';
+                document.getElementById('business-email').textContent = business.email || '-';
                 
                 if (business.logoUrl) {
                     businessLogoImg.src = business.logoUrl;
