@@ -402,46 +402,40 @@
             message.className = type;
         }
 
-                form.addEventListener('submit', async (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
             message.textContent = '';
             submitButton.disabled = true;
             btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            
             try {
                 const persistence = document.getElementById('rememberMe').checked
                     ? browserLocalPersistence
                     : browserSessionPersistence;
                 
                 await setPersistence(auth, persistence);
-                await signInWithEmailAndPassword(
+                
+                // Proses login Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(
                     auth,
                     document.getElementById('email').value.trim(),
                     document.getElementById('password').value
                 );
                 
-                // Menyimpan data "isLoggedIn=true" ke penyimpanan perangkat browser 
-                // agar bisa dibaca seketika oleh sitenexs.com
-                document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
+                const user = userCredential.user;
 
-                btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
-                window.location.assign('/profile/');
-
-                              await signInWithEmailAndPassword(
-                    auth,
-                    document.getElementById('email').value.trim(),
-                    document.getElementById('password').value
-                );
-                
-                // TAMBAHKAN: Simpan ke localStorage agar bisa dibaca langsung oleh Komunitas.html
+                // Simpan data ke localStorage dan cookie lintas subdomain (.sitenexs.com)
                 localStorage.setItem('sitenexs_logged_in', 'true');
-                localStorage.setItem('sitenexs_uid', auth.currentUser.uid);
+                localStorage.setItem('sitenexs_uid', user.uid);
 
-                // Menyimpan data cookie juga sebagai cadangan lintas subdomain
                 document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
+                document.cookie = `sitenexs_uid=${user.uid}; domain=.sitenexs.com; path=/; max-age=2592000`;
 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
-                window.location.assign('/profile/'); // atau arahkan ke /community/ sesuai kebutuhan
+                
+                // Arahkan ke halaman profil
+                window.location.assign('/profile/');
 
             } catch (error) {
                 const messages = {
@@ -456,7 +450,6 @@
                 btnText.textContent = 'Masuk';
             }
         });
-
 
         document.getElementById('reset-password').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
