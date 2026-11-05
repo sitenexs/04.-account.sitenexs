@@ -402,7 +402,7 @@
             message.className = type;
         }
 
-        form.addEventListener('submit', async (event) => {
+                form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
             message.textContent = '';
@@ -416,7 +416,6 @@
                 
                 await setPersistence(auth, persistence);
                 
-                // Proses login Firebase Auth
                 const userCredential = await signInWithEmailAndPassword(
                     auth,
                     document.getElementById('email').value.trim(),
@@ -425,17 +424,14 @@
                 
                 const user = userCredential.user;
 
-                // Simpan data ke localStorage dan cookie lintas subdomain (.sitenexs.com)
+                // Simpan juga ke localStorage cadangan
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
 
-                document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
-                document.cookie = `sitenexs_uid=${user.uid}; domain=.sitenexs.com; path=/; max-age=2592000`;
-
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
                 
-                // Arahkan ke halaman profil
-                window.location.assign('/profile/');
+                // LEMPAR KE HALAMAN KOMUNITAS DENGAN MEMBAWA PARAMETER UID
+                window.location.assign(`https://sitenexs.com/community/?uid=${user.uid}`);
 
             } catch (error) {
                 const messages = {
@@ -450,6 +446,7 @@
                 btnText.textContent = 'Masuk';
             }
         });
+
 
         document.getElementById('reset-password').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
