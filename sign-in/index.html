@@ -426,6 +426,23 @@
 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
                 window.location.assign('/profile/');
+
+                              await signInWithEmailAndPassword(
+                    auth,
+                    document.getElementById('email').value.trim(),
+                    document.getElementById('password').value
+                );
+                
+                // TAMBAHKAN: Simpan ke localStorage agar bisa dibaca langsung oleh Komunitas.html
+                localStorage.setItem('sitenexs_logged_in', 'true');
+                localStorage.setItem('sitenexs_uid', auth.currentUser.uid);
+
+                // Menyimpan data cookie juga sebagai cadangan lintas subdomain
+                document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
+
+                btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
+                window.location.assign('/profile/'); // atau arahkan ke /community/ sesuai kebutuhan
+
             } catch (error) {
                 const messages = {
                     'auth/invalid-credential': 'Email atau password salah.',
