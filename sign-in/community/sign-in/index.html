@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masuk - Sitenexs</title>
+    <meta name="description" content="Halaman login untuk akun Sitenexs." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-body: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-light: #cbd5e1;
+            --border-focus: #93c5fd;
+            
+            /* Shadow yang lebih rapat dan natural */
+            --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
+            
+            --radius-sm: 0.4rem;  
+            --radius-md: 0.75rem; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        button, input { font: inherit; outline: none; border: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Topbar - Lebih Ramping */
+        .topbar {
+            width: min(900px, calc(100% - 2rem));
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .brand-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-light);
+        }
+
+        /* Gradient pada Sitenexs */
+        .brand-text {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.01em;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .back-link:hover { color: var(--primary); }
+
+        /* Card Wrapper - Diperkecil */
+        .auth-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 360px; 
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-card);
+            border-radius: var(--radius-md);
+            padding: 2rem 1.75rem; 
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .header-text { text-align: center; margin-bottom: 1.5rem; }
+
+        h1 {
+            font-size: 1.35rem; 
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #0f172a;
+        }
+
+        .subtext {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Form Inputs - Lebih presisi dan ringkas */
+        .form-group { margin-bottom: 1rem; }
+
+        label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-size: 0.75rem; 
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .input-wrap { position: relative; }
+
+        .input-wrap i.icon-left {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.85rem; 
+            transition: color 0.2s ease;
+        }
+
+        input {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.8rem 0.6rem 2.2rem; 
+            font-size: 0.85rem; 
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder { color: #94a3b8; }
+
+        input:hover { border-color: #94a3b8; }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--border-focus); 
+        }
+
+        input:focus + i.icon-left, 
+        .input-wrap:focus-within i.icon-left {
+            color: var(--primary);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.3rem;
+        }
+
+        .toggle-password:hover { color: var(--text-main); }
+
+        /* Row untuk Ingat Saya & Lupa Password */
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0 1.25rem;
+            font-size: 0.75rem;
+        }
+
+        .remember {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .remember input {
+            width: 0.85rem;
+            height: 0.85rem;
+            accent-color: var(--primary);
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .link {
+            color: var(--primary);
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.75rem;
+        }
+        
+        .link:hover { text-decoration: underline; }
+
+        /* Button - Lebih slim */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            padding: 0.65rem; 
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem; 
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Message */
+        #auth-message {
+            margin-top: 1rem;
+            padding: 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            display: none;
+            text-align: center;
+        }
+
+        #auth-message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        
+        #auth-message.success {
+            display: block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Alt Link */
+        .alt {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .alt a { color: var(--primary); font-weight: 600; }
+        .alt a:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="https://sitenexs.com/" class="brand" aria-label="Ke halaman utama">
+            <img src="https://sitenexs.com/assets/logo/logo.png" alt="Logo" class="brand-mark" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff&size=28&rounded=true';">
+            <span class="brand-text">Sitenexs</span>
+        </a>
+        <a href="https://sitenexs.com/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </header>
+
+    <main class="auth-wrap">
+        <section class="card">
+            <div class="header-text">
+                <h1 class="brand-text">Selamat Datang</h1>
+                <p class="subtext">Masuk untuk mengelola akun Anda.</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Alamat Email</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input id="email" type="email" autocomplete="email" placeholder="email@contoh.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock icon-left"></i>
+                        <input id="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="remember">
+                        <input type="checkbox" id="rememberMe" />
+                        Ingat saya
+                    </label>
+                    <button id="reset-password" type="button" class="link">Lupa password?</button>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span id="btnText">Masuk</span>
+                </button>
+            </form>
+
+            <div id="auth-message" role="status" aria-live="polite"></div>
+
+            <div class="alt">
+                Belum punya akun? <a href="https://account.sitenexs.com/register/">Daftar di sini</a>
+            </div>
+        </section>
+    </main>
+    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
+        import {
+            browserLocalPersistence,
+            browserSessionPersistence,
+            getAuth,
+            onAuthStateChanged,
+            setPersistence,
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail
+        } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
+            authDomain: 'sitenexs-62919.firebaseapp.com',
+            projectId: 'sitenexs-62919',
+            storageBucket: 'sitenexs-62919.firebasestorage.app',
+            messagingSenderId: '1060348110644',
+            appId: '1:1060348110644:web:e45af14d5f26a9cf8e6761',
+            measurementId: 'G-C7YL0Q7YRQ'
+        };
+
+        const auth = getAuth(initializeApp(firebaseConfig));
+        const form = document.getElementById('login-form');
+        const message = document.getElementById('auth-message');
+        const submitButton = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const mainSiteOrigin = 'https://sitenexs.com';
+        
+        // Fitur Toggle Password (Mata)
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // Sinkronisasi Sesi
+        onAuthStateChanged(auth, (user) => {
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'sitenexs-auth-state',
+                    signedIn: Boolean(user)
+                }, mainSiteOrigin);
+            }
+        });
+
+        function showMessage(msg, type = 'error') {
+            message.textContent = msg;
+            message.className = type;
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            message.className = '';
+            message.textContent = '';
+            submitButton.disabled = true;
+            btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            
+            try {
+                const persistence = document.getElementById('rememberMe').checked
+                    ? browserLocalPersistence
+                    : browserSessionPersistence;
+                
+                await setPersistence(auth, persistence);
+                
+                // Proses login Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(
+                    auth,
+                    document.getElementById('email').value.trim(),
+                    document.getElementById('password').value
+                );
+                
+                const user = userCredential.user;
+
+                // Simpan data ke localStorage dan cookie lintas subdomain (.sitenexs.com)
+                localStorage.setItem('sitenexs_logged_in', 'true');
+                localStorage.setItem('sitenexs_uid', user.uid);
+
+                document.cookie = "isLoggedIn=true; domain=.sitenexs.com; path=/; max-age=2592000"; 
+                document.cookie = `sitenexs_uid=${user.uid}; domain=.sitenexs.com; path=/; max-age=2592000`;
+
+                btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
+                
+                // Arahkan ke halaman profil
+                window.location.assign('/profile/');
+
+            } catch (error) {
+                const messages = {
+                    'auth/invalid-credential': 'Email atau password salah.',
+                    'auth/invalid-email': 'Masukkan alamat email yang valid.',
+                    'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi nanti.',
+                    'auth/network-request-failed': 'Koneksi bermasalah. Periksa internet Anda.'
+                };
+                showMessage(messages[error.code] || 'Terjadi kesalahan saat masuk.', 'error');
+                
+                submitButton.disabled = false;
+                btnText.textContent = 'Masuk';
+            }
+        });
+
+        document.getElementById('reset-password').addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                showMessage('Masukkan email Anda terlebih dahulu untuk reset password.', 'error');
+                document.getElementById('email').focus();
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showMessage('Tautan reset password telah dikirim ke email Anda.', 'success');
+            } catch (error) {
+                const messages = {
+                    'auth/invalid-email': 'Masukkan alamat email yang valid.',
+                    'auth/user-not-found': 'Email tidak terdaftar.',
+                };
+                showMessage(messages[error.code] || 'Gagal mengirim tautan reset.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
