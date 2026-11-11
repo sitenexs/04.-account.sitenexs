@@ -807,6 +807,7 @@
         let currentUserData = null;
         let allRegisteredUsers = [];
         let userVerifCache = {};
+        let isInitialLoad = true;
 
         const avatarImg = document.getElementById('profileAvatarImg');
         const sidebarAvatarPreview = document.getElementById('sidebarAvatarPreview');
@@ -881,7 +882,6 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
-        // --- SISTEM NOTIFIKASI TOAST MODERN ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1341,7 +1341,6 @@
             }
         }
 
-        // --- SUBMIT POSTINGAN BARU DARI PROFIL (DIPERBAIKI) ---
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUid) {
@@ -1379,8 +1378,6 @@
                     
                     if (uploadRes.ok) {
                         imageUrl = `${supabaseUrl}/storage/v1/object/public/${forumBucket}/${fileName}`;
-                    } else {
-                        console.error("Gagal upload gambar, tapi post akan dilanjutkan.", await uploadRes.text());
                     }
                 }
 
@@ -1398,6 +1395,9 @@
                     imageUrl: imageUrl,
                     likes: [],
                     comments: [],
+                    isPrivate: false,
+                    commentsDisabled: false,
+                    hideStats: false,
                     createdAt: serverTimestamp()
                 });
 
@@ -1606,6 +1606,7 @@
             }, 100);
         }
 
+        // --- SMART DOM PATCHING UNTUK PROFIL (REAL-TIME TANPA KEDIP) ---
         function subscribeUserPosts(uid) {
             const qPosts = query(collection(db, "forum_posts"), where("authorUid", "==", uid));
             
@@ -1625,6 +1626,7 @@
 
                 if (docsList.length === 0) {
                     myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
+                    isInitialLoad = false;
                     return;
                 }
 
@@ -1634,16 +1636,124 @@
                     return timeB - timeA;
                 });
 
-                let html = "";
-                docsList.forEach(item => {
-                    html += renderPostCardHtml(item.id, item.data, uid);
+                if (isInitialLoad) {
+                    let html = "";
+                    docsList.forEach(item => {
+                        html += renderPostCardHtml(item.id, item.data, uid);
+                    });
+                    myPostsContainer.innerHTML = html;
+                    isInitialLoad = false;
+                    runAsyncVerifBadges();
+                    return;
+                }
+
+                const existingCards = {};
+                document.querySelectorAll('.my-posts-list .post-card').forEach(card => {
+                    existingCards[card.getAttribute('data-post-id')] = card;
                 });
 
-                myPostsContainer.innerHTML = html;
+                const currentSnapshotIds = new Set();
+                const tempDiv = document.createElement('div');
+
+                docsList.forEach(item => {
+                    const postId = item.id;
+                    const data = item.data;
+                    currentSnapshotIds.add(postId);
+                    const existingCard = existingCards[postId];
+
+                    const likes = data.likes || [];
+                    const isLiked = likes.includes(uid);
+                    const likeCount = likes.length;
+                    const hideStats = data.hideStats === true;
+                    const likeDisplay = hideStats ? 'Suka' : `${likeCount > 0 ? likeCount : ''} Suka`;
+                    const comments = data.comments || [];
+                    const commentDisplay = hideStats ? 'Komentar' : `${comments.length > 0 ? comments.length : ''} Komentar`;
+
+                    if (existingCard) {
+                        const likeBtn = existingCard.querySelector('.action-btn');
+                        if (likeBtn && document.activeElement !== likeBtn) {
+                            if (isLiked) {
+                                likeBtn.classList.add('liked');
+                                likeBtn.querySelector('i').className = 'fas fa-thumbs-up';
+                            } else {
+                                likeBtn.classList.remove('liked');
+                                likeBtn.querySelector('i').className = 'far fa-thumbs-up';
+                            }
+                            likeBtn.querySelector('span').innerText = likeDisplay;
+                        }
+
+                        const commentBtn = existingCard.querySelectorAll('.action-btn')[1];
+                        if (commentBtn) {
+                            commentBtn.querySelector('span').innerText = commentDisplay;
+                        }
+
+                        const commentsListEl = existingCard.querySelector('.comment-list');
+                        if (commentsListEl && document.activeElement.id !== `comment-input-${postId}`) {
+                            let commentsHtml = '';
+                            comments.forEach(c => {
+                                const cDate = c.createdAt ? timeAgo(new Date(c.createdAt)) : 'Baru saja';
+                                const cAuthorUid = c.authorUid || 'unknown';
+                                const cAvatar = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(cAuthorUid)}/profile-photo`;
+                                const cFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.penulis || 'Mitra')}&background=random&color=fff`;
+                                
+                                let cVerified = `<span class="async-verif-badge" data-uid="${cAuthorUid}"></span>`;
+                                if (c.isVerified === true || String(c.isVerified) === 'true') {
+                                    cVerified = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
+                                }
+
+                                const formattedText = formatCommentText(c.isi || '');
+                                const isMyComment = (cAuthorUid === uid);
+                                const deleteBtnHtml = isMyComment ? `<button type="button" class="delete-comment-btn" onclick="deleteComment('${postId}', '${c.createdAt}', '${cAuthorUid}')">Hapus</button>` : '';
+
+                                commentsHtml += `
+                                    <div class="comment-item">
+                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" style="flex-shrink: 0;">
+                                            <img src="${cAvatar}" alt="${c.penulis || 'Mitra'}" class="comment-avatar" onerror="this.onerror=null; this.src='${cFallback}';">
+                                        </a>
+                                        <div class="comment-content-wrapper">
+                                            <div class="comment-bubble">
+                                                <div class="comment-header-row">
+                                                    <div class="comment-author-left">
+                                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" class="comment-author-link">
+                                                            <span class="comment-author">${c.penulis || 'Mitra'}</span>
+                                                        </a>
+                                                        ${cVerified}
+                                                    </div>
+                                                </div>
+                                                <div class="comment-text">${formattedText}</div>
+                                            </div>
+                                            <div class="comment-footer-row">
+                                                <div class="comment-time">${cDate}</div>
+                                                <button type="button" class="reply-trigger-btn" onclick="replyComment('${postId}', '${(c.penulis || 'Mitra').replace(/'/g, "\\'")}')">Balas</button>
+                                                ${deleteBtnHtml}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            if (comments.length === 0) {
+                                commentsHtml = '<div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Belum ada komentar. Jadilah yang pertama membalas!</div>';
+                            }
+                            commentsListEl.innerHTML = commentsHtml;
+                        }
+                    } else {
+                        tempDiv.innerHTML = renderPostCardHtml(postId, data, uid);
+                        const newCard = tempDiv.firstElementChild;
+                        if (newCard) {
+                            myPostsContainer.insertBefore(newCard, myPostsContainer.firstChild);
+                        }
+                    }
+                });
+
+                Object.keys(existingCards).forEach(postId => {
+                    if (!currentSnapshotIds.has(postId)) {
+                        existingCards[postId].remove();
+                    }
+                });
+
                 runAsyncVerifBadges();
             }, (err) => {
                 console.error("Gagal memuat postingan:", err);
-                myPostsContainer.innerHTML = '<div class="loader-container"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
             });
         }
 
@@ -1656,9 +1766,9 @@
             const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
             const btn = postCard ? postCard.querySelector('.post-actions .action-btn') : null;
             if (btn) {
-                btn.classList.toggle('liked');
-                const isNowLiked = btn.classList.contains('liked');
-                playLikeSound(isNowLiked);
+                const isCurrentlyLiked = btn.classList.contains('liked');
+                btn.classList.toggle('liked', !isCurrentlyLiked);
+                playLikeSound(!isCurrentlyLiked);
             }
 
             const postRef = doc(db, "forum_posts", postId);
@@ -1843,7 +1953,7 @@
             document.querySelectorAll('.comment-item').forEach(item => item.classList.remove('focused-comment'));
         };
 
-        window.activateCommentFocusMode = function(commentItem) {
+        window.activateCommentFocusCommand = function(commentItem) {
             const section = commentItem.closest('.comments-section');
             if (!section) return;
 
