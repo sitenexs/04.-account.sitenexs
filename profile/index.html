@@ -103,45 +103,6 @@
             border: 1px solid rgba(254, 240, 138, 0.5);
         }
 
-        /* BADGE PAKET DENGAN ANIMASI */
-        .profile-package-tag {
-            font-size: 0.78rem;
-            font-weight: 800;
-            padding: 0.35rem 0.95rem;
-            border-radius: var(--radius-full);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            transition: var(--transition);
-        }
-
-        .profile-package-tag.basic {
-            color: #475569;
-            background: #e2e8f0;
-            border: 1px solid #cbd5e1;
-        }
-
-        .profile-package-tag.pro {
-            color: #ffffff;
-            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
-        }
-
-        .profile-package-tag.vip {
-            color: #ffffff;
-            background: linear-gradient(135deg, #7c3aed 0%, #b45309 100%);
-            border: 1px solid #fef08a;
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
-            animation: goldPulse 2.5s infinite alternate;
-        }
-
-        @keyframes goldPulse {
-            0% { box-shadow: 0 0 6px rgba(251, 191, 36, 0.3); }
-            100% { box-shadow: 0 0 18px rgba(251, 191, 36, 0.85); }
-        }
-
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; font-size: 15px; }
 
@@ -193,7 +154,7 @@
         .nav-container { display: flex; align-items: center; justify-content: space-between; height: 65px; width: 100%; max-width: 680px; margin: 0 auto; padding: 0 1rem; }
         .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
         .logo img { height: 32px; width: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
-        .logo-text { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
         .nav-actions { display: flex; gap: 0.4rem; align-items: center; }
 
         /* PROFILE LAYOUT */
@@ -603,7 +564,7 @@
         <div class="nav-container">
             <a href="https://sitenexs.com/" class="logo">
                 <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" onerror="this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff'">
-                <span class="logo-text">SiteNexs</span>
+                <span class="logo-text" id="navLogoText">SiteNexs</span>
             </a>
             <div class="nav-actions">
                 <a href="https://sitenexs.com/" class="btn btn-secondary btn-icon-only" title="Beranda"><i class="fas fa-home"></i></a>
@@ -638,7 +599,6 @@
             <p id="profileHeaderEmail" class="profile-email">Memuat email...</p>
             
             <div class="profile-badges-wrapper">
-                <span id="profileHeaderPackage" class="profile-package-tag basic" style="display: none;"><i class="fas fa-user"></i> <span id="packageText">Paket Basic</span></span>
                 <span id="profileHeaderBusiness" class="profile-business-tag"><i class="fas fa-store"></i> UMKM / Bisnis Mitra</span>
             </div>
 
@@ -728,7 +688,6 @@
         const headerName = document.getElementById('profileHeaderName');
         const headerEmail = document.getElementById('profileHeaderEmail');
         const headerBusiness = document.getElementById('profileHeaderBusiness');
-        const headerPackage = document.getElementById('profileHeaderPackage');
         const verifiedIcon = document.getElementById('profileVerifiedIcon');
         const statPostCount = document.getElementById('statPostCount');
         const statLikeCount = document.getElementById('statLikeCount');
@@ -900,7 +859,7 @@
             return formatted;
         }
 
-        // TEMA PAKET USER
+        // TEMA PAKET USER & UBAH TEKS LOGO NAVBAR
         function applyUserPackageTheme(paketLangganan) {
             const pkg = (paketLangganan || 'basic').toLowerCase();
             let themeCategory = 'basic';
@@ -913,14 +872,10 @@
 
             document.body.setAttribute('data-package', themeCategory);
 
-            let badgeIcon = 'fa-user';
-            if (themeCategory === 'pro') badgeIcon = 'fa-star';
-            if (themeCategory === 'vip') badgeIcon = 'fa-crown';
-
-            if (headerPackage) {
-                headerPackage.className = `profile-package-tag ${themeCategory}`;
-                headerPackage.style.display = 'inline-flex';
-                headerPackage.innerHTML = `<i class="fas ${badgeIcon}"></i> <span id="packageText">PAKET ${paketLangganan.toUpperCase()}</span>`;
+            // Ganti teks logo navbar sesuai nama paket user
+            const logoTextEl = document.getElementById('navLogoText');
+            if (logoTextEl) {
+                logoTextEl.innerText = (paketLangganan || 'BASIC').toUpperCase();
             }
         }
 
