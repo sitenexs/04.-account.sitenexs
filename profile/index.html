@@ -47,7 +47,6 @@
            SISTEM TEMA BERBASIS PAKET LANGGANAN (PRO & VIP / ULTIMATE)
            ========================================================= */
 
-        /* 1. TEMA PRO (Electric Cyan & Amber Gold) */
         body[data-package="pro"] {
             --primary: #0284c7;
             --primary-dark: #0369a1;
@@ -66,7 +65,6 @@
             box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
         }
 
-        /* 2. TEMA VIP / ULTIMATE / PREMIUM (Royal Purple & Gold Aura) */
         body[data-package="vip"],
         body[data-package="ultimate"],
         body[data-package="premium"] {
@@ -148,7 +146,6 @@
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; font-size: 15px; }
 
         body {
@@ -166,7 +163,7 @@
         ul { list-style: none; }
         button, input, textarea, select { font-family: inherit; outline: none; border: none; }
 
-        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 1.25rem; }
+        .container { width: 100%; max-width: 680px; margin: 0 auto; padding: 0 1rem; }
 
         .text-primary { color: var(--primary); }
         .text-muted { color: var(--text-muted); }
@@ -184,7 +181,12 @@
         .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
         .btn-danger { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
         .btn-danger:hover { background: #ef4444; color: #fff; }
-        .btn-sm { padding: 0.45rem 1rem; font-size: 0.8rem; }
+        
+        /* ICON ONLY BUTTONS FOR NAVBAR */
+        .btn-icon-only {
+            width: 38px; height: 38px; padding: 0; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem;
+        }
 
         /* NAVBAR */
         #navbar {
@@ -192,19 +194,19 @@
             backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
             transition: border-color 0.3s ease;
         }
-        .nav-container { display: flex; align-items: center; justify-content: space-between; height: 70px; width: 100%; max-width: 1000px; }
-        .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.15rem; color: var(--text-main); }
-        .logo img { height: 35px; width: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; align-items: center; justify-content: space-between; height: 65px; width: 100%; max-width: 680px; margin: 0 auto; padding: 0 1rem; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
+        .logo img { height: 32px; width: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
         .logo-text { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
+        .nav-actions { display: flex; gap: 0.4rem; align-items: center; }
 
         /* PROFILE LAYOUT */
-        .profile-wrapper { padding: 2rem 0 4rem 0; width: 100%; }
+        .profile-wrapper { padding: 1.5rem 0 4rem 0; width: 100%; }
         
         .profile-header-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
-            padding: 2rem 1.5rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center;
-            text-align: center; margin-bottom: 1.5rem; position: relative; overflow: hidden;
+            padding: 1.75rem 1.25rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center;
+            text-align: center; margin-bottom: 1.25rem; position: relative; overflow: hidden;
             transition: var(--transition);
         }
 
@@ -215,99 +217,159 @@
         }
 
         .profile-avatar-container {
-            position: relative; width: 96px; height: 96px; margin-bottom: 0.85rem;
+            position: relative; width: 92px; height: 92px; margin-bottom: 0.75rem;
         }
         .profile-avatar {
-            width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-light);
+            width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-light);
             box-shadow: var(--shadow-md); background: #cbd5e1; display: grid; place-items: center; overflow: hidden;
         }
         .upload-avatar-btn {
             position: absolute; bottom: 0; right: 0; background: var(--primary); color: #fff;
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
+            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
         }
         .upload-avatar-btn:hover { background: var(--primary-dark); transform: scale(1.08); }
 
         .profile-name-row { display: flex; align-items: center; justify-content: center; gap: 0.35rem; margin-bottom: 0.15rem; }
-        .profile-name { font-size: 1.25rem; font-weight: 800; color: var(--text-main); }
-        .verified-badge { width: 17px; height: 17px; object-fit: contain; }
-        .profile-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; word-break: break-all; }
+        .profile-name { font-size: 1.2rem; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+        .verified-badge { width: 16px; height: 16px; object-fit: contain; }
+        .profile-email { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; word-break: break-all; }
         
         .profile-badges-wrapper {
-            display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; width: 100%;
+            display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-bottom: 1rem; width: 100%;
         }
-        .profile-business-tag { font-size: 0.78rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.3rem 0.85rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid rgba(37,99,235,0.15); }
+        .profile-business-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.25rem 0.8rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid rgba(37,99,235,0.15); }
 
         .profile-stats {
-            display: flex; gap: 2.5rem; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
-            padding: 0.85rem 1rem; width: 100%; justify-content: center; margin-bottom: 0.25rem;
+            display: flex; gap: 2rem; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+            padding: 0.75rem 1rem; width: 100%; justify-content: center; margin-bottom: 0.25rem;
         }
         .stat-item { text-align: center; }
         .stat-value { font-weight: 800; font-size: 1.05rem; color: var(--text-main); }
-        .stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
+        .stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
 
-        /* FORM SECTION */
+        /* POSTINGAN SAYA (GAYA SOCIAL MEDIA FEED) */
         .profile-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
-            padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom: 1.25rem;
+            padding: 1.25rem; box-shadow: var(--shadow-sm); margin-bottom: 1.25rem;
             transition: var(--transition);
         }
-        .card-title { font-size: 1rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); }
+        .card-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; color: var(--text-main); }
         
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        @media(max-width: 768px) { .form-grid { grid-template-columns: 1fr; gap: 0; } }
+        .my-posts-list { display: flex; flex-direction: column; gap: 0.85rem; }
+        
+        .my-post-card {
+            background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+            padding: 0.85rem; box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition);
+            display: flex; flex-direction: column; gap: 0.5rem; position: relative;
+        }
+        .my-post-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        
+        .post-card-header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+        .post-card-date { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+        
+        .post-badge {
+            font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: var(--radius-full);
+            background: var(--bg-body); color: var(--text-muted); border: 1px solid var(--border-subtle);
+        }
+        .badge-pengumuman { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
+        .badge-tips { background: #fffbeb; color: #d97706; border-color: #fcd34d; }
+        .badge-bug { background: #faf5ff; color: #7e22ce; border-color: #d8b4fe; }
+
+        .my-post-title { font-weight: 800; font-size: 0.9rem; color: var(--text-main); line-height: 1.35; word-break: break-word; }
+        .my-post-snippet { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
+        
+        .my-post-thumb { width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-top: 0.2rem; }
+        
+        .my-post-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 0.4rem; margin-top: 0.2rem; font-size: 0.72rem; color: var(--text-muted); }
+        .post-footer-stats { display: flex; gap: 0.8rem; font-weight: 600; }
+        
+        .delete-post-btn { background: none; border: none; color: #ef4444; font-weight: 700; font-size: 0.72rem; cursor: pointer; padding: 0.2rem 0.4rem; border-radius: var(--radius-sm); transition: var(--transition); }
+        .delete-post-btn:hover { background: #fee2e2; }
+
+        /* SIDEBAR BURGER (OFF-CANVAS DRAWER) */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px);
+            z-index: 9999; opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+        
+        .sidebar-drawer {
+            position: fixed; top: 0; right: -360px; width: min(340px, 85vw); height: 100%;
+            background: #fff; z-index: 10000; box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; overflow-y: auto; padding: 1.25rem;
+        }
+        .sidebar-drawer.active { right: 0; }
+        
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 0.85rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);
+        }
+        .sidebar-title { font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem; }
+        .close-sidebar-btn { background: var(--bg-body); border: none; width: 30px; height: 30px; border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: var(--transition); }
+        .close-sidebar-btn:hover { background: #fee2e2; color: #ef4444; }
 
         .form-group { margin-bottom: 1rem; }
-        .form-label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem; }
+        .form-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem; }
         .form-control {
-            width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md); font-size: 0.88rem; background: var(--bg-body); color: var(--text-main);
+            width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md); font-size: 0.85rem; background: var(--bg-body); color: var(--text-main);
             transition: var(--transition);
         }
         .form-control:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
-        .form-control:disabled { opacity: 0.7; cursor: not-allowed; background: var(--bg-alt); }
+        
+        .logo-upload-container { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem; }
+        .business-logo-preview { width: 44px; height: 44px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; box-shadow: var(--shadow-sm); }
 
-        /* LOGO UPLOAD AREA */
-        .logo-upload-container { display: flex; align-items: center; gap: 1rem; margin-top: 0.35rem; }
-        .business-logo-preview { width: 50px; height: 50px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; box-shadow: var(--shadow-sm); }
-
-        /* CROP DIALOG */
+        /* DIALOG CROP FOTO PROFIL */
         .crop-dialog {
             width: min(380px, calc(100% - 2rem));
-            padding: 1.5rem;
+            padding: 1.25rem;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
             background: #fff;
             box-shadow: var(--shadow-lg);
+            margin: auto;
         }
         .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
 
         .crop-canvas {
-            display: block;
-            width: 220px;
-            height: 220px;
-            margin: 1rem auto;
-            border-radius: 50%;
-            background: #e2e8f0;
-            cursor: grab;
-            touch-action: none;
+            display: block; width: 220px; height: 220px; margin: 1rem auto;
+            border-radius: 50%; background: #e2e8f0; cursor: grab; touch-action: none;
         }
         .crop-canvas:active { cursor: grabbing; }
         .crop-zoom input { width: 100%; margin-top: 0.5rem; accent-color: var(--primary); }
-        .crop-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; }
+        .crop-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
 
-        /* POSTINGAN SAYA */
-        .my-posts-list { display: flex; flex-direction: column; gap: 0.65rem; }
-        .my-post-item {
-            background: var(--bg-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-            padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;
-            transition: var(--transition);
+        /* DIALOG POP-UP FULL POST DETAIL */
+        .post-detail-dialog {
+            width: min(550px, calc(100% - 1.5rem));
+            padding: 1.25rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+            margin: auto;
+            max-height: 85vh;
+            overflow-y: auto;
         }
-        .my-post-item:hover { border-color: var(--border-accent); }
-        .my-post-info { min-width: 0; flex: 1; }
-        .my-post-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
-        .my-post-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
-        .my-post-actions { display: flex; gap: 0.4rem; align-items: center; }
+        .post-detail-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+        
+        .detail-post-author-row { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.85rem; }
+        .detail-post-author-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); }
+        .detail-author-name { font-weight: 800; font-size: 0.88rem; color: var(--text-main); display: flex; align-items: center; gap: 0.25rem; }
+        .detail-post-time { font-size: 0.68rem; color: var(--text-muted); }
+
+        .detail-post-title { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem; line-height: 1.35; word-break: break-word; }
+        .detail-post-content { font-size: 0.82rem; color: var(--text-main); line-height: 1.5; white-space: pre-wrap; word-break: break-word; margin-bottom: 0.85rem; }
+        .detail-post-img { width: 100%; max-height: 320px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 0.85rem; }
+
+        .detail-comments-wrapper { border-top: 1px solid var(--border-subtle); padding-top: 0.85rem; margin-top: 0.85rem; }
+        .detail-comments-title { font-size: 0.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.65rem; }
+        .detail-comment-item { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; font-size: 0.75rem; background: var(--bg-alt); padding: 0.5rem 0.65rem; border-radius: var(--radius-md); }
+        .detail-comment-author { font-weight: 800; color: var(--text-main); margin-bottom: 0.1rem; }
 
         .loader-container { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
 
@@ -321,16 +383,62 @@
 </head>
 <body>
 
+    <!-- SIDEBAR BURGER (DRAWER UNTUK EDIT PROFIL) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <aside class="sidebar-drawer" id="sidebarDrawer">
+        <div class="sidebar-header">
+            <div class="sidebar-title"><i class="fas fa-user-gear text-primary"></i> Pengaturan Profil</div>
+            <button type="button" class="close-sidebar-btn" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <form id="updateProfileForm" onsubmit="saveProfileChanges(event)">
+            <div class="form-group">
+                <label class="form-label">Nama Depan</label>
+                <input type="text" id="inputNamaDepan" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nama Belakang</label>
+                <input type="text" id="inputNamaBelakang" class="form-control">
+            </div>
+
+            <div class="form-group" style="margin-top: 1.25rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+                <label class="form-label">Logo Bisnis / Toko</label>
+                <div class="logo-upload-container">
+                    <img id="businessLogoPreview" src="https://ui-avatars.com/api/?name=Logo&background=e2e8f0&color=475569" alt="Logo Bisnis" class="business-logo-preview">
+                    <label for="logoFileInput" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.4rem 0.75rem; cursor: pointer;">
+                        <i class="fas fa-upload"></i> Pilih Logo
+                    </label>
+                    <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="uploadBusinessLogo(event)">
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary" id="saveBtn" style="width: 100%;">
+                    <i class="fas fa-save"></i> Simpan Perubahan
+                </button>
+            </div>
+        </form>
+
+        <div style="margin-top: auto; padding-top: 1.5rem;">
+            <button onclick="handleLogout()" class="btn btn-danger" style="width: 100%; padding: 0.75rem; font-size: 0.85rem; justify-content: center; border-radius: var(--radius-lg); font-weight: 800;">
+                <i class="fas fa-sign-out-alt"></i> Keluar Akun
+            </button>
+        </div>
+    </aside>
+
     <!-- NAVBAR -->
     <header id="navbar">
-        <div class="container nav-container">
+        <div class="nav-container">
             <a href="https://sitenexs.com/" class="logo">
                 <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" onerror="this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff'">
                 <span class="logo-text">SiteNexs</span>
             </a>
             <div class="nav-actions">
-                <a href="https://sitenexs.com/" class="btn btn-secondary btn-sm" title="Menu Utama"><i class="fas fa-home"></i> Beranda</a>
-                <a href="https://sitenexs.com/community/" class="btn btn-secondary btn-sm" title="Komunitas"><i class="fas fa-comments"></i> Komunitas</a>
+                <!-- HANYA IKON UNTUK BERANDA DAN KOMUNITAS -->
+                <a href="https://sitenexs.com/" class="btn btn-secondary btn-icon-only" title="Beranda"><i class="fas fa-home"></i></a>
+                <a href="https://sitenexs.com/community/" class="btn btn-secondary btn-icon-only" title="Komunitas"><i class="fas fa-comments"></i></a>
+                <!-- TOMBOL SIDEBAR BURGER -->
+                <button type="button" onclick="openSidebar()" class="btn btn-secondary btn-icon-only" title="Edit Profil & Pengaturan"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </header>
@@ -371,46 +479,16 @@
                 </div>
                 <div class="stat-item">
                     <div id="statLikeCount" class="stat-value text-primary">0</div>
-                    <div class="stat-label">Total Like Diterima</div>
+                    <div class="stat-label">Total Suka</div>
                 </div>
             </div>
         </div>
 
-        <!-- FORM EDIT INFORMASI PROFIL & BISNIS -->
+        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA -->
         <div class="profile-card">
-            <h3 class="card-title"><i class="fas fa-user-edit text-primary"></i> Informasi Pribadi & Identitas Usaha</h3>
-            <form id="updateProfileForm" onsubmit="saveProfileChanges(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Nama Depan</label>
-                        <input type="text" id="inputNamaDepan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Nama Belakang</label>
-                        <input type="text" id="inputNamaBelakang" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Logo Bisnis / Toko</label>
-                    <div class="logo-upload-container">
-                        <img id="businessLogoPreview" src="https://ui-avatars.com/api/?name=Logo&background=e2e8f0&color=475569" alt="Logo Bisnis" class="business-logo-preview">
-                        <label for="logoFileInput" class="btn btn-secondary btn-sm" style="cursor: pointer;">
-                            <i class="fas fa-upload"></i> Pilih File Logo
-                        </label>
-                        <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="uploadBusinessLogo(event)">
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: flex-end; margin-top: 1.25rem;">
-                    <button type="submit" class="btn btn-primary" id="saveBtn">
-                        <i class="fas fa-save"></i> Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- RIWAYAT DISKUSI SAYA -->
-        <div class="profile-card">
-            <h3 class="card-title"><i class="fas fa-comments text-primary"></i> Riwayat Diskusi Saya</h3>
+            <div class="card-title">
+                <span><i class="fas fa-comments text-primary"></i> Postingan Komunitas Saya</span>
+            </div>
             <div class="my-posts-list" id="myPostsContainer">
                 <div class="loader-container">
                     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
@@ -419,30 +497,48 @@
             </div>
         </div>
 
-        <!-- TOMBOL KELUAR DI BAGIAN PALING BAWAH (MERAH) -->
-        <div style="margin-top: 1.5rem;">
-            <button onclick="handleLogout()" class="btn btn-danger" style="width: 100%; padding: 0.85rem; font-size: 0.9rem; justify-content: center; border-radius: var(--radius-lg); font-weight: 800;">
-                <i class="fas fa-sign-out-alt"></i> Keluar dari Akun
-            </button>
+    </main>
+
+    <!-- DIALOG POP-UP FULL POST DETAIL -->
+    <dialog id="postDetailDialog" class="post-detail-dialog">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+            <span style="font-weight: 800; font-size: 0.85rem; color: var(--text-muted);">Pratinjau Diskusi</span>
+            <button type="button" class="close-sidebar-btn" onclick="document.getElementById('postDetailDialog').close()"><i class="fas fa-times"></i></button>
         </div>
 
-    </main>
+        <div class="detail-post-author-row">
+            <img id="detailAuthorImg" src="" class="detail-post-author-img" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2563eb&color=fff'">
+            <div>
+                <div id="detailAuthorName" class="detail-author-name">Mitra Sitenexs</div>
+                <div id="detailPostTime" class="detail-post-time">Baru saja</div>
+            </div>
+        </div>
+
+        <h2 id="detailPostTitle" class="detail-post-title"></h2>
+        <p id="detailPostContent" class="detail-post-content"></p>
+        <img id="detailPostImg" src="" class="detail-post-img" style="display: none;">
+
+        <div class="detail-comments-wrapper">
+            <div id="detailCommentsTitle" class="detail-comments-title"><i class="far fa-comment-alt"></i> Komentar (0)</div>
+            <div id="detailCommentsList"></div>
+        </div>
+    </dialog>
 
     <!-- DIALOG CROP FOTO PROFIL -->
     <dialog id="avatarCropDialog" class="crop-dialog" aria-labelledby="crop-title">
-        <h2 id="crop-title" style="margin-top:0; font-size: 1.15rem; font-weight: 800;">Sesuaikan Foto Profil</h2>
-        <p style="color:var(--text-muted); font-size:0.85rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
+        <h2 id="crop-title" style="margin-top:0; font-size: 1.1rem; font-weight: 800;">Sesuaikan Foto Profil</h2>
+        <p style="color:var(--text-muted); font-size:0.8rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
         
         <canvas id="cropCanvas" class="crop-canvas" width="220" height="220"></canvas>
         
-        <label class="crop-zoom" for="cropZoom" style="display:block; margin-bottom:1rem;">
-            <span style="font-size:0.85rem; font-weight:600;">Perbesar</span>
+        <label class="crop-zoom" for="cropZoom" style="display:block; margin-bottom:0.75rem;">
+            <span style="font-size:0.8rem; font-weight:600;">Perbesar</span>
             <input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1">
         </label>
         
         <div class="crop-actions">
-            <button id="cancelCrop" class="btn btn-secondary" type="button">Batal</button>
-            <button id="applyCrop" class="btn btn-primary" type="button">Gunakan</button>
+            <button id="cancelCrop" class="btn btn-secondary" type="button" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">Batal</button>
+            <button id="applyCrop" class="btn btn-primary" type="button" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">Gunakan</button>
         </div>
     </dialog>
 
@@ -474,6 +570,7 @@
 
         let currentUid = null;
         let currentUser = null;
+        let userPostsCache = {};
 
         const avatarImg = document.getElementById('profileAvatarImg');
         const avatarInitials = document.getElementById('avatarInitials');
@@ -485,7 +582,6 @@
         const headerEmail = document.getElementById('profileHeaderEmail');
         const headerBusiness = document.getElementById('profileHeaderBusiness');
         const headerPackage = document.getElementById('profileHeaderPackage');
-        const packageText = document.getElementById('packageText');
         const verifiedIcon = document.getElementById('profileVerifiedIcon');
         const statPostCount = document.getElementById('statPostCount');
         const statLikeCount = document.getElementById('statLikeCount');
@@ -494,6 +590,16 @@
         const inputNamaBelakang = document.getElementById('inputNamaBelakang');
         const myPostsContainer = document.getElementById('myPostsContainer');
         const alertBox = document.getElementById('alertBox');
+
+        // Sidebar elements
+        window.openSidebar = function() {
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.getElementById('sidebarDrawer').classList.add('active');
+        };
+        window.closeSidebar = function() {
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('sidebarDrawer').classList.remove('active');
+        };
 
         // Crop Dialog Elements
         const cropDialog = document.getElementById('avatarCropDialog');
@@ -509,9 +615,7 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
-        // ============================================
-        // LOGIKA PENERAPAN TEMA PAKET USER DINAMIS
-        // ============================================
+        // TEMA PAKET USER
         function applyUserPackageTheme(paketLangganan) {
             const pkg = (paketLangganan || 'basic').toLowerCase();
             let themeCategory = 'basic';
@@ -522,10 +626,8 @@
                 themeCategory = 'vip';
             }
 
-            // Atur Atribut Paket di Body
             document.body.setAttribute('data-package', themeCategory);
 
-            // Update Tampilan Badge Paket di Header Profil
             let badgeIcon = 'fa-user';
             if (themeCategory === 'pro') badgeIcon = 'fa-star';
             if (themeCategory === 'vip') badgeIcon = 'fa-crown';
@@ -600,7 +702,6 @@
                     d.isVerified = data.isVerified || false;
                 }
 
-                // Terapkan Tema Sesuai Paket
                 applyUserPackageTheme(d.paketLangganan);
 
                 inputNamaDepan.value = d.namaDepan;
@@ -650,7 +751,7 @@
             }
         });
 
-        // --- FUNGSI CROP & ZOOM FOTO PROFIL ---
+        // FUNGSI CROP FOTO PROFIL
         function clampCropPosition() {
             const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
             const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
@@ -770,7 +871,7 @@
 
         cropCanvas.addEventListener('pointerup', () => dragPosition = null);
 
-        // --- SIMPAN PERUBAHAN NAMA ---
+        // SIMPAN PERUBAHAN NAMA PROFIL
         window.saveProfileChanges = async function(e) {
             e.preventDefault();
             if (!currentUid) return;
@@ -798,7 +899,8 @@
                 }
 
                 headerName.innerText = fullName;
-                showAlert("Nama profil berhasil diperbarui!");
+                closeSidebar();
+                showAlert("Profil berhasil diperbarui!");
             } catch (err) {
                 console.error("Gagal menyimpan profil:", err);
                 showAlert("Terjadi kesalahan saat menyimpan.", "error");
@@ -842,6 +944,7 @@
             }
         }
 
+        // LOAD POSTINGAN KOMUNITAS SAYA
         async function loadUserPosts(uid) {
             try {
                 const qPosts = query(collection(db, "forum_posts"), where("authorUid", "==", uid));
@@ -850,8 +953,11 @@
                 statPostCount.innerText = querySnapshot.size;
 
                 let totalLikes = 0;
+                userPostsCache = {};
+
                 querySnapshot.forEach(docSnap => {
                     const data = docSnap.data();
+                    userPostsCache[docSnap.id] = { id: docSnap.id, ...data };
                     if (data.likes && Array.isArray(data.likes)) {
                         totalLikes += data.likes.length;
                     }
@@ -859,7 +965,7 @@
                 statLikeCount.innerText = totalLikes;
 
                 if (querySnapshot.empty) {
-                    myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat diskusi.</p></div>';
+                    myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
                     return;
                 }
 
@@ -869,17 +975,37 @@
                     const post = docSnap.data();
                     const dateStr = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
                     
+                    let badgeHtml = '';
+                    if (post.kategori) {
+                        let badgeClass = 'badge-tips';
+                        if (post.kategori === 'Pengumuman') badgeClass = 'badge-pengumuman';
+                        else if (post.kategori === 'Lapor Bug') badgeClass = 'badge-bug';
+                        badgeHtml = `<span class="post-badge ${badgeClass}">${post.kategori}</span>`;
+                    }
+
+                    const postTitleHtml = post.judul ? `<div class="my-post-title">${post.judul}</div>` : '';
+                    const postThumbHtml = post.imageUrl ? `<img src="${post.imageUrl}" class="my-post-thumb" alt="Foto Postingan">` : '';
+
+                    const likesCount = (post.likes && Array.isArray(post.likes)) ? post.likes.length : 0;
+                    const commentsCount = (post.comments && Array.isArray(post.comments)) ? post.comments.length : 0;
+
                     html += `
-                        <div class="my-post-item" id="post-row-${postId}">
-                            <div class="my-post-info">
-                                <div class="my-post-title">${post.judul}</div>
-                                <div class="my-post-meta">Kategori: <strong>${post.kategori}</strong> • Diposting pada ${dateStr}</div>
+                        <article class="my-post-card" onclick="openPostDetail('${postId}')">
+                            <div class="post-card-header">
+                                <span class="post-card-date">${dateStr}</span>
+                                ${badgeHtml}
                             </div>
-                            <div class="my-post-actions">
-                                <a href="https://sitenexs.com/community/" target="_blank" class="btn btn-secondary btn-sm" title="Lihat"><i class="fas fa-external-link-alt"></i></a>
-                                <button onclick="deletePost('${postId}')" class="btn btn-danger btn-sm" title="Hapus Diskusi"><i class="fas fa-trash-alt"></i></button>
+                            ${postTitleHtml}
+                            <p class="my-post-snippet">${post.isi}</p>
+                            ${postThumbHtml}
+                            <div class="my-post-footer">
+                                <div class="post-footer-stats">
+                                    <span><i class="far fa-thumbs-up"></i> ${likesCount} Suka</span>
+                                    <span><i class="far fa-comment-alt"></i> ${commentsCount} Komentar</span>
+                                </div>
+                                <button type="button" class="delete-post-btn" onclick="event.stopPropagation(); deletePost('${postId}')"><i class="fas fa-trash-alt"></i> Hapus</button>
                             </div>
-                        </div>
+                        </article>
                     `;
                 });
 
@@ -888,6 +1014,65 @@
                 console.error("Gagal memuat postingan:", err);
                 myPostsContainer.innerHTML = '<div class="loader-container"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
             }
+        }
+
+        // BUKA POP-UP DETAIL POSTINGAN (FULL)
+        window.openPostDetail = function(postId) {
+            const post = userPostsCache[postId];
+            if (!post) return;
+
+            const modal = document.getElementById('postDetailDialog');
+            const authorImg = document.getElementById('detailAuthorImg');
+            const authorName = document.getElementById('detailAuthorName');
+            const postTime = document.getElementById('detailPostTime');
+            const postTitle = document.getElementById('detailPostTitle');
+            const postContent = document.getElementById('detailPostContent');
+            const postImg = document.getElementById('detailPostImg');
+            const commentsTitle = document.getElementById('detailCommentsTitle');
+            const commentsList = document.getElementById('detailCommentsList');
+
+            const authorPhoto = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(post.authorUid)}/profile-photo`;
+            authorImg.src = authorPhoto;
+
+            let verifIcon = post.isVerified ? `<img src="https://sitenexs.com/assets/logo/verified.png" style="width:12px;height:12px;" alt="Verified">` : '';
+            authorName.innerHTML = `${post.penulis || 'Mitra Sitenexs'} ${verifIcon}`;
+
+            const dateObj = post.createdAt ? post.createdAt.toDate() : new Date();
+            postTime.innerText = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            postTitle.innerText = post.judul || '';
+            postTitle.style.display = post.judul ? 'block' : 'none';
+
+            postContent.innerText = post.isi || '';
+
+            if (post.imageUrl) {
+                postImg.src = post.imageUrl;
+                postImg.style.display = 'block';
+            } else {
+                postImg.style.display = 'none';
+            }
+
+            const comments = post.comments || [];
+            commentsTitle.innerHTML = `<i class="far fa-comment-alt"></i> Komentar (${comments.length})`;
+
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Belum ada komentar pada postingan ini.</div>';
+            } else {
+                let commentsHtml = '';
+                comments.forEach(c => {
+                    commentsHtml += `
+                        <div class="detail-comment-item">
+                            <div>
+                                <div class="detail-comment-author">${c.penulis}</div>
+                                <div>${c.isi}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                commentsList.innerHTML = commentsHtml;
+            }
+
+            modal.showModal();
         }
 
         window.deletePost = async function(postId) {
