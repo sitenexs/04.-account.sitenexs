@@ -248,7 +248,7 @@
         .stat-value { font-weight: 800; font-size: 1.05rem; color: var(--text-main); }
         .stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
 
-        /* DESAIN KOTAK SAMA SISI (SQUARE 1:1) POSTINGAN SAYA */
+        /* TAMPILAN POSTINGAN SAYA (1 KOLOM / FULL WIDTH STACK) */
         .profile-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
             padding: 1.25rem; box-shadow: var(--shadow-sm); margin-bottom: 1.25rem;
@@ -257,22 +257,18 @@
         .card-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; color: var(--text-main); }
         
         .my-posts-list { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 0.75rem; 
-        }
-        .my-posts-list .loader-container {
-            grid-column: 1 / -1;
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.85rem; 
+            width: 100%;
         }
         
-        /* KARTU POSTINGAN SQUARE 1:1 */
         .my-post-card {
-            aspect-ratio: 1 / 1; /* MEMBUAT KARTU PRESISI KOTAK SAMA SISI */
             width: 100%;
             background: #ffffff; 
             border: 1px solid var(--border-subtle); 
             border-radius: var(--radius-lg);
-            padding: 0.75rem; 
+            padding: 1rem; 
             box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04); 
             cursor: pointer; 
             transition: var(--transition);
@@ -280,41 +276,38 @@
             flex-direction: column; 
             justify-content: space-between; 
             position: relative;
-            overflow: hidden;
         }
         .my-post-card:hover { 
             border-color: var(--primary); 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.15); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.12); 
         }
         
         .post-card-body {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
-            overflow: hidden;
-            flex: 1;
+            gap: 0.35rem;
+            margin-bottom: 0.65rem;
         }
 
         .post-card-header { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            gap: 0.25rem; 
-            margin-bottom: 0.1rem;
+            gap: 0.35rem; 
+            margin-bottom: 0.2rem;
         }
         .post-card-date { 
-            font-size: 0.62rem; 
+            font-size: 0.68rem; 
             color: var(--text-muted); 
             font-weight: 600; 
             display: flex;
             align-items: center;
-            gap: 0.2rem;
-            white-space: nowrap;
+            gap: 0.25rem;
         }
         
         .post-badge {
-            font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: var(--radius-full);
+            font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: var(--radius-full);
             background: var(--bg-body); color: var(--text-muted); border: 1px solid var(--border-subtle);
             white-space: nowrap;
         }
@@ -324,21 +317,17 @@
 
         .my-post-title { 
             font-weight: 800; 
-            font-size: 0.8rem; 
+            font-size: 0.9rem; 
             color: var(--text-main); 
-            line-height: 1.25; 
+            line-height: 1.35; 
             word-break: break-word; 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
         .my-post-snippet { 
-            font-size: 0.72rem; 
+            font-size: 0.78rem; 
             color: var(--text-muted); 
-            line-height: 1.35; 
+            line-height: 1.45; 
             display: -webkit-box; 
-            -webkit-line-clamp: 2; 
+            -webkit-line-clamp: 3; 
             -webkit-box-orient: vertical; 
             overflow: hidden; 
             word-break: break-word; 
@@ -347,23 +336,22 @@
         .my-post-thumb-wrapper {
             position: relative;
             width: 100%;
-            flex: 1;
-            min-height: 45px;
-            max-height: 85px;
-            border-radius: var(--radius-sm);
+            max-height: 220px;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            margin-top: 0.2rem;
+            margin-top: 0.4rem;
             border: 1px solid var(--border-subtle);
             background: var(--bg-alt);
         }
         .my-post-thumb { 
             width: 100%; 
             height: 100%; 
+            max-height: 220px;
             object-fit: cover; 
             transition: var(--transition);
         }
         .my-post-card:hover .my-post-thumb {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         
         .my-post-footer { 
@@ -371,24 +359,23 @@
             align-items: center; 
             justify-content: space-between; 
             border-top: 1px solid var(--border-subtle); 
-            padding-top: 0.4rem; 
-            margin-top: 0.3rem; 
-            font-size: 0.68rem; 
+            padding-top: 0.5rem; 
+            margin-top: auto; 
+            font-size: 0.72rem; 
             color: var(--text-muted); 
-            flex-shrink: 0;
         }
         .post-footer-stats { 
             display: flex; 
-            gap: 0.5rem; 
+            gap: 0.75rem; 
             font-weight: 600; 
             align-items: center;
         }
         .stat-badge-item {
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
+            gap: 0.25rem;
             color: var(--text-muted);
-            font-size: 0.68rem;
+            font-size: 0.72rem;
         }
         
         .delete-post-btn { 
@@ -396,10 +383,10 @@
             border: 1px solid #fecaca; 
             color: #ef4444; 
             font-weight: 700; 
-            font-size: 0.68rem; 
+            font-size: 0.7rem; 
             cursor: pointer; 
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -411,15 +398,6 @@
             color: #fff;
             border-color: #ef4444;
             transform: scale(1.08);
-        }
-
-        @media (max-width: 480px) {
-            .my-posts-list {
-                gap: 0.5rem;
-            }
-            .my-post-card {
-                padding: 0.6rem;
-            }
         }
 
         /* SIDEBAR BURGER (OFF-CANVAS DRAWER) */
@@ -645,13 +623,13 @@
             </div>
         </div>
 
-        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA ( GRID KOTAK 2 KOLOM ) -->
+        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA ( 1 POSTINGAN PER BARIS ) -->
         <div class="profile-card">
             <div class="card-title">
                 <span><i class="fas fa-comments text-primary"></i> Postingan Komunitas Saya</span>
             </div>
             <div class="my-posts-list" id="myPostsContainer">
-                <div class="loader-container" style="grid-column: 1 / -1;">
+                <div class="loader-container">
                     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
                     <p style="margin-top: 0.5rem;">Memuat daftar postingan Anda...</p>
                 </div>
@@ -1105,7 +1083,7 @@
             }
         }
 
-        // LOAD POSTINGAN KOMUNITAS SAYA (TAMPILAN SQUARE 1:1)
+        // LOAD POSTINGAN KOMUNITAS SAYA (1 BARIS PER POSTINGAN)
         async function loadUserPosts(uid) {
             try {
                 const qPosts = query(collection(db, "forum_posts"), where("authorUid", "==", uid));
@@ -1126,7 +1104,7 @@
                 statLikeCount.innerText = totalLikes;
 
                 if (querySnapshot.empty) {
-                    myPostsContainer.innerHTML = '<div class="loader-container" style="grid-column: 1 / -1;"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
+                    myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
                     return;
                 }
 
@@ -1166,8 +1144,8 @@
                             </div>
                             <div class="my-post-footer">
                                 <div class="post-footer-stats">
-                                    <span class="stat-badge-item"><i class="far fa-thumbs-up"></i> ${likesCount}</span>
-                                    <span class="stat-badge-item"><i class="far fa-comment-alt"></i> ${commentsCount}</span>
+                                    <span class="stat-badge-item"><i class="far fa-thumbs-up"></i> ${likesCount} Suka</span>
+                                    <span class="stat-badge-item"><i class="far fa-comment-alt"></i> ${commentsCount} Komentar</span>
                                 </div>
                                 <button type="button" class="delete-post-btn" title="Hapus Diskusi" onclick="event.stopPropagation(); deletePost('${postId}')"><i class="fas fa-trash-alt"></i></button>
                             </div>
@@ -1178,7 +1156,7 @@
                 myPostsContainer.innerHTML = html;
             } catch (err) {
                 console.error("Gagal memuat postingan:", err);
-                myPostsContainer.innerHTML = '<div class="loader-container" style="grid-column: 1 / -1;"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
+                myPostsContainer.innerHTML = '<div class="loader-container"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
             }
         }
 
