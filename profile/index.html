@@ -173,7 +173,7 @@
             transition: var(--transition);
         }
 
-        /* FOTO PROFIL DIPERBESAR (110px) & TOMBOL TAMBAH (+) UNTUK MEMBUAT POSTINGAN */
+        /* FOTO PROFIL DIPERBESAR (110px) & TOMBOL TAMBAH (+) YANG LEBIH KECIL DAN RAPI */
         .profile-avatar-container {
             position: relative; width: 110px; height: 110px; margin-bottom: 0.85rem;
         }
@@ -189,12 +189,12 @@
             width: 100%; height: 100%; display: grid; place-items: center;
         }
         .create-post-trigger-btn {
-            position: absolute; bottom: 2px; right: 2px; background: var(--primary); color: #fff;
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            position: absolute; bottom: 4px; right: 4px; background: var(--primary); color: #fff;
+            width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .create-post-trigger-btn:hover { background: var(--primary-dark); transform: scale(1.08); }
+        .create-post-trigger-btn:hover { background: var(--primary-dark); transform: scale(1.1); }
 
         .profile-name-row { display: flex; align-items: center; justify-content: center; gap: 0.35rem; margin-bottom: 0.15rem; }
         .profile-name { font-size: 1.2rem; font-weight: 800; color: var(--text-main); line-height: 1.3; }
@@ -229,7 +229,7 @@
         }
 
         /* =========================================================
-           DESAIN KARTU POSTINGAN DARI KOMUNITAS.HTML
+           DESAIN KARTU POSTINGAN
            ========================================================= */
         .post-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
@@ -645,7 +645,7 @@
                     <img id="profileAvatarImg" src="" alt="Avatar" class="profile-avatar" hidden>
                     <div id="avatarInitials" class="avatar-initials"><i class="fas fa-user" style="color: #94a3b8;"></i></div>
                 </div>
-                <!-- TOMBOL TANDA TAMBAH (+) SEKARANG BERFUNGSI MEMBUAT POSTINGAN -->
+                <!-- TOMBOL TANDA TAMBAH (+) DIPERKECIL UNTUK MEMBUAT POSTINGAN -->
                 <button type="button" class="create-post-trigger-btn" id="uploadAvatarBtn" onclick="checkAuthAndOpenModal()" title="Buat Diskusi Baru">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -664,7 +664,7 @@
             <div class="profile-stats">
                 <div class="stat-item">
                     <div id="statPostCount" class="stat-value">0</div>
-                    <div class="stat-label">Diskusi Dibuat</div>
+                    <div class="stat-label">Postingan</div>
                 </div>
                 <div class="stat-item">
                     <div id="statLikeCount" class="stat-value text-primary">0</div>
@@ -697,17 +697,7 @@
             </div>
             <form id="createPostForm">
                 <div class="form-group">
-                    <select id="postCategory" class="form-control" required style="font-weight: 600;">
-                        <option value="">-- Pilih Kategori Diskusi --</option>
-                        <option value="Sitenexs POS">Sitenexs POS</option>
-                        <option value="QR Order">QR Order</option>
-                        <option value="Tips Bisnis">Tips Bisnis</option>
-                        <option value="Pengumuman">Pengumuman</option>
-                        <option value="Lapor Bug">Lapor Bug / Kendala</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="postTitle" class="form-control" placeholder="Judul Diskusi (cth: Cara setting pajak pada struk?)" required style="font-weight: 700;">
+                    <input type="text" id="postTitle" class="form-control" placeholder="Judul Diskusi (Opsional)" style="font-weight: 700;">
                 </div>
                 <div class="form-group">
                     <textarea id="postContent" class="form-control" rows="4" placeholder="Jelaskan pertanyaan atau bagikan pemikiran Anda secara detail..." required></textarea>
@@ -814,7 +804,6 @@
             document.getElementById('sidebarDrawer').classList.remove('active');
         };
 
-        // Modal Buat Postingan Handler
         window.checkAuthAndOpenModal = function() {
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1336,7 +1325,7 @@
             }
         }
 
-        // --- SUBMIT POSTINGAN BARU DARI PROFIL ---
+        // --- SUBMIT POSTINGAN BARU DARI PROFIL (TANPA KATEGORI, JUDUL OPSIONAL) ---
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUid) {
@@ -1344,11 +1333,10 @@
                 return;
             }
 
-            const category = document.getElementById('postCategory').value;
             const title = document.getElementById('postTitle').value.trim();
             const content = document.getElementById('postContent').value.trim();
 
-            if (!category || !title || !content) return;
+            if (!content) return;
 
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             submitBtn.disabled = true;
@@ -1389,8 +1377,8 @@
                     authorUid: currentUid,
                     penulis: nameVal,
                     isVerified: verifiedVal,
-                    kategori: category,
-                    judul: title,
+                    kategori: "Diskusi Umum", // Kategori default karena pilihan kategori dihapus
+                    judul: title || "", // Judul opsional
                     isi: content,
                     imageUrl: imageUrl,
                     likes: [],
@@ -1417,7 +1405,7 @@
             const waktuString = timeAgo(dateObj);
 
             let badgeHtml = '';
-            if (data.kategori) {
+            if (data.kategori && data.kategori !== "Diskusi Umum") {
                 let badgeClass = 'badge-tips';
                 if (data.kategori === 'Pengumuman') badgeClass = 'badge-pengumuman';
                 else if (data.kategori === 'Lapor Bug') badgeClass = 'badge-bug';
