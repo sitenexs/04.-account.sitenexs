@@ -512,64 +512,6 @@
         .logo-upload-container { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem; }
         .business-logo-preview { width: 44px; height: 44px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; box-shadow: var(--shadow-sm); }
 
-        /* MODAL BUAT POSTINGAN */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px);
-            z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: all 0.2s ease; padding: 1rem;
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: #fff; width: 100%; max-width: 480px; border-radius: var(--radius-lg);
-            padding: 1.25rem; transform: translateY(15px); transition: all 0.2s ease; box-shadow: var(--shadow-lg);
-            max-height: 90vh; overflow-y: auto;
-        }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border-subtle); }
-        .modal-header h3 { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
-        .close-modal { background: var(--bg-body); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); border: none; }
-        .close-modal:hover { background: #fef2f2; color: #ef4444; }
-
-        /* UPLOAD FOTO POSTINGAN */
-        .image-upload-wrapper { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
-        .image-upload-label { 
-            display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; 
-            border: 1px dashed var(--border-medium); border-radius: var(--radius-sm); 
-            color: var(--text-muted); cursor: pointer; font-size: 0.75rem; font-weight: 600; 
-            transition: var(--transition); width: fit-content;
-        }
-        .image-upload-label:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-        .image-preview-container { position: relative; display: none; width: 100%; margin-top: 0.5rem; }
-        .image-preview-container img { width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
-        .remove-image-btn { 
-            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(15, 23, 42, 0.7); 
-            color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; 
-            align-items: center; justify-content: center; cursor: pointer; border: none; font-size: 0.7rem; 
-        }
-
-        /* DIALOG CROP FOTO PROFIL */
-        .crop-dialog {
-            width: min(380px, calc(100% - 2rem));
-            padding: 1.25rem;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            background: #fff;
-            box-shadow: var(--shadow-lg);
-            margin: auto;
-        }
-        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
-
-        .crop-canvas {
-            display: block; width: 220px; height: 220px; margin: 1rem auto;
-            border-radius: 50%; background: #e2e8f0; cursor: grab; touch-action: none;
-        }
-        .crop-canvas:active { cursor: grabbing; }
-        .crop-zoom input { width: 100%; margin-top: 0.5rem; accent-color: var(--primary); }
-        .crop-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
-
-        .loader-container { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
-
         /* TOAST NOTIFICATION MODERN */
         #toastContainer {
             position: fixed; bottom: 20px; right: 20px; z-index: 10000;
@@ -719,7 +661,8 @@
             </div>
             <div class="my-posts-list" id="myPostsContainer">
                 <div class="loader-container">
-                    <i class="fas fa-circle-notch fa-spin fa-2x"></h3>
+                    <!-- PERBAIKAN: Mengganti tag penutup </h3> yang salah menjadi </i> -->
+                    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
                     <p style="margin-top: 0.5rem;">Memuat daftar postingan Anda...</p>
                 </div>
             </div>
@@ -913,7 +856,6 @@
             return formatted;
         }
 
-        // --- TOGGLE MENU TITIK TIGA DI POSTINGAN ---
         window.togglePostOptions = function(postId, event) {
             event.stopPropagation();
             document.querySelectorAll('.post-options-dropdown').forEach(d => {
@@ -929,7 +871,6 @@
             document.querySelectorAll('.post-options-dropdown').forEach(d => d.classList.remove('active'));
         });
 
-        // --- UBAH PENGATURAN PRIVASI & INTERAKSI POSTINGAN ---
         window.updatePostSetting = async function(postId, settingKey, value) {
             const postRef = doc(db, "forum_posts", postId);
             try {
@@ -1279,40 +1220,35 @@
         }
 
         function renderPostCardHtml(postId, data, currentActiveUid) {
+            if (!data) return '';
+            const penulis = data.penulis || 'Mitra Sitenexs';
+            const authorUid = data.authorUid || currentUid || '';
+            const judul = data.judul || '';
+            const isi = data.isi || '';
+
             const dateObj = data.createdAt ? data.createdAt.toDate() : new Date();
             const waktuString = timeAgo(dateObj);
 
-            // Status Privasi & Tampilan Statistik
             const isPrivate = data.isPrivate === true;
             const commentsDisabled = data.commentsDisabled === true;
             const hideStats = data.hideStats === true;
 
             const likeCount = Array.isArray(data.likes) ? data.likes.length : 0;
-            const comments = Array.isArray(data.comments) ? data.comments : 0;
-            const commentCount = Array.isArray(comments) ? comments.length : 0;
+            const comments = Array.isArray(data.comments) ? data.comments : [];
+            const commentCount = comments.length;
 
             const likeDisplay = hideStats ? 'Suka' : `${likeCount > 0 ? likeCount : ''} Suka`;
             const commentDisplay = hideStats ? 'Komentar' : `${commentCount > 0 ? commentCount : ''} Komentar`;
 
-            let badgeHtml = '';
-            if (data.kategori && data.kategori !== "Diskusi Umum") {
-                let badgeClass = 'badge-tips';
-                if (data.kategori === 'Pengumuman') badgeClass = 'badge-pengumuman';
-                else if (data.kategori === 'Lapor Bug') badgeClass = 'badge-bug';
-                badgeHtml = `<span class="post-badge ${badgeClass}">${data.kategori}</span>`;
-            }
-
-            const authorPhoto = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(data.authorUid)}/profile-photo`;
-            const authorFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.penulis)}&background=2563eb&color=fff`;
+            const authorPhoto = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(authorUid)}/profile-photo`;
+            const authorFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(penulis)}&background=2563eb&color=fff`;
             
-            let verifiedIcon = '';
+            let verifiedIcon = `<span class="async-verif-badge" data-uid="${authorUid}"></span>`;
             if (data.isVerified === true || String(data.isVerified) === 'true') {
                 verifiedIcon = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
-            } else {
-                verifiedIcon = `<span class="async-verif-badge" data-uid="${data.authorUid}"></span>`;
             }
 
-            const postTitleHtml = data.judul ? `<h2 class="post-title">${data.judul}</h2>` : '';
+            const postTitleHtml = judul ? `<h2 class="post-title">${judul}</h2>` : '';
             const postImageHtml = data.imageUrl ? `<img src="${data.imageUrl}" alt="Foto Diskusi" class="post-image">` : '';
             const isLiked = Array.isArray(data.likes) && data.likes.includes(currentActiveUid);
 
@@ -1325,30 +1261,28 @@
                     const cDate = c.createdAt ? timeAgo(new Date(c.createdAt)) : 'Baru saja';
                     const cAuthorUid = c.authorUid || 'unknown';
                     const cAvatar = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(cAuthorUid)}/profile-photo`;
-                    const cFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.penulis)}&background=random&color=fff`;
+                    const cFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.penulis || 'Mitra')}&background=random&color=fff`;
                     
-                    let cVerified = '';
+                    let cVerified = `<span class="async-verif-badge" data-uid="${cAuthorUid}"></span>`;
                     if (c.isVerified === true || String(c.isVerified) === 'true') {
                         cVerified = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
-                    } else {
-                        cVerified = `<span class="async-verif-badge" data-uid="${cAuthorUid}"></span>`;
                     }
 
-                    const formattedText = formatCommentText(c.isi);
+                    const formattedText = formatCommentText(c.isi || '');
                     const isMyComment = (cAuthorUid === currentActiveUid);
                     const deleteBtnHtml = isMyComment ? `<button type="button" class="delete-comment-btn" onclick="deleteComment('${postId}', '${c.createdAt}', '${cAuthorUid}')">Hapus</button>` : '';
 
                     commentsHtml += `
                         <div class="comment-item">
                             <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" style="flex-shrink: 0;">
-                                <img src="${cAvatar}" alt="${c.penulis}" class="comment-avatar" onerror="this.onerror=null; this.src='${cFallback}';">
+                                <img src="${cAvatar}" alt="${c.penulis || 'Mitra'}" class="comment-avatar" onerror="this.onerror=null; this.src='${cFallback}';">
                             </a>
                             <div class="comment-content-wrapper">
                                 <div class="comment-bubble">
                                     <div class="comment-header-row">
                                         <div class="comment-author-left">
                                             <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" class="comment-author-link">
-                                                <span class="comment-author">${c.penulis}</span>
+                                                <span class="comment-author">${c.penulis || 'Mitra'}</span>
                                             </a>
                                             ${cVerified}
                                         </div>
@@ -1357,7 +1291,7 @@
                                 </div>
                                 <div class="comment-footer-row">
                                     <div class="comment-time">${cDate}</div>
-                                    <button type="button" class="reply-trigger-btn" onclick="replyComment('${postId}', '${c.penulis.replace(/'/g, "\\'")}')">Balas</button>
+                                    <button type="button" class="reply-trigger-btn" onclick="replyComment('${postId}', '${(c.penulis || 'Mitra').replace(/'/g, "\\'")}')">Balas</button>
                                     ${deleteBtnHtml}
                                 </div>
                             </div>
@@ -1376,15 +1310,14 @@
                     <div class="post-card-inner">
                         <div class="post-header">
                             <div class="post-author">
-                                <img src="${authorPhoto}" alt="${data.penulis}" class="post-author-img" onerror="this.onerror=null; this.src='${authorFallback}';">
+                                <img src="${authorPhoto}" alt="${penulis}" class="post-author-img" onerror="this.onerror=null; this.src='${authorFallback}';">
                                 <div class="author-info">
                                     <div class="author-name-row">
-                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(data.authorUid)}" class="author-name-link">
-                                            <span class="author-name">${data.penulis}</span>
+                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(authorUid)}" class="author-name-link">
+                                            <span class="author-name">${penulis}</span>
                                         </a>
                                         ${verifiedIcon}
                                     </div>
-                                    <!-- WAKTU & PRIVASI TANPA TITIK PEMISAH DAN JARAK RAPAT -->
                                     <div class="author-time-wrapper">
                                         <span>${waktuString}</span>
                                         ${isPrivate ? '<span style="color:#f59e0b; display:inline-flex; align-items:center; gap:0.2rem;"><i class="fas fa-lock"></i> Privat</span>' : ''}
@@ -1392,7 +1325,6 @@
                                 </div>
                             </div>
 
-                            <!-- TOMBOL TITIK TIGA (...) PENGATURAN POSTINGAN -->
                             <div class="post-options-container">
                                 <button type="button" class="post-options-btn" onclick="togglePostOptions('${postId}', event)" title="Pengaturan Postingan">
                                     <i class="fas fa-ellipsis-v"></i>
@@ -1412,7 +1344,7 @@
                         </div>
                         
                         ${postTitleHtml}
-                        <p class="post-content">${data.isi}</p>
+                        <p class="post-content">${isi}</p>
                         ${postImageHtml}
                     </div>
                     
