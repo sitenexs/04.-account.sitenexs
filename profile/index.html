@@ -1578,35 +1578,36 @@
             `;
         }
 
+        // --- PEMBARUAN CENTANG BIRU REALTIME ---
         function runAsyncVerifBadges() {
             setTimeout(() => {
                 document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
                     const uid = el.getAttribute('data-uid');
-                    if (!uid || uid === 'unknown' || el.innerHTML !== '') return;
+                    if (!uid || uid === 'unknown') return;
                     
-                    if (userVerifCache[uid] === undefined) {
-                        try {
-                            const snap = await getDoc(doc(db, "users", uid));
-                            if (snap.exists()) {
-                                const d = snap.data();
-                                userVerifCache[uid] = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
+                    try {
+                        const snap = await getDoc(doc(db, "users", uid));
+                        if (snap.exists()) {
+                            const d = snap.data();
+                            const isVerified = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
+                            userVerifCache[uid] = isVerified;
+                            
+                            if (isVerified) {
+                                el.innerHTML = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
                             } else {
-                                userVerifCache[uid] = false;
+                                el.innerHTML = ''; // Hapus centang biru jika status verifikasi dicabut
                             }
-                        } catch(e) {
-                            userVerifCache[uid] = false;
+                        } else {
+                            el.innerHTML = '';
                         }
-                    }
-                    
-                    if (userVerifCache[uid]) {
-                        el.innerHTML = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
+                    } catch(e) {
+                        console.error("Gagal memeriksa status verifikasi:", e);
                     }
                     el.classList.remove('async-verif-badge');
                 });
             }, 100);
         }
 
-        // --- SMART DOM PATCHING UNTUK PROFIL (REAL-TIME TANPA KEDIP) ---
         function subscribeUserPosts(uid) {
             const qPosts = query(collection(db, "forum_posts"), where("authorUid", "==", uid));
             
@@ -1757,6 +1758,7 @@
             });
         }
 
+        // --- TOMBOL LIKE INSTAN BEBAS GLITCH & COUNTER DINAMIS ---
         window.toggleLike = async function(postId) {
             if (!currentUid) {
                 showToast("Silakan login terlebih dahulu.", "error");
@@ -1765,10 +1767,30 @@
 
             const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
             const btn = postCard ? postCard.querySelector('.post-actions .action-btn') : null;
+            
             if (btn) {
+                const icon = btn.querySelector('i');
+                const spanCount = btn.querySelector('span');
                 const isCurrentlyLiked = btn.classList.contains('liked');
+                
+                // Perubahan UI Instan
                 btn.classList.toggle('liked', !isCurrentlyLiked);
                 playLikeSound(!isCurrentlyLiked);
+
+                let currentText = spanCount.innerText.trim();
+                let currentNum = parseInt(currentText) || 0;
+                let isHideStats = currentText.toLowerCase() === 'suka';
+
+                if (!isHideStats) {
+                    if (!isCurrentlyLiked) {
+                        icon.className = 'fas fa-thumbs-up';
+                        spanCount.innerText = `${currentNum + 1} Suka`;
+                    } else {
+                        icon.className = 'far fa-thumbs-up';
+                        let newCount = Math.max(0, currentNum - 1);
+                        spanCount.innerText = newCount > 0 ? `${newCount} Suka` : 'Suka';
+                    }
+                }
             }
 
             const postRef = doc(db, "forum_posts", postId);
@@ -1953,7 +1975,7 @@
             document.querySelectorAll('.comment-item').forEach(item => item.classList.remove('focused-comment'));
         };
 
-        window.activateCommentFocusCommand = function(commentItem) {
+        window.activateCommentFocusMode = function(commentItem) {
             const section = commentItem.closest('.comments-section');
             if (!section) return;
 
