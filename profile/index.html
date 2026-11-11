@@ -512,6 +512,62 @@
         .logo-upload-container { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem; }
         .business-logo-preview { width: 44px; height: 44px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; box-shadow: var(--shadow-sm); }
 
+        /* MODAL BUAT POSTINGAN */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.2s ease; padding: 1rem;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #fff; width: 100%; max-width: 480px; border-radius: var(--radius-lg);
+            padding: 1.25rem; transform: translateY(15px); transition: all 0.2s ease; box-shadow: var(--shadow-lg);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border-subtle); }
+        .modal-header h3 { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
+        .close-modal { background: var(--bg-body); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); border: none; }
+        .close-modal:hover { background: #fef2f2; color: #ef4444; }
+
+        /* UPLOAD FOTO POSTINGAN */
+        .image-upload-wrapper { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        .image-upload-label { 
+            display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; 
+            border: 1px dashed var(--border-medium); border-radius: var(--radius-sm); 
+            color: var(--text-muted); cursor: pointer; font-size: 0.75rem; font-weight: 600; 
+            transition: var(--transition); width: fit-content;
+        }
+        .image-upload-label:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .image-preview-container { position: relative; display: none; width: 100%; margin-top: 0.5rem; }
+        .image-preview-container img { width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
+        .remove-image-btn { 
+            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(15, 23, 42, 0.7); 
+            color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; border: none; font-size: 0.7rem; 
+        }
+
+        /* DIALOG CROP FOTO PROFIL */
+        .crop-dialog {
+            width: min(380px, calc(100% - 2rem));
+            padding: 1.25rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+            margin: auto;
+        }
+        .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+
+        .crop-canvas {
+            display: block; width: 220px; height: 220px; margin: 1rem auto;
+            border-radius: 50%; background: #e2e8f0; cursor: grab; touch-action: none;
+        }
+        .crop-canvas:active { cursor: grabbing; }
+        .crop-zoom input { width: 100%; margin-top: 0.5rem; accent-color: var(--primary); }
+        .crop-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+
         /* TOAST NOTIFICATION MODERN */
         #toastContainer {
             position: fixed; bottom: 20px; right: 20px; z-index: 10000;
@@ -661,14 +717,45 @@
             </div>
             <div class="my-posts-list" id="myPostsContainer">
                 <div class="loader-container">
-                    <!-- PERBAIKAN: Mengganti tag penutup </h3> yang salah menjadi </i> -->
-                    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
-                    <p style="margin-top: 0.5rem;">Memuat daftar postingan Anda...</p>
+                    <p>Memuat...</p>
                 </div>
             </div>
         </div>
 
     </main>
+
+    <!-- MODAL BUAT POSTINGAN -->
+    <div class="modal-overlay" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Diskusi Baru</h3>
+                <button type="button" class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="createPostForm">
+                <div class="form-group">
+                    <input type="text" id="postTitle" class="form-control" placeholder="Judul Diskusi (Opsional)" style="font-weight: 700;">
+                </div>
+                <div class="form-group">
+                    <textarea id="postContent" class="form-control" rows="4" placeholder="Jelaskan pertanyaan atau bagikan pemikiran Anda secara detail..." required></textarea>
+                </div>
+                
+                <!-- FITUR UPLOAD FOTO POSTINGAN -->
+                <div class="form-group image-upload-wrapper">
+                    <input type="file" id="postImage" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                    <label for="postImage" class="image-upload-label"><i class="fas fa-image"></i> Tambah Foto (Opsional)</label>
+                    <div class="image-preview-container" id="imagePreviewContainer">
+                        <img id="imagePreview" src="" alt="Preview Foto">
+                        <button type="button" class="remove-image-btn" onclick="removeImage()"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="submitPostBtn"><i class="fas fa-paper-plane"></i> Posting</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- DIALOG CROP FOTO PROFIL -->
     <dialog id="avatarCropDialog" class="crop-dialog" aria-labelledby="crop-title">
@@ -692,7 +779,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, collection, query, where, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, collection, query, where, getDocs, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -707,6 +794,7 @@
         const supabasePublishableKey = 'sb_publishable_XKHXYrEw2EDdfYH17Uyx6w_k_BtGLQa';
         const avatarBucket = 'profile-photos';
         const logoBucket = 'business-logos';
+        const forumBucket = 'forum-photos';
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -737,6 +825,11 @@
         const inputNamaBelakang = document.getElementById('inputNamaBelakang');
         const myPostsContainer = document.getElementById('myPostsContainer');
 
+        const modal = document.getElementById('postModal');
+        const form = document.getElementById('createPostForm');
+        const submitBtn = document.getElementById('submitPostBtn');
+        const forumCollection = collection(db, "forum_posts");
+
         window.openSidebar = function() {
             document.getElementById('sidebarOverlay').classList.add('active');
             document.getElementById('sidebarDrawer').classList.add('active');
@@ -745,6 +838,35 @@
             document.getElementById('sidebarOverlay').classList.remove('active');
             document.getElementById('sidebarDrawer').classList.remove('active');
         };
+
+        window.checkAuthAndOpenModal = function() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            removeImage();
+        }
+
+        window.previewImage = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreviewContainer').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        window.removeImage = function() {
+            document.getElementById('postImage').value = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('imagePreview').src = '';
+        }
 
         const cropDialog = document.getElementById('avatarCropDialog');
         const cropCanvas = document.getElementById('cropCanvas');
@@ -1152,7 +1274,7 @@
             if (!currentUid) return;
 
             const saveBtn = document.getElementById('saveBtn');
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+            saveBtn.innerHTML = 'Menyimpan...';
             saveBtn.disabled = true;
 
             try {
@@ -1218,6 +1340,80 @@
                 showToast("Gagal mengunggah logo bisnis.", "error");
             }
         }
+
+        // --- SUBMIT POSTINGAN BARU DARI PROFIL (DIPERBAIKI) ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUid) {
+                showToast("Silakan login terlebih dahulu.", "error");
+                return;
+            }
+
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!content) return;
+
+            submitBtn.innerHTML = 'Memproses...';
+            submitBtn.disabled = true;
+
+            try {
+                let imageUrl = null;
+                const fileInput = document.getElementById('postImage');
+                const file = fileInput.files[0];
+
+                if (file) {
+                    submitBtn.innerHTML = 'Mengunggah Foto...';
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.floor(Math.random()*1000)}.${fileExt}`;
+                    
+                    const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/${forumBucket}/${fileName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${supabasePublishableKey}`,
+                            'apikey': supabasePublishableKey,
+                            'Content-Type': file.type
+                        },
+                        body: file
+                    });
+                    
+                    if (uploadRes.ok) {
+                        imageUrl = `${supabaseUrl}/storage/v1/object/public/${forumBucket}/${fileName}`;
+                    } else {
+                        console.error("Gagal upload gambar, tapi post akan dilanjutkan.", await uploadRes.text());
+                    }
+                }
+
+                submitBtn.innerHTML = 'Menyimpan...';
+
+                const nameVal = headerName.innerText || currentUser?.displayName || "Mitra Sitenexs";
+                const verifiedVal = currentUserData ? Boolean(currentUserData.isVerified) : false;
+
+                await addDoc(forumCollection, {
+                    authorUid: currentUid,
+                    penulis: nameVal,
+                    isVerified: verifiedVal,
+                    judul: title,
+                    isi: content,
+                    imageUrl: imageUrl,
+                    likes: [],
+                    comments: [],
+                    createdAt: serverTimestamp()
+                });
+
+                form.reset();
+                removeImage();
+                closeModal();
+                showToast("Diskusi baru berhasil diposting!");
+                fetchAllUsersForMention();
+            } catch (error) {
+                console.error("Gagal mengirim postingan:", error);
+                showToast("Terjadi kesalahan saat memposting.", "error");
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Posting';
+                submitBtn.disabled = false;
+            }
+        });
 
         function renderPostCardHtml(postId, data, currentActiveUid) {
             if (!data) return '';
