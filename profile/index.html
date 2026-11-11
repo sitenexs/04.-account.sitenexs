@@ -248,7 +248,7 @@
         .stat-value { font-weight: 800; font-size: 1.05rem; color: var(--text-main); }
         .stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
 
-        /* POSTINGAN SAYA (GAYA SOCIAL MEDIA FEED) */
+        /* POSTINGAN SAYA (TATA LETAK 2 KOLOM / 2 POSTINGAN PER BARIS) */
         .profile-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
             padding: 1.25rem; box-shadow: var(--shadow-sm); margin-bottom: 1.25rem;
@@ -256,36 +256,57 @@
         }
         .card-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; color: var(--text-main); }
         
-        .my-posts-list { display: flex; flex-direction: column; gap: 0.85rem; }
+        .my-posts-list { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 0.85rem; 
+        }
+        .my-posts-list .loader-container {
+            grid-column: 1 / -1;
+        }
         
         .my-post-card {
             background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-            padding: 0.85rem; box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition);
-            display: flex; flex-direction: column; gap: 0.5rem; position: relative;
+            padding: 0.75rem; box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition);
+            display: flex; flex-direction: column; justify-content: space-between; gap: 0.45rem; position: relative;
+            height: 100%;
         }
         .my-post-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
         
-        .post-card-header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-        .post-card-date { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+        .post-card-header { display: flex; justify-content: space-between; align-items: center; gap: 0.35rem; }
+        .post-card-date { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; }
         
         .post-badge {
-            font-size: 0.6rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: var(--radius-full);
+            font-size: 0.58rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: var(--radius-full);
             background: var(--bg-body); color: var(--text-muted); border: 1px solid var(--border-subtle);
+            white-space: nowrap;
         }
         .badge-pengumuman { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
         .badge-tips { background: #fffbeb; color: #d97706; border-color: #fcd34d; }
         .badge-bug { background: #faf5ff; color: #7e22ce; border-color: #d8b4fe; }
 
-        .my-post-title { font-weight: 800; font-size: 0.9rem; color: var(--text-main); line-height: 1.35; word-break: break-word; }
-        .my-post-snippet { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
+        .my-post-title { font-weight: 800; font-size: 0.85rem; color: var(--text-main); line-height: 1.3; word-break: break-word; }
+        .my-post-snippet { font-size: 0.75rem; color: var(--text-muted); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; margin-bottom: 0.2rem; }
         
-        .my-post-thumb { width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-top: 0.2rem; }
+        .my-post-thumb { width: 100%; height: 120px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-top: 0.2rem; }
         
-        .my-post-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 0.4rem; margin-top: 0.2rem; font-size: 0.72rem; color: var(--text-muted); }
-        .post-footer-stats { display: flex; gap: 0.8rem; font-weight: 600; }
+        .my-post-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 0.4rem; margin-top: auto; font-size: 0.68rem; color: var(--text-muted); }
+        .post-footer-stats { display: flex; gap: 0.5rem; font-weight: 600; flex-wrap: wrap; }
         
-        .delete-post-btn { background: none; border: none; color: #ef4444; font-weight: 700; font-size: 0.72rem; cursor: pointer; padding: 0.2rem 0.4rem; border-radius: var(--radius-sm); transition: var(--transition); }
+        .delete-post-btn { background: none; border: none; color: #ef4444; font-weight: 700; font-size: 0.68rem; cursor: pointer; padding: 0.15rem 0.3rem; border-radius: var(--radius-sm); transition: var(--transition); }
         .delete-post-btn:hover { background: #fee2e2; }
+
+        @media (max-width: 480px) {
+            .my-posts-list {
+                gap: 0.6rem;
+            }
+            .my-post-card {
+                padding: 0.6rem;
+            }
+            .my-post-thumb {
+                height: 95px;
+            }
+        }
 
         /* SIDEBAR BURGER (OFF-CANVAS DRAWER) */
         .sidebar-overlay {
@@ -484,13 +505,13 @@
             </div>
         </div>
 
-        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA -->
+        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA ( GRID 2 KOLOM ) -->
         <div class="profile-card">
             <div class="card-title">
                 <span><i class="fas fa-comments text-primary"></i> Postingan Komunitas Saya</span>
             </div>
             <div class="my-posts-list" id="myPostsContainer">
-                <div class="loader-container">
+                <div class="loader-container" style="grid-column: 1 / -1;">
                     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
                     <p style="margin-top: 0.5rem;">Memuat daftar postingan Anda...</p>
                 </div>
@@ -965,7 +986,7 @@
                 statLikeCount.innerText = totalLikes;
 
                 if (querySnapshot.empty) {
-                    myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
+                    myPostsContainer.innerHTML = '<div class="loader-container" style="grid-column: 1 / -1;"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
                     return;
                 }
 
@@ -991,19 +1012,21 @@
 
                     html += `
                         <article class="my-post-card" onclick="openPostDetail('${postId}')">
-                            <div class="post-card-header">
-                                <span class="post-card-date">${dateStr}</span>
-                                ${badgeHtml}
+                            <div>
+                                <div class="post-card-header">
+                                    <span class="post-card-date">${dateStr}</span>
+                                    ${badgeHtml}
+                                </div>
+                                ${postTitleHtml}
+                                <p class="my-post-snippet">${post.isi}</p>
+                                ${postThumbHtml}
                             </div>
-                            ${postTitleHtml}
-                            <p class="my-post-snippet">${post.isi}</p>
-                            ${postThumbHtml}
                             <div class="my-post-footer">
                                 <div class="post-footer-stats">
-                                    <span><i class="far fa-thumbs-up"></i> ${likesCount} Suka</span>
-                                    <span><i class="far fa-comment-alt"></i> ${commentsCount} Komentar</span>
+                                    <span><i class="far fa-thumbs-up"></i> ${likesCount}</span>
+                                    <span><i class="far fa-comment-alt"></i> ${commentsCount}</span>
                                 </div>
-                                <button type="button" class="delete-post-btn" onclick="event.stopPropagation(); deletePost('${postId}')"><i class="fas fa-trash-alt"></i> Hapus</button>
+                                <button type="button" class="delete-post-btn" onclick="event.stopPropagation(); deletePost('${postId}')"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </article>
                     `;
@@ -1012,7 +1035,7 @@
                 myPostsContainer.innerHTML = html;
             } catch (err) {
                 console.error("Gagal memuat postingan:", err);
-                myPostsContainer.innerHTML = '<div class="loader-container"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
+                myPostsContainer.innerHTML = '<div class="loader-container" style="grid-column: 1 / -1;"><p style="color:red;">Gagal memuat riwayat diskusi.</p></div>';
             }
         }
 
