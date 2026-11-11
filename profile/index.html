@@ -34,12 +34,117 @@
             --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
             --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 15px 30px -5px rgba(15, 23, 42, 0.08);
+            --shadow-card: 0 20px 40px -12px rgba(37, 99, 235, 0.15);
             --radius-sm: 0.375rem;
             --radius-md: 0.625rem;
             --radius-lg: 1rem;
             --radius-xl: 1.5rem;
             --radius-full: 9999px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* =========================================================
+           SISTEM TEMA BERBASIS PAKET LANGGANAN (PRO & VIP / ULTIMATE)
+           ========================================================= */
+
+        /* 1. TEMA PRO (Electric Cyan & Amber Gold) */
+        body[data-package="pro"] {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #f0f9ff;
+            --accent: #f59e0b;
+            --border-accent: #38bdf8;
+            --shadow-card: 0 20px 40px -12px rgba(2, 132, 199, 0.22);
+        }
+
+        body[data-package="pro"] .profile-header-card::before {
+            background: linear-gradient(90deg, #0284c7 0%, #f59e0b 100%);
+        }
+
+        body[data-package="pro"] .btn-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+        }
+
+        /* 2. TEMA VIP / ULTIMATE / PREMIUM (Royal Purple & Gold Aura) */
+        body[data-package="vip"],
+        body[data-package="ultimate"],
+        body[data-package="premium"] {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --primary-light: #f5f3ff;
+            --accent: #fbbf24;
+            --border-accent: #c084fc;
+            --shadow-card: 0 25px 50px -12px rgba(124, 58, 237, 0.28);
+        }
+
+        body[data-package="vip"] #navbar,
+        body[data-package="ultimate"] #navbar,
+        body[data-package="premium"] #navbar {
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #7c3aed, #fbbf24, #7c3aed) 1;
+        }
+
+        body[data-package="vip"] .profile-header-card,
+        body[data-package="ultimate"] .profile-header-card,
+        body[data-package="premium"] .profile-header-card {
+            background: linear-gradient(145deg, #ffffff 0%, #faf5ff 100%);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            box-shadow: 0 20px 45px -10px rgba(124, 58, 237, 0.25);
+        }
+
+        body[data-package="vip"] .profile-header-card::before,
+        body[data-package="ultimate"] .profile-header-card::before,
+        body[data-package="premium"] .profile-header-card::before {
+            height: 6px;
+            background: linear-gradient(90deg, #7c3aed 0%, #fbbf24 50%, #d97706 100%);
+        }
+
+        body[data-package="vip"] .btn-primary,
+        body[data-package="ultimate"] .btn-primary,
+        body[data-package="premium"] .btn-primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #d97706 100%);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            border: 1px solid rgba(254, 240, 138, 0.5);
+        }
+
+        /* BADGE PAKET DENGAN ANIMASI */
+        .profile-package-tag {
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 0.35rem 0.95rem;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            transition: var(--transition);
+        }
+
+        .profile-package-tag.basic {
+            color: #475569;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+        }
+
+        .profile-package-tag.pro {
+            color: #ffffff;
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+        }
+
+        .profile-package-tag.vip {
+            color: #ffffff;
+            background: linear-gradient(135deg, #7c3aed 0%, #b45309 100%);
+            border: 1px solid #fef08a;
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+            animation: goldPulse 2.5s infinite alternate;
+        }
+
+        @keyframes goldPulse {
+            0% { box-shadow: 0 0 6px rgba(251, 191, 36, 0.3); }
+            100% { box-shadow: 0 0 18px rgba(251, 191, 36, 0.85); }
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,6 +158,7 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         body.dialog-open { overflow: hidden; }
@@ -73,7 +179,7 @@
             white-space: nowrap; border: 1px solid transparent; text-align: center;
         }
         .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35); }
         .btn-secondary { background: #fff; border: 1px solid var(--border-medium); color: var(--text-main); box-shadow: var(--shadow-sm); }
         .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
         .btn-danger { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
@@ -84,11 +190,12 @@
         #navbar {
             position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);
+            transition: border-color 0.3s ease;
         }
         .nav-container { display: flex; align-items: center; justify-content: space-between; height: 70px; width: 100%; max-width: 1000px; }
         .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.15rem; color: var(--text-main); }
         .logo img { height: 35px; width: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
-        .logo-text { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
 
         /* PROFILE LAYOUT */
@@ -98,11 +205,13 @@
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
             padding: 2rem 1.5rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center;
             text-align: center; margin-bottom: 1.5rem; position: relative; overflow: hidden;
+            transition: var(--transition);
         }
 
         .profile-header-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
             background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transition: var(--transition);
         }
 
         .profile-avatar-container {
@@ -128,7 +237,6 @@
             display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; width: 100%;
         }
         .profile-business-tag { font-size: 0.78rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.3rem 0.85rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.35rem; border: 1px solid rgba(37,99,235,0.15); }
-        .profile-package-tag { font-size: 0.78rem; font-weight: 700; color: #854d0e; background: #fef08a; padding: 0.3rem 0.85rem; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.35rem; }
 
         .profile-stats {
             display: flex; gap: 2.5rem; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
@@ -142,6 +250,7 @@
         .profile-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl);
             padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom: 1.25rem;
+            transition: var(--transition);
         }
         .card-title { font-size: 1rem; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); }
         
@@ -251,7 +360,7 @@
             <p id="profileHeaderEmail" class="profile-email">Memuat email...</p>
             
             <div class="profile-badges-wrapper">
-                <span id="profileHeaderPackage" class="profile-package-tag" style="display: none;"><i class="fas fa-crown"></i> <span id="packageText">Paket Basic</span></span>
+                <span id="profileHeaderPackage" class="profile-package-tag basic" style="display: none;"><i class="fas fa-user"></i> <span id="packageText">Paket Basic</span></span>
                 <span id="profileHeaderBusiness" class="profile-business-tag"><i class="fas fa-store"></i> UMKM / Bisnis Mitra</span>
             </div>
 
@@ -400,6 +509,34 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
+        // ============================================
+        // LOGIKA PENERAPAN TEMA PAKET USER DINAMIS
+        // ============================================
+        function applyUserPackageTheme(paketLangganan) {
+            const pkg = (paketLangganan || 'basic').toLowerCase();
+            let themeCategory = 'basic';
+
+            if (pkg.includes('pro') || pkg.includes('business')) {
+                themeCategory = 'pro';
+            } else if (pkg.includes('vip') || pkg.includes('ultimate') || pkg.includes('premium')) {
+                themeCategory = 'vip';
+            }
+
+            // Atur Atribut Paket di Body
+            document.body.setAttribute('data-package', themeCategory);
+
+            // Update Tampilan Badge Paket di Header Profil
+            let badgeIcon = 'fa-user';
+            if (themeCategory === 'pro') badgeIcon = 'fa-star';
+            if (themeCategory === 'vip') badgeIcon = 'fa-crown';
+
+            if (headerPackage) {
+                headerPackage.className = `profile-package-tag ${themeCategory}`;
+                headerPackage.style.display = 'inline-flex';
+                headerPackage.innerHTML = `<i class="fas ${badgeIcon}"></i> <span id="packageText">PAKET ${paketLangganan.toUpperCase()}</span>`;
+            }
+        }
+
         function showAlert(message, type = 'success') {
             alertBox.innerText = message;
             alertBox.className = type === 'success' ? 'alert-success' : 'alert-error';
@@ -463,21 +600,15 @@
                     d.isVerified = data.isVerified || false;
                 }
 
+                // Terapkan Tema Sesuai Paket
+                applyUserPackageTheme(d.paketLangganan);
+
                 inputNamaDepan.value = d.namaDepan;
                 inputNamaBelakang.value = d.namaBelakang;
 
                 headerName.innerText = d.namaLengkap;
                 headerEmail.innerText = d.email;
                 headerBusiness.innerHTML = `<i class="fas fa-store"></i> ${d.bisnisNama || 'UMKM / Bisnis Mitra'}`;
-
-                headerPackage.style.display = 'inline-flex';
-                packageText.innerText = `Paket ${d.paketLangganan.toUpperCase()}`;
-                
-                const pkgLower = d.paketLangganan.toLowerCase();
-                if (pkgLower.includes('premium') || pkgLower.includes('vip') || pkgLower.includes('ultimate')) {
-                    headerPackage.style.background = '#e9d5ff';
-                    headerPackage.style.color = '#6b21a8';
-                }
 
                 if (d.isVerified) {
                     verifiedIcon.style.display = 'inline-block';
@@ -502,7 +633,6 @@
         if (urlUid) {
             localStorage.setItem('sitenexs_uid', urlUid);
             localStorage.setItem('sitenexs_logged_in', 'true');
-            // Jika ada uid di URL tapi belum login firebase, tetap jalankan auth check normal
         }
 
         onAuthStateChanged(auth, async (user) => {
@@ -513,8 +643,6 @@
                 const isLogged = localStorage.getItem('sitenexs_logged_in') === 'true';
 
                 if (isLogged && savedUid) {
-                    // Fallback jika auth state belum trigger tapi ada session lokal
-                    // Buat dummy user object minimal
                     loadUserData({ uid: savedUid, email: '', displayName: 'Mitra Sitenexs' });
                 } else {
                     window.location.replace("https://account.sitenexs.com/sign-in/");
@@ -641,7 +769,6 @@
         });
 
         cropCanvas.addEventListener('pointerup', () => dragPosition = null);
-
 
         // --- SIMPAN PERUBAHAN NAMA ---
         window.saveProfileChanges = async function(e) {
