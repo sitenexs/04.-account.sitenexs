@@ -947,20 +947,64 @@
         }
         fetchAllUsersForMention();
 
-        function timeAgo(date) {
-            if (!date) return 'Baru saja';
-            const seconds = Math.floor((new Date() - date) / 1000);
-            let interval = seconds / 31536000;
-            if (interval > 1) return Math.floor(interval) + "th lalu";
-            interval = seconds / 2592000;
-            if (interval > 1) return Math.floor(interval) + "bln lalu";
-            interval = seconds / 86400;
-            if (interval > 1) return Math.floor(interval) + "hr lalu";
-            interval = seconds / 3600;
-            if (interval > 1) return Math.floor(interval) + "j lalu";
-            interval = seconds / 60;
-            if (interval > 1) return Math.floor(interval) + "m lalu";
-            return "Baru saja";
+        // --- FITUR MENTION & REPLY KOMENTAR DI PROFIL ---
+        window.replyComment = function(postId, authorName) {
+            const inputEl = document.getElementById(`comment-input-${postId}`);
+            if (inputEl) {
+                inputEl.value = `@${authorName} ` + inputEl.value;
+                inputEl.focus();
+                inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+            }
+        }
+
+        window.handleCommentInput = function(event, postId) {
+            const input = event.target;
+            const val = input.value;
+            const cursorPos = input.selectionStart;
+            const dropdown = document.getElementById(`mention-dropdown-${postId}`);
+
+            const textBeforeCursor = val.substring(0, cursorPos);
+            const match = textBeforeCursor.match(/@([a-zA-Z0-9_\s]*)$/);
+
+            if (match) {
+                const queryStr = match[1].toLowerCase();
+                const filtered = allRegisteredUsers.filter(u => u.nama.toLowerCase().includes(queryStr));
+
+                if (filtered.length > 0) {
+                    let html = '';
+                    filtered.forEach(u => {
+                        const fallbackAv = `https://ui-avatars.com/api/?name=${encodeURIComponent(u.nama)}&background=2563eb&color=fff`;
+                        html += `
+                            <div class="mention-item" onclick="selectMention('${postId}', '${u.nama.replace(/'/g, "\\'")}')">
+                                <img src="${u.avatar}" onerror="this.src='${fallbackAv}'">
+                                <span>${u.nama}</span>
+                            </div>
+                        `;
+                    });
+                    dropdown.innerHTML = html;
+                    dropdown.classList.add('active');
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            } else {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        window.selectMention = function(postId, name) {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const dropdown = document.getElementById(`mention-dropdown-${postId}`);
+            const cursorPos = input.selectionStart;
+            const val = input.value;
+
+            const textBefore = val.substring(0, cursorPos);
+            const textAfter = val.substring(cursorPos);
+            const newTextBefore = textBefore.replace(/@([a-zA-Z0-9_\s]*)$/, `@${name} `);
+
+            input.value = newTextBefore + textAfter;
+            dropdown.classList.remove('active');
+            input.focus();
+            input.setSelectionRange(newTextBefore.length, newTextBefore.length);
         }
 
         function formatCommentText(text) {
@@ -976,6 +1020,22 @@
                 });
             });
             return formatted;
+        }
+
+        function timeAgo(date) {
+            if (!date) return 'Baru saja';
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + "th lalu";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + "bln lalu";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + "hr lalu";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + "j lalu";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + "m lalu";
+            return "Baru saja";
         }
 
         window.togglePostOptions = function(postId, event) {
@@ -1441,7 +1501,6 @@
             const authorPhoto = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(authorUid)}/profile-photo`;
             const authorFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(penulis)}&background=2563eb&color=fff`;
             
-            // Selalu gunakan kontainer dinamis `.async-verif-badge` untuk mengecek status verifikasi terbaru dari database pengguna
             const verifiedIcon = `<span class="async-verif-badge" data-uid="${authorUid}"></span>`;
 
             const postTitleHtml = judul ? `<h2 class="post-title">${judul}</h2>` : '';
@@ -1575,7 +1634,7 @@
             `;
         }
 
-        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI (CENTANG BIRU IKUT HILANG) ---
+        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI ---
         function runAsyncVerifBadges() {
             setTimeout(() => {
                 document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
@@ -1587,18 +1646,16 @@
                         if (snap.exists()) {
                             const d = snap.data();
                             const isVerified = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
-                            userVerifCache[uid] = isVerified;
                             
                             if (isVerified) {
                                 el.innerHTML = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
                             } else {
-                                el.innerHTML = ''; // Centang biru dikosongkan/dihilangkan jika status verifikasi dicabut
+                                el.innerHTML = '';
                             }
                         } else {
                             el.innerHTML = '';
                         }
                     } catch(e) {
-                        console.error("Gagal memeriksa status verifikasi:", e);
                         el.innerHTML = '';
                     }
                 });
