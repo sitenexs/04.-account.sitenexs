@@ -173,17 +173,26 @@
             transition: var(--transition);
         }
 
+        /* UKURAN FOTO PROFIL DIPERBESAR (110px) & TOMBOL TAMBAH (+) */
         .profile-avatar-container {
-            position: relative; width: 92px; height: 92px; margin-bottom: 0.75rem;
+            position: relative; width: 110px; height: 110px; margin-bottom: 0.85rem;
+        }
+        .profile-avatar-wrapper {
+            width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-light);
+            box-shadow: var(--shadow-md); background: #e2e8f0; display: grid; place-items: center; position: relative;
         }
         .profile-avatar {
-            width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-light);
-            box-shadow: var(--shadow-md); background: #cbd5e1; display: grid; place-items: center; overflow: hidden;
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .avatar-initials {
+            font-size: 2rem; font-weight: 800; color: var(--text-muted); background: #cbd5e1;
+            width: 100%; height: 100%; display: grid; place-items: center;
         }
         .upload-avatar-btn {
-            position: absolute; bottom: 0; right: 0; background: var(--primary); color: #fff;
-            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.78rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
+            position: absolute; bottom: 2px; right: 2px; background: var(--primary); color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; cursor: pointer; border: 2px solid #fff; transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         .upload-avatar-btn:hover { background: var(--primary-dark); transform: scale(1.08); }
 
@@ -516,12 +525,25 @@
     <!-- BACKDROP MODE FOKUS -->
     <div class="focus-backdrop" id="focusBackdrop" onclick="exitFocusMode()"></div>
 
-    <!-- SIDEBAR BURGER (DRAWER UNTUK EDIT PROFIL) -->
+    <!-- SIDEBAR BURGER (DRAWER UNTUK EDIT PROFIL, FOTO & LOGO) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <aside class="sidebar-drawer" id="sidebarDrawer">
         <div class="sidebar-header">
             <div class="sidebar-title"><i class="fas fa-user-gear text-primary"></i> Pengaturan Profil</div>
             <button type="button" class="close-sidebar-btn" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- FOTO PROFIL DI DALAM SIDEBAR -->
+        <div class="form-group" style="text-align: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+            <label class="form-label" style="text-align: left;">Foto Profil Utama</label>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                <div style="width: 55px; height: 55px; border-radius: 50%; overflow: hidden; background: #cbd5e1; flex-shrink: 0; border: 2px solid var(--border-medium);">
+                    <img id="sidebarAvatarPreview" src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2563eb&color=fff'">
+                </div>
+                <label for="avatarFileInput" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.85rem; cursor: pointer; width: 100%;">
+                    <i class="fas fa-camera"></i> Ganti Foto Profil
+                </label>
+            </div>
         </div>
 
         <form id="updateProfileForm" onsubmit="saveProfileChanges(event)">
@@ -582,12 +604,13 @@
         <!-- HEADER KARTU PROFIL -->
         <div class="profile-header-card">
             <div class="profile-avatar-container">
-                <div class="profile-avatar" aria-hidden="true">
-                    <img id="profileAvatarImg" src="" alt="Avatar" class="profile-avatar" style="width:100%; height:100%; object-fit:cover;" hidden>
-                    <span id="avatarInitials"><i class="fas fa-spinner fa-spin"></i></span>
+                <div class="profile-avatar-wrapper" aria-hidden="true">
+                    <img id="profileAvatarImg" src="" alt="Avatar" class="profile-avatar" hidden>
+                    <div id="avatarInitials" class="avatar-initials"><i class="fas fa-user" style="color: #94a3b8;"></i></div>
                 </div>
-                <button type="button" class="upload-avatar-btn" id="uploadAvatarBtn" title="Ganti Foto Profil">
-                    <i class="fas fa-camera"></i>
+                <!-- TOMBOL TANDA TAMBAH (+) DI FOTO PROFIL -->
+                <button type="button" class="upload-avatar-btn" id="uploadAvatarBtn" title="Tambah / Ganti Foto Profil">
+                    <i class="fas fa-plus"></i>
                 </button>
                 <input type="file" id="avatarFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;">
             </div>
@@ -680,6 +703,7 @@
         let userVerifCache = {};
 
         const avatarImg = document.getElementById('profileAvatarImg');
+        const sidebarAvatarPreview = document.getElementById('sidebarAvatarPreview');
         const avatarInitials = document.getElementById('avatarInitials');
         const avatarFileInput = document.getElementById('avatarFileInput');
         const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
@@ -856,7 +880,6 @@
             return formatted;
         }
 
-        // PENERAPAN TEMA & NAMA LOGO NAVBAR SESUAI PAKET
         function applyUserPackageTheme(paketLangganan) {
             const pkg = (paketLangganan || 'basic').toLowerCase();
             let themeCategory = 'basic';
@@ -891,16 +914,22 @@
             const initials = name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
             const profilePhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo?t=${Date.now()}`;
             
+            const fallbackText = initials || 'S';
+
             avatarImg.onload = () => {
                 avatarImg.hidden = false;
                 avatarInitials.hidden = true;
             };
             avatarImg.onerror = () => {
                 avatarImg.hidden = true;
-                avatarInitials.textContent = initials || 'S';
+                avatarInitials.innerHTML = `<span style="font-size: 2rem; font-weight:800; color:#475569;">${fallbackText}</span>`;
                 avatarInitials.hidden = false;
             };
             avatarImg.src = profilePhotoUrl;
+            sidebarAvatarPreview.src = profilePhotoUrl;
+            sidebarAvatarPreview.onerror = () => {
+                sidebarAvatarPreview.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff`;
+            };
         }
 
         async function loadUserData(user) {
@@ -1083,9 +1112,12 @@
                 
                 if (!response.ok) throw new Error('Upload failed');
 
-                avatarImg.src = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                const newPhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                avatarImg.src = newPhotoUrl;
                 avatarImg.hidden = false;
                 avatarInitials.hidden = true;
+                sidebarAvatarPreview.src = newPhotoUrl;
+
                 cropDialog.close();
                 showAlert("Foto profil berhasil diperbarui!");
             } catch (error) {
