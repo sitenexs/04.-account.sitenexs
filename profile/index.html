@@ -154,7 +154,7 @@
         .nav-container { display: flex; align-items: center; justify-content: space-between; height: 65px; width: 100%; max-width: 680px; margin: 0 auto; padding: 0 1rem; }
         .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
         .logo img { height: 32px; width: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
-        .logo-text { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+        .logo-text { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; font-weight: 800; letter-spacing: -0.02em; }
         .nav-actions { display: flex; gap: 0.4rem; align-items: center; }
 
         /* PROFILE LAYOUT */
@@ -564,7 +564,7 @@
         <div class="nav-container">
             <a href="https://sitenexs.com/" class="logo">
                 <img src="https://sitenexs.com/assets/logo/logo.png" alt="Sitenexs Logo" onerror="this.src='https://ui-avatars.com/api/?name=Sitenexs&background=2563eb&color=fff'">
-                <span class="logo-text" id="navLogoText">SiteNexs</span>
+                <span class="logo-text" id="navLogoText">SITENEXS</span>
             </a>
             <div class="nav-actions">
                 <a href="https://sitenexs.com/" class="btn btn-secondary btn-icon-only" title="Beranda"><i class="fas fa-home"></i></a>
@@ -614,7 +614,7 @@
             </div>
         </div>
 
-        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA (PERSIS DENGAN KARTU KOMUNITAS.HTML) -->
+        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA -->
         <div class="profile-card">
             <div class="card-title">
                 <span><i class="fas fa-comments text-primary"></i> Postingan Komunitas Saya</span>
@@ -677,7 +677,7 @@
         let currentUser = null;
         let currentUserData = null;
         let allRegisteredUsers = [];
-        const userVerifCache = {};
+        let userVerifCache = {};
 
         const avatarImg = document.getElementById('profileAvatarImg');
         const avatarInitials = document.getElementById('avatarInitials');
@@ -697,7 +697,6 @@
         const myPostsContainer = document.getElementById('myPostsContainer');
         const alertBox = document.getElementById('alertBox');
 
-        // Sidebar elements
         window.openSidebar = function() {
             document.getElementById('sidebarOverlay').classList.add('active');
             document.getElementById('sidebarDrawer').classList.add('active');
@@ -707,7 +706,6 @@
             document.getElementById('sidebarDrawer').classList.remove('active');
         };
 
-        // Crop Dialog Elements
         const cropDialog = document.getElementById('avatarCropDialog');
         const cropCanvas = document.getElementById('cropCanvas');
         const cropContext = cropCanvas.getContext('2d', { alpha: false });
@@ -721,7 +719,6 @@
         let dragPosition = null;
         const cropSize = cropCanvas.width;
 
-        // EFEK SUARA SUKA (KOMUNITAS)
         function playLikeSound(isLiked) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -859,7 +856,7 @@
             return formatted;
         }
 
-        // TEMA PAKET USER & UBAH TEKS LOGO NAVBAR
+        // PENERAPAN TEMA & NAMA LOGO NAVBAR SESUAI PAKET
         function applyUserPackageTheme(paketLangganan) {
             const pkg = (paketLangganan || 'basic').toLowerCase();
             let themeCategory = 'basic';
@@ -872,10 +869,13 @@
 
             document.body.setAttribute('data-package', themeCategory);
 
-            // Ganti teks logo navbar sesuai nama paket user
             const logoTextEl = document.getElementById('navLogoText');
             if (logoTextEl) {
-                logoTextEl.innerText = (paketLangganan || 'BASIC').toUpperCase();
+                if (themeCategory === 'basic' || !paketLangganan || paketLangganan.toLowerCase() === 'basic') {
+                    logoTextEl.innerText = 'SITENEXS';
+                } else {
+                    logoTextEl.innerText = paketLangganan.toUpperCase();
+                }
             }
         }
 
@@ -999,7 +999,6 @@
             }
         });
 
-        // FUNGSI CROP FOTO PROFIL
         function clampCropPosition() {
             const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
             const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
@@ -1119,7 +1118,6 @@
 
         cropCanvas.addEventListener('pointerup', () => dragPosition = null);
 
-        // SIMPAN PERUBAHAN NAMA PROFIL
         window.saveProfileChanges = async function(e) {
             e.preventDefault();
             if (!currentUid) return;
@@ -1191,10 +1189,6 @@
                 showAlert("Gagal mengunggah logo bisnis.", "error");
             }
         }
-
-        // =========================================================
-        // REALTIME POSTINGAN USER (TAMPILAN & STRUKTUR KOMUNITAS.HTML)
-        // =========================================================
 
         function renderPostCardHtml(postId, data, currentActiveUid) {
             const dateObj = data.createdAt ? data.createdAt.toDate() : new Date();
@@ -1384,7 +1378,6 @@
                     return;
                 }
 
-                // Urutkan postingan berdasarkan tanggal terbaru
                 docsList.sort((a, b) => {
                     const timeA = a.data.createdAt ? a.data.createdAt.toDate().getTime() : 0;
                     const timeB = b.data.createdAt ? b.data.createdAt.toDate().getTime() : 0;
@@ -1404,7 +1397,6 @@
             });
         }
 
-        // AKSI LIKE DENGAN AUDIOPLAY DAN ANIMASI POP DARI KOMUNITAS
         window.toggleLike = async function(postId) {
             if (!currentUid) {
                 showAlert("Silakan login terlebih dahulu.", "error");
@@ -1521,7 +1513,6 @@
             }
         };
 
-        // --- FITUR LONG-PRESS FOCUS & BLUR MODE ---
         let pressTimer = null;
         let startX = 0;
         let startY = 0;
