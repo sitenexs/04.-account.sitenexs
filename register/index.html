@@ -1024,6 +1024,10 @@
                 
                 // LEMPAR KE HALAMAN KOMUNITAS DENGAN MEMBAWA PARAMETER UID (Sama seperti sign-in.html)
                 window.location.assign(`https://sitenexs.com/community/?uid=${user.uid}`);
+              
+                localStorage.setItem('sitenexs_show_welcome', 'true');
+                window.location.assign('https://sitenexs.com/?welcome=true');
+
                 
             } catch (error) {
                 message.className = 'error';
