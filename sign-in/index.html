@@ -433,6 +433,10 @@
                 // LEMPAR KE HALAMAN KOMUNITAS DENGAN MEMBAWA PARAMETER UID
                 window.location.assign(`https://sitenexs.com/community/?uid=${user.uid}`);
 
+                localStorage.setItem('sitenexs_show_welcome', 'true');
+                window.location.assign('https://sitenexs.com/?welcome=true');
+
+
             } catch (error) {
                 const messages = {
                     'auth/invalid-credential': 'Email atau password salah.',
