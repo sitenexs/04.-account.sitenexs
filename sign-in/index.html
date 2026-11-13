@@ -402,7 +402,7 @@
             message.className = type;
         }
 
-                form.addEventListener('submit', async (event) => {
+            form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
             message.textContent = '';
@@ -427,15 +427,12 @@
                 // Simpan juga ke localStorage cadangan
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
+                localStorage.setItem('sitenexs_show_welcome', 'true');
 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
                 
-                // LEMPAR KE HALAMAN KOMUNITAS DENGAN MEMBAWA PARAMETER UID
-                window.location.assign(`https://sitenexs.com/community/?uid=${user.uid}`);
-
-                localStorage.setItem('sitenexs_show_welcome', 'true');
-                window.location.assign('https://sitenexs.com/?welcome=true');
-
+                // LEMPAR LANGSUNG KE INDEX.HTML DENGAN MEMBAWA PARAMETER WELCOME DAN UID
+                window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
 
             } catch (error) {
                 const messages = {
@@ -450,6 +447,7 @@
                 btnText.textContent = 'Masuk';
             }
         });
+
 
 
         document.getElementById('reset-password').addEventListener('click', async () => {
