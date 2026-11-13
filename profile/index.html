@@ -2034,16 +2034,28 @@
             if (navigator.vibrate) navigator.vibrate(50);
         };
 
-        window.handleLogout = async function() {
+                window.handleLogout = async function() {
             if (confirm("Apakah Anda yakin ingin keluar dari akun Sitenexs?")) {
+                // Hapus semua data sesi login dan kunci terkait dari localStorage & sessionStorage
                 localStorage.removeItem('sitenexs_uid');
                 localStorage.removeItem('sitenexs_logged_in');
+                localStorage.removeItem('sitenexs_show_welcome');
+                sessionStorage.clear();
+                
+                // Bersihkan seluruh penyimpanan lokal jika diperlukan
+                // localStorage.clear(); 
+
                 try {
                     await signOut(auth);
-                } catch(e) {}
+                } catch(e) {
+                    console.error("Gagal melakukan sign out dari Firebase:", e);
+                }
+
+                // Redirect ke halaman login
                 window.location.replace("https://account.sitenexs.com/sign-in/");
             }
         };
+
     </script>
 </body>
 </html>
