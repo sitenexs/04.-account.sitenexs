@@ -155,25 +155,7 @@
         .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
         .logo img { height: 32px; width: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm); }
         .logo-text { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; font-weight: 800; letter-spacing: -0.02em; }
-        .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
-
-        /* TOMBOL MENU PROFIL DI NAVBAR */
-        .nav-profile-menu-btn {
-            display: inline-flex; align-items: center; gap: 0.4rem; background: #fff;
-            border: 1px solid var(--border-medium); padding: 0.25rem 0.65rem 0.25rem 0.25rem;
-            border-radius: var(--radius-full); cursor: pointer; transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-        .nav-profile-menu-btn:hover { border-color: var(--primary); }
-        .nav-profile-avatar {
-            width: 28px; height: 28px; border-radius: 50%; object-fit: cover;
-            border: 2px solid var(--primary); flex-shrink: 0;
-        }
-        /* Border tema khusus paket di navbar */
-        body[data-package="pro"] .nav-profile-avatar { border-color: #0284c7; }
-        body[data-package="vip"] .nav-profile-avatar,
-        body[data-package="ultimate"] .nav-profile-avatar,
-        body[data-package="premium"] .nav-profile-avatar { border-color: #7c3aed; }
+        .nav-actions { display: flex; gap: 0.4rem; align-items: center; }
 
         /* PROFILE LAYOUT */
         .profile-wrapper { padding: 1.5rem 0 4rem 0; width: 100%; }
@@ -245,7 +227,9 @@
             width: 100%;
         }
 
-        /* KARTU POSTINGAN */
+        /* =========================================================
+           DESAIN KARTU POSTINGAN
+           ========================================================= */
         .post-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
             padding: 0; box-shadow: var(--shadow-sm); transition: var(--transition); animation: fadeIn 0.3s ease; width: 100%; overflow: hidden;
@@ -257,19 +241,30 @@
         
         .post-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.65rem; gap: 0.4rem; }
         .post-author { display: flex; align-items: center; gap: 0.5rem; min-width: 0; flex: 1; }
+        
         .post-author-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(0,0,0,0.08); flex-shrink: 0; }
         
         .author-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+        
         .author-name-row { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
         .author-name-link { text-decoration: none; color: inherit; display: inline-flex; align-items: center; min-width: 0; }
         .author-name-link:hover .author-name { text-decoration: underline; color: var(--primary); }
         .author-name { 
-            font-weight: 800; font-size: 0.85rem; color: var(--text-main); 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; 
+            font-weight: 800; 
+            font-size: 0.85rem; 
+            color: var(--text-main); 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            line-height: 1.3; 
+            transition: color 0.2s; 
+            padding-bottom: 1px;
         }
         .member-verification-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; transform: translateY(0.5px); }
+        
         .author-time-wrapper { display: flex; align-items: center; gap: 0.4rem; font-size: 0.65rem; color: var(--text-muted); font-weight: 500; margin-top: 0.05rem; }
         
+        /* TOMBOL MENU TITIK TIGA (...) DI POJOK KANAN ATAS POSTINGAN */
         .post-options-container { position: relative; }
         .post-options-btn {
             background: transparent; border: none; width: 28px; height: 28px; border-radius: 50%;
@@ -292,36 +287,85 @@
         .option-item:hover { background: var(--primary-light); color: var(--primary); }
         .option-item i { width: 16px; text-align: center; }
 
+        .post-badge {
+            font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: var(--radius-full);
+            background: var(--bg-body); color: var(--text-muted); flex-shrink: 0; border: 1px solid var(--border-subtle);
+        }
+        .badge-pengumuman { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
+        .badge-tips { background: #fffbeb; color: #d97706; border-color: #fcd34d; }
+        .badge-bug { background: #faf5ff; color: #7e22ce; border-color: #d8b4fe; }
+
         .post-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.3rem; line-height: 1.3; color: var(--text-main); word-break: break-word; }
         .post-content { font-size: 0.8rem; color: var(--text-main); margin-bottom: 0.65rem; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
         .post-image { width: 100%; max-height: 350px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 0.65rem; border: 1px solid var(--border-subtle); }
 
+        /* TOMBOL AKSI GAYA SOSMED & SEJAJAR RAPI */
         .post-actions {
-            display: flex; align-items: center; justify-content: space-between; 
-            border-top: 1px solid var(--border-subtle); padding: 0.3rem 0.5rem; gap: 0.25rem;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-top: 1px solid var(--border-subtle); 
+            padding: 0.3rem 0.5rem; 
+            gap: 0.25rem;
         }
         .action-btn { 
-            flex: 1 1 0px; display: inline-flex; align-items: center; justify-content: center; 
-            gap: 0.35rem; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; 
-            cursor: pointer; transition: all 0.2s; background: transparent; padding: 0.45rem 0.2rem; 
-            border-radius: var(--radius-sm); border: none; white-space: nowrap;
+            flex: 1 1 0px; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 0.35rem; 
+            color: var(--text-muted); 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            background: transparent; 
+            padding: 0.45rem 0.2rem; 
+            border-radius: var(--radius-sm);
+            border: none;
+            white-space: nowrap;
         }
         .action-btn:hover { background: var(--bg-body); color: var(--text-main); }
         .action-btn.liked { color: #ef4444; }
+
         .action-btn.delete-btn { color: #ef4444; }
         .action-btn.delete-btn:hover { background: #fef2f2; color: #dc2626; }
 
-        /* KOMENTAR */
+        @keyframes likePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+        .action-btn.liked i { 
+            font-weight: 900; 
+            animation: likePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        /* KOMENTAR SECTION - DENGAN ANIMASI BUKA/TUTUP */
         .comments-section {
             background: #fafafa; border-top: 1px solid var(--border-subtle);
-            padding: 0.85rem; display: none; opacity: 0; transform: translateY(-8px);
+            padding: 0.85rem; display: none;
+            opacity: 0;
+            transform: translateY(-8px);
             transition: opacity 0.25s ease, transform 0.25s ease;
         }
         .comments-section.active { 
-            display: block; opacity: 1; transform: translateY(0); 
+            display: block; 
+            opacity: 1;
+            transform: translateY(0);
+            animation: commentSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+        @keyframes commentSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .comment-list { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0.85rem; max-height: 250px; overflow-y: auto; padding-right: 0.4rem; }
-        .comment-item { display: flex; gap: 0.5rem; align-items: flex-start; }
+        
+        .comment-item { 
+            display: flex; gap: 0.5rem; align-items: flex-start; 
+            transition: all 0.3s ease; border-radius: var(--radius-md); padding: 0.15rem;
+        }
         .comment-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); flex-shrink: 0; }
         
         .comment-content-wrapper { flex: 1; min-width: 0; }
@@ -330,25 +374,109 @@
             border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
             display: inline-block; width: 100%; border: 1px solid var(--border-subtle);
         }
+        
         .comment-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.15rem; }
         .comment-author-left { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
         .comment-author-link { text-decoration: none; color: inherit; display: inline-flex; align-items: center; min-width: 0; }
         .comment-author-link:hover .comment-author { text-decoration: underline; color: var(--primary); }
-        .comment-author { font-weight: 800; font-size: 0.75rem; color: var(--text-main); line-height: 1.3; }
+        .comment-author { 
+            font-weight: 800; 
+            font-size: 0.75rem; 
+            color: var(--text-main); 
+            line-height: 1.3; 
+            transition: color 0.2s; 
+            padding-bottom: 1px;
+        }
+        
         .comment-text { font-size: 0.75rem; color: var(--text-main); word-break: break-word; line-height: 1.35; }
+        .comment-text .mention-link { color: var(--primary); font-weight: 700; text-decoration: none; }
+        .comment-text .mention-link:hover { text-decoration: underline; }
+
         .comment-footer-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.2rem; margin-left: 0.3rem; }
         .comment-time { font-size: 0.6rem; color: var(--text-muted); font-weight: 500; }
-        .reply-trigger-btn, .delete-comment-btn { background: none; border: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 0; }
-        .reply-trigger-btn { color: var(--primary); }
-        .delete-comment-btn { color: #ef4444; }
+        .reply-trigger-btn { background: none; border: none; color: var(--primary); font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 0; transition: var(--transition); }
+        .reply-trigger-btn:hover { text-decoration: underline; }
+        .delete-comment-btn { background: none; border: none; color: #ef4444; font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 0; transition: var(--transition); }
+        .delete-comment-btn:hover { text-decoration: underline; }
+
+        /* FOKUS KOMENTAR & BLUR */
+        .comments-section.comment-focus-mode .comment-item:not(.focused-comment) {
+            filter: blur(4px);
+            opacity: 0.35;
+            pointer-events: none;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        .comment-item.focused-comment {
+            position: relative;
+            z-index: 50;
+            transform: scale(1.02);
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+            border: none;
+            padding: 0.3rem;
+            transition: all 0.3s ease;
+        }
+
+        /* MENTION AUTOCOMPLETE DROPDOWN */
+        .mention-dropdown {
+            position: absolute; bottom: 100%; left: 0; background: #fff;
+            border: 1px solid var(--border-medium); border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md); width: 220px; max-height: 150px; overflow-y: auto;
+            z-index: 100; display: none; margin-bottom: 4px;
+        }
+        .mention-dropdown.active { display: block; }
+        .mention-item {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem;
+            font-size: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--border-subtle);
+            transition: var(--transition); color: var(--text-main);
+        }
+        .mention-item:hover, .mention-item.selected { background: var(--primary-light); color: var(--primary); }
+        .mention-item img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
 
         .comment-form { display: flex; gap: 0.5rem; align-items: center; position: relative; }
         .comment-form-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); flex-shrink: 0; }
-        .comment-input-wrapper { flex: 1; display: flex; align-items: center; background: #fff; border: 1px solid var(--border-medium); border-radius: var(--radius-full); padding: 0.15rem 0.15rem 0.15rem 0.65rem; position: relative; }
+        .comment-input-wrapper { flex: 1; display: flex; align-items: center; background: #fff; border: 1px solid var(--border-medium); border-radius: var(--radius-full); padding: 0.15rem 0.15rem 0.15rem 0.65rem; transition: var(--transition); position: relative; }
+        .comment-input-wrapper:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
         .comment-input { flex: 1; background: transparent; font-size: 0.75rem; color: var(--text-main); height: 28px; }
-        .comment-submit-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; flex-shrink: 0; }
+        .comment-submit-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); flex-shrink: 0; border: none; }
+        .comment-submit-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
 
-        /* SIDEBAR DRAWER */
+        /* MODE FOKUS & BLUR POST CARD */
+        body.forum-focus-mode header,
+        body.forum-focus-mode .profile-header-card,
+        body.forum-focus-mode .card-title,
+        body.forum-focus-mode .post-card:not(.focused-card) {
+            filter: blur(5px);
+            opacity: 0.35;
+            pointer-events: none;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        .post-card.focused-card {
+            position: relative;
+            z-index: 9999;
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.25);
+            border-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        .focus-backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 9998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.forum-focus-mode .focus-backdrop {
+            display: block;
+            opacity: 1;
+        }
+
+        /* SIDEBAR BURGER (OFF-CANVAS DRAWER) */
         .sidebar-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px);
@@ -369,18 +497,22 @@
             padding-bottom: 0.85rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);
         }
         .sidebar-title { font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem; }
-        .close-sidebar-btn { background: var(--bg-body); border: none; width: 30px; height: 30px; border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
-        
+        .close-sidebar-btn { background: var(--bg-body); border: none; width: 30px; height: 30px; border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: var(--transition); }
+        .close-sidebar-btn:hover { background: #fee2e2; color: #ef4444; }
+
         .form-group { margin-bottom: 1rem; }
         .form-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem; }
         .form-control {
             width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-medium);
             border-radius: var(--radius-md); font-size: 0.85rem; background: var(--bg-body); color: var(--text-main);
+            transition: var(--transition);
         }
         .form-control:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
-        .business-logo-preview { width: 44px; height: 44px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; }
+        
+        .logo-upload-container { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem; }
+        .business-logo-preview { width: 44px; height: 44px; border-radius: var(--radius-md); object-fit: cover; border: 1px solid var(--border-medium); background: #fff; box-shadow: var(--shadow-sm); }
 
-        /* MODAL POSTING */
+        /* MODAL BUAT POSTINGAN */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px);
@@ -393,36 +525,84 @@
             padding: 1.25rem; transform: translateY(15px); transition: all 0.2s ease; box-shadow: var(--shadow-lg);
             max-height: 90vh; overflow-y: auto;
         }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border-subtle); }
-        .close-modal { background: var(--bg-body); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; border: none; }
+        .modal-header h3 { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
+        .close-modal { background: var(--bg-body); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); border: none; }
+        .close-modal:hover { background: #fef2f2; color: #ef4444; }
+
+        /* UPLOAD FOTO POSTINGAN */
+        .image-upload-wrapper { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        .image-upload-label { 
+            display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; 
+            border: 1px dashed var(--border-medium); border-radius: var(--radius-sm); 
+            color: var(--text-muted); cursor: pointer; font-size: 0.75rem; font-weight: 600; 
+            transition: var(--transition); width: fit-content;
+        }
+        .image-upload-label:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .image-preview-container { position: relative; display: none; width: 100%; margin-top: 0.5rem; }
+        .image-preview-container img { width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
+        .remove-image-btn { 
+            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(15, 23, 42, 0.7); 
+            color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; border: none; font-size: 0.7rem; 
+        }
 
         /* DIALOG CROP FOTO PROFIL */
         .crop-dialog {
-            width: min(380px, calc(100% - 2rem)); padding: 1.25rem; border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-lg); margin: auto;
+            width: min(380px, calc(100% - 2rem));
+            padding: 1.25rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+            margin: auto;
         }
         .crop-dialog::backdrop { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
-        .crop-canvas { display: block; width: 220px; height: 220px; margin: 1rem auto; border-radius: 50%; background: #e2e8f0; cursor: grab; }
+
+        .crop-canvas {
+            display: block; width: 220px; height: 220px; margin: 1rem auto;
+            border-radius: 50%; background: #e2e8f0; cursor: grab; touch-action: none;
+        }
+        .crop-canvas:active { cursor: grabbing; }
+        .crop-zoom input { width: 100%; margin-top: 0.5rem; accent-color: var(--primary); }
         .crop-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
 
-        /* TOAST */
+        /* TOAST NOTIFICATION MODERN */
         #toastContainer {
             position: fixed; bottom: 20px; right: 20px; z-index: 10000;
-            display: flex; flex-direction: column; gap: 0.5rem; max-width: 320px; width: 100%; pointer-events: none;
+            display: flex; flex-direction: column; gap: 0.5rem; max-width: 320px; width: 100%;
+            pointer-events: none;
         }
         .toast {
             background: #0f172a; color: #fff; padding: 0.75rem 1rem; border-radius: var(--radius-md);
-            font-size: 0.8rem; font-weight: 600; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 0.6rem; pointer-events: auto;
+            font-size: 0.8rem; font-weight: 600; box-shadow: var(--shadow-lg);
+            display: flex; align-items: center; gap: 0.6rem; pointer-events: auto;
+            animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .toast.success { background: #065f46; border-left: 4px solid #10b981; }
         .toast.error { background: #991b1b; border-left: 4px solid #ef4444; }
+        .toast.fadeOut { animation: toastOut 0.3s ease forwards; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(10px) scale(0.95); }
+        }
     </style>
 </head>
 <body>
 
+    <!-- CONTAINER NOTIFIKASI TOAST -->
     <div id="toastContainer"></div>
 
-    <!-- SIDEBAR DRAWER -->
+    <!-- BACKDROP MODE FOKUS -->
+    <div class="focus-backdrop" id="focusBackdrop" onclick="exitFocusMode()"></div>
+
+    <!-- SIDEBAR BURGER (DRAWER UNTUK EDIT PROFIL, FOTO & LOGO) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <aside class="sidebar-drawer" id="sidebarDrawer">
         <div class="sidebar-header">
@@ -455,7 +635,7 @@
 
             <div class="form-group" style="margin-top: 1.25rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
                 <label class="form-label">Logo Bisnis / Toko</label>
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.35rem;">
+                <div class="logo-upload-container">
                     <img id="businessLogoPreview" src="https://ui-avatars.com/api/?name=Logo&background=e2e8f0&color=475569" alt="Logo Bisnis" class="business-logo-preview">
                     <label for="logoFileInput" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.4rem 0.75rem; cursor: pointer;">
                         <i class="fas fa-upload"></i> Pilih Logo
@@ -488,12 +668,7 @@
             <div class="nav-actions">
                 <a href="https://sitenexs.com/" class="btn btn-secondary btn-icon-only" title="Beranda"><i class="fas fa-home"></i></a>
                 <a href="https://sitenexs.com/community/" class="btn btn-secondary btn-icon-only" title="Komunitas"><i class="fas fa-comments"></i></a>
-                
-                <!-- TOMBOL BURGER DENGAN FOTO PROFIL BULAT BERBORDER TEMA PAKET -->
-                <button type="button" onclick="openSidebar()" class="nav-profile-menu-btn" title="Pengaturan Profil">
-                    <img id="navProfileAvatarImg" src="" alt="Avatar" class="nav-profile-avatar" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2563eb&color=fff'">
-                    <i class="fas fa-bars" style="font-size: 0.8rem; color: var(--text-muted); margin-left: 0.1rem;"></i>
-                </button>
+                <button type="button" onclick="openSidebar()" class="btn btn-secondary btn-icon-only" title="Edit Profil & Pengaturan"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </header>
@@ -501,6 +676,7 @@
     <!-- KONTEN UTAMA PROFIL -->
     <main class="container profile-wrapper">
 
+        <!-- HEADER KARTU PROFIL -->
         <div class="profile-header-card">
             <div class="profile-avatar-container">
                 <div class="profile-avatar-wrapper" aria-hidden="true">
@@ -534,6 +710,7 @@
             </div>
         </div>
 
+        <!-- RIWAYAT POSTINGAN KOMUNITAS SAYA -->
         <div class="profile-card">
             <div class="card-title">
                 <span><i class="fas fa-comments text-primary"></i> Postingan Komunitas Saya</span>
@@ -562,12 +739,13 @@
                     <textarea id="postContent" class="form-control" rows="4" placeholder="Jelaskan pertanyaan atau bagikan pemikiran Anda secara detail..." required></textarea>
                 </div>
                 
-                <div class="form-group">
+                <!-- FITUR UPLOAD FOTO POSTINGAN -->
+                <div class="form-group image-upload-wrapper">
                     <input type="file" id="postImage" accept="image/*" style="display: none;" onchange="previewImage(event)">
-                    <label for="postImage" class="btn btn-secondary" style="font-size: 0.75rem; cursor: pointer; display: inline-flex; gap: 0.4rem;"><i class="fas fa-image"></i> Tambah Foto</label>
-                    <div id="imagePreviewContainer" style="display: none; margin-top: 0.5rem; position: relative;">
-                        <img id="imagePreview" src="" alt="Preview" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: var(--radius-sm);">
-                        <button type="button" onclick="removeImage()" style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 22px; height: 22px; border: none; cursor: pointer;">&times;</button>
+                    <label for="postImage" class="image-upload-label"><i class="fas fa-image"></i> Tambah Foto (Opsional)</label>
+                    <div class="image-preview-container" id="imagePreviewContainer">
+                        <img id="imagePreview" src="" alt="Preview Foto">
+                        <button type="button" class="remove-image-btn" onclick="removeImage()"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
 
@@ -580,16 +758,24 @@
     </div>
 
     <!-- DIALOG CROP FOTO PROFIL -->
-    <dialog id="avatarCropDialog" class="crop-dialog">
-        <h2 style="margin-top:0; font-size: 1.1rem; font-weight: 800;">Sesuaikan Foto Profil</h2>
+    <dialog id="avatarCropDialog" class="crop-dialog" aria-labelledby="crop-title">
+        <h2 id="crop-title" style="margin-top:0; font-size: 1.1rem; font-weight: 800;">Sesuaikan Foto Profil</h2>
+        <p style="color:var(--text-muted); font-size:0.8rem;">Geser foto untuk memilih area, gunakan penggeser untuk zoom.</p>
+        
         <canvas id="cropCanvas" class="crop-canvas" width="220" height="220"></canvas>
-        <input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1" style="width:100%; margin-bottom:1rem;">
+        
+        <label class="crop-zoom" for="cropZoom" style="display:block; margin-bottom:0.75rem;">
+            <span style="font-size:0.8rem; font-weight:600;">Perbesar</span>
+            <input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1">
+        </label>
+        
         <div class="crop-actions">
-            <button id="cancelCrop" class="btn btn-secondary" type="button">Batal</button>
-            <button id="applyCrop" class="btn btn-primary" type="button">Gunakan</button>
+            <button id="cancelCrop" class="btn btn-secondary" type="button" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">Batal</button>
+            <button id="applyCrop" class="btn btn-primary" type="button" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;">Gunakan</button>
         </div>
     </dialog>
 
+    <!-- SCRIPT FIREBASE & SUPABASE INTEGRATION -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
@@ -620,10 +806,10 @@
         let currentUser = null;
         let currentUserData = null;
         let allRegisteredUsers = [];
+        let userVerifCache = {};
         let isInitialLoad = true;
 
         const avatarImg = document.getElementById('profileAvatarImg');
-        const navProfileAvatarImg = document.getElementById('navProfileAvatarImg');
         const sidebarAvatarPreview = document.getElementById('sidebarAvatarPreview');
         const avatarInitials = document.getElementById('avatarInitials');
         const avatarFileInput = document.getElementById('avatarFileInput');
@@ -700,10 +886,47 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fas fa-info-circle"></i> <span>${message}</span>`;
+            
+            let iconClass = 'fa-check-circle';
+            if (type === 'error') iconClass = 'fa-exclamation-circle';
+            else if (type === 'info') iconClass = 'fa-info-circle';
+
+            toast.innerHTML = `<i class="fas ${iconClass}" style="font-size: 1rem;"></i> <span>${message}</span>`;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+
+            setTimeout(() => {
+                toast.classList.add('fadeOut');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         };
+
+        function playLikeSound(isLiked) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                osc.type = 'sine';
+                if (isLiked) {
+                    osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.12);
+                } else {
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 0.12);
+                }
+
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            } catch (e) {
+                console.log("Audio Web API tidak didukung:", e);
+            }
+        }
 
         async function fetchAllUsersForMention() {
             try {
@@ -719,26 +942,82 @@
                     });
                 });
             } catch (err) {
-                console.error(err);
+                console.error("Gagal mengambil daftar pengguna untuk mention:", err);
             }
         }
         fetchAllUsersForMention();
 
+        // --- FITUR MENTION & REPLY KOMENTAR DI PROFIL ---
         window.replyComment = function(postId, authorName) {
             const inputEl = document.getElementById(`comment-input-${postId}`);
             if (inputEl) {
                 inputEl.value = `@${authorName} ` + inputEl.value;
                 inputEl.focus();
+                inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
             }
+        }
+
+        window.handleCommentInput = function(event, postId) {
+            const input = event.target;
+            const val = input.value;
+            const cursorPos = input.selectionStart;
+            const dropdown = document.getElementById(`mention-dropdown-${postId}`);
+
+            const textBeforeCursor = val.substring(0, cursorPos);
+            const match = textBeforeCursor.match(/@([a-zA-Z0-9_\s]*)$/);
+
+            if (match) {
+                const queryStr = match[1].toLowerCase();
+                const filtered = allRegisteredUsers.filter(u => u.nama.toLowerCase().includes(queryStr));
+
+                if (filtered.length > 0) {
+                    let html = '';
+                    filtered.forEach(u => {
+                        const fallbackAv = `https://ui-avatars.com/api/?name=${encodeURIComponent(u.nama)}&background=2563eb&color=fff`;
+                        html += `
+                            <div class="mention-item" onclick="selectMention('${postId}', '${u.nama.replace(/'/g, "\\'")}')">
+                                <img src="${u.avatar}" onerror="this.src='${fallbackAv}'">
+                                <span>${u.nama}</span>
+                            </div>
+                        `;
+                    });
+                    dropdown.innerHTML = html;
+                    dropdown.classList.add('active');
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            } else {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        window.selectMention = function(postId, name) {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const dropdown = document.getElementById(`mention-dropdown-${postId}`);
+            const cursorPos = input.selectionStart;
+            const val = input.value;
+
+            const textBefore = val.substring(0, cursorPos);
+            const textAfter = val.substring(cursorPos);
+            const newTextBefore = textBefore.replace(/@([a-zA-Z0-9_\s]*)$/, `@${name} `);
+
+            input.value = newTextBefore + textAfter;
+            dropdown.classList.remove('active');
+            input.focus();
+            input.setSelectionRange(newTextBefore.length, newTextBefore.length);
         }
 
         function formatCommentText(text) {
             if (!text) return '';
+            const sortedUsers = [...allRegisteredUsers].sort((a, b) => b.nama.length - a.nama.length);
+            
             let formatted = text;
-            allRegisteredUsers.forEach(u => {
+            sortedUsers.forEach(u => {
                 const escapedName = u.nama.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 const regex = new RegExp(`@(${escapedName})\\b`, 'gi');
-                formatted = formatted.replace(regex, `<a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(u.uid)}" style="color:var(--primary); font-weight:750;">@$1</a>`);
+                formatted = formatted.replace(regex, (match, p1) => {
+                    return `<a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(u.uid)}" class="mention-link">@${p1}</a>`;
+                });
             });
             return formatted;
         }
@@ -765,7 +1044,9 @@
                 if (d.id !== `options-dropdown-${postId}`) d.classList.remove('active');
             });
             const dropdown = document.getElementById(`options-dropdown-${postId}`);
-            if (dropdown) dropdown.classList.toggle('active');
+            if (dropdown) {
+                dropdown.classList.toggle('active');
+            }
         };
 
         document.addEventListener('click', () => {
@@ -773,40 +1054,61 @@
         });
 
         window.updatePostSetting = async function(postId, settingKey, value) {
+            const postRef = doc(db, "forum_posts", postId);
             try {
-                await updateDoc(doc(db, "forum_posts", postId), { [settingKey]: value });
-                showToast("Pengaturan postingan diperbarui!");
+                await updateDoc(postRef, {
+                    [settingKey]: value
+                });
+                showToast("Pengaturan postingan berhasil diperbarui!");
             } catch (err) {
-                showToast("Gagal mengubah pengaturan.", "error");
+                console.error("Gagal memperbarui pengaturan:", err);
+                showToast("Gagal mengubah pengaturan postingan.", "error");
             }
         };
 
         function applyUserPackageTheme(paketLangganan) {
             const pkg = (paketLangganan || 'basic').toLowerCase();
             let themeCategory = 'basic';
-            if (pkg.includes('pro') || pkg.includes('business')) themeCategory = 'pro';
-            else if (pkg.includes('vip') || pkg.includes('ultimate') || pkg.includes('premium')) themeCategory = 'vip';
+
+            if (pkg.includes('pro') || pkg.includes('business')) {
+                themeCategory = 'pro';
+            } else if (pkg.includes('vip') || pkg.includes('ultimate') || pkg.includes('premium')) {
+                themeCategory = 'vip';
+            }
 
             document.body.setAttribute('data-package', themeCategory);
+
             const logoTextEl = document.getElementById('navLogoText');
             if (logoTextEl) {
-                logoTextEl.innerText = (themeCategory === 'basic') ? 'SITENEXS' : paketLangganan.toUpperCase();
+                if (themeCategory === 'basic' || !paketLangganan || paketLangganan.toLowerCase() === 'basic') {
+                    logoTextEl.innerText = 'SITENEXS';
+                } else {
+                    logoTextEl.innerText = paketLangganan.toUpperCase();
+                }
             }
         }
 
         function renderAvatar(user) {
+            const name = user.displayName || 'Pengguna';
+            const initials = name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
             const profilePhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo?t=${Date.now()}`;
-            const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=2563eb&color=fff`;
-
-            avatarImg.onload = () => { avatarImg.hidden = false; avatarInitials.hidden = true; };
-            avatarImg.onerror = () => { avatarImg.hidden = true; avatarInitials.hidden = false; };
-            avatarImg.src = profilePhotoUrl;
             
-            sidebarAvatarPreview.src = profilePhotoUrl;
-            sidebarAvatarPreview.onerror = () => { sidebarAvatarPreview.src = fallbackAvatar; };
+            const fallbackText = initials || 'S';
 
-            navProfileAvatarImg.src = profilePhotoUrl;
-            navProfileAvatarImg.onerror = () => { navProfileAvatarImg.src = fallbackAvatar; };
+            avatarImg.onload = () => {
+                avatarImg.hidden = false;
+                avatarInitials.hidden = true;
+            };
+            avatarImg.onerror = () => {
+                avatarImg.hidden = true;
+                avatarInitials.innerHTML = `<span style="font-size: 2rem; font-weight:800; color:#475569;">${fallbackText}</span>`;
+                avatarInitials.hidden = false;
+            };
+            avatarImg.src = profilePhotoUrl;
+            sidebarAvatarPreview.src = profilePhotoUrl;
+            sidebarAvatarPreview.onerror = () => {
+                sidebarAvatarPreview.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff`;
+            };
         }
 
         async function loadUserData(user) {
@@ -815,7 +1117,9 @@
             renderAvatar(user);
 
             try {
-                const userDocSnap = await getDoc(doc(db, "users", user.uid));
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
                 let d = {
                     namaDepan: user.displayName?.split(' ')[0] || '',
                     namaBelakang: user.displayName?.split(' ').slice(1).join(' ') || '',
@@ -830,41 +1134,74 @@
                     const data = userDocSnap.data();
                     d.namaDepan = data.namaDepan || d.namaDepan;
                     d.namaBelakang = data.namaBelakang || d.namaBelakang;
-                    d.namaLengkap = data.namaLengkap || (d.namaDepan + ' ' + d.namaBelakang).trim() || d.namaLengkap;
-                    d.bisnisNama = data.bisnis?.nama || data.bisnisNama || d.bisnisNama;
-                    d.paketLangganan = (data.paketLangganan || data.paket || 'Basic').replace(/^(paket\s*)+/i, '').trim();
+                    d.namaLengkap = data.namaLengkap || (d.namaDepan + ' ' + d.namaBelakang).trim() || user.displayName || d.namaLengkap;
+                    
+                    if (data.bisnis && typeof data.bisnis === 'object') {
+                        d.bisnisNama = data.bisnis.nama || d.bisnisNama;
+                    } else {
+                        d.bisnisNama = data.bisnisNama || d.bisnisNama;
+                    }
+
+                    let rawPkg = data.paketLangganan || data.paket || 'Basic';
+                    rawPkg = rawPkg.replace(/^(paket\s*)+/i, '').trim();
+                    d.paketLangganan = rawPkg || 'Basic';
+
                     d.email = data.email || user.email || '';
                     d.isVerified = data.isVerified || false;
                 }
 
                 applyUserPackageTheme(d.paketLangganan);
+
                 inputNamaDepan.value = d.namaDepan;
                 inputNamaBelakang.value = d.namaBelakang;
+
                 headerName.innerText = d.namaLengkap;
                 headerEmail.innerText = d.email;
-                headerBusiness.innerHTML = `<i class="fas fa-store"></i> ${d.bisnisNama}`;
-                verifiedIcon.style.display = d.isVerified ? 'inline-block' : 'none';
+                headerBusiness.innerHTML = `<i class="fas fa-store"></i> ${d.bisnisNama || 'UMKM / Bisnis Mitra'}`;
 
-                currentUserData = { uid: user.uid, nama: d.namaLengkap, isVerified: d.isVerified, avatar: profilePhotoUrl };
-                logoPreviewImg.src = `${supabaseUrl}/storage/v1/object/public/${logoBucket}/${encodeURIComponent(user.uid)}/business-logo?t=${Date.now()}`;
+                if (d.isVerified) {
+                    verifiedIcon.style.display = 'inline-block';
+                } else {
+                    verifiedIcon.style.display = 'none';
+                }
+
+                currentUserData = {
+                    uid: user.uid,
+                    nama: d.namaLengkap,
+                    isVerified: d.isVerified,
+                    avatar: `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo?t=${Date.now()}`,
+                    fallbackAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(d.namaLengkap)}&background=2563eb&color=fff`
+                };
+
+                const logoUrl = `${supabaseUrl}/storage/v1/object/public/${logoBucket}/${encodeURIComponent(user.uid)}/business-logo?t=${Date.now()}`;
+                const fallbackLogoUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(d.bisnisNama || 'Logo')}&background=e2e8f0&color=475569`;
+                logoPreviewImg.src = logoUrl;
+                logoPreviewImg.onerror = () => { logoPreviewImg.src = fallbackLogoUrl; };
 
                 subscribeUserPosts(user.uid);
+
             } catch (err) {
+                console.error("Gagal memuat profil:", err);
                 showToast("Gagal memuat data profil.", "error");
             }
         }
 
-        const urlUid = new URLSearchParams(window.location.search).get('uid');
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUid = urlParams.get('uid');
+
         if (urlUid) {
             localStorage.setItem('sitenexs_uid', urlUid);
             localStorage.setItem('sitenexs_logged_in', 'true');
         }
 
         onAuthStateChanged(auth, async (user) => {
-            if (user) loadUserData(user);
-            else {
+            if (user) {
+                loadUserData(user);
+            } else {
                 const savedUid = localStorage.getItem('sitenexs_uid');
-                if (localStorage.getItem('sitenexs_logged_in') === 'true' && savedUid) {
+                const isLogged = localStorage.getItem('sitenexs_logged_in') === 'true';
+
+                if (isLogged && savedUid) {
                     loadUserData({ uid: savedUid, email: '', displayName: 'Mitra Sitenexs' });
                 } else {
                     window.location.replace("https://account.sitenexs.com/sign-in/");
@@ -872,188 +1209,849 @@
             }
         });
 
-        // Crop & Sidebar Handlers
-        avatarFileInput.addEventListener('change', async () => {
-            const file = avatarFileInput.files[0];
-            if (file) {
+        function clampCropPosition() {
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropX = Math.min(0, Math.max(cropSize - drawnWidth, cropX));
+            cropY = Math.min(0, Math.max(cropSize - drawnHeight, cropY));
+        }
+
+        function drawCropPreview() {
+            if (!cropImage) return;
+            const drawnWidth = cropImage.width * cropBaseScale * cropZoom;
+            const drawnHeight = cropImage.height * cropBaseScale * cropZoom;
+            cropContext.clearRect(0, 0, cropSize, cropSize);
+            cropContext.drawImage(cropImage, cropX, cropY, drawnWidth, drawnHeight);
+        }
+
+        function releaseCropImage() {
+            if (cropImage) cropImage.close();
+            cropImage = null;
+            dragPosition = null;
+            avatarFileInput.value = '';
+            document.body.classList.remove('dialog-open');
+        }
+
+        function setCropZoom(nextZoom) {
+            const oldScale = cropBaseScale * cropZoom;
+            const imageCenterX = (cropSize / 2 - cropX) / oldScale;
+            const imageCenterY = (cropSize / 2 - cropY) / oldScale;
+            cropZoom = Number(nextZoom);
+            const nextScale = cropBaseScale * cropZoom;
+            cropX = cropSize / 2 - imageCenterX * nextScale;
+            cropY = cropSize / 2 - imageCenterY * nextScale;
+            clampCropPosition();
+            requestAnimationFrame(drawCropPreview);
+        }
+
+        async function openCropEditor(file) {
+            try {
                 cropImage = await createImageBitmap(file);
                 cropBaseScale = cropSize / Math.min(cropImage.width, cropImage.height);
-                cropZoom = 1; cropX = (cropSize - cropImage.width * cropBaseScale) / 2; cropY = (cropSize - cropImage.height * cropBaseScale) / 2;
+                cropZoom = 1;
+                cropX = (cropSize - cropImage.width * cropBaseScale) / 2;
+                cropY = (cropSize - cropImage.height * cropBaseScale) / 2;
+                cropZoomInput.value = '1';
+                drawCropPreview();
+                document.body.classList.add('dialog-open');
                 cropDialog.showModal();
+            } catch (error) {
+                releaseCropImage();
+                showToast("Foto tidak dapat dibuka.", "error");
+            }
+        }
+
+        avatarFileInput.addEventListener('change', async () => {
+            const file = avatarFileInput.files[0];
+            if (file && ['image/jpeg', 'image/png', 'image/webp'].includes(file.type) && file.size <= 5242880) {
+                await openCropEditor(file);
+            } else if (file) {
+                showToast("Format file tidak valid atau ukuran melebihi 5MB.", "error");
             }
         });
 
         applyCropButton.addEventListener('click', async () => {
             if (!cropImage || !currentUid) return;
-            const croppedPhoto = await new Promise(resolve => cropCanvas.toBlob(resolve, 'image/jpeg', 0.85));
-            const objectPath = `${encodeURIComponent(currentUid)}/profile-photo`;
             
-            await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
-                method: 'POST', headers: { apikey: supabasePublishableKey, 'Content-Type': 'image/jpeg', 'x-upsert': 'true' }, body: croppedPhoto
-            });
+            applyCropButton.disabled = true;
+            showToast("Mengunggah foto profil...", "info");
+            
+            try {
+                const croppedPhoto = await new Promise(resolve => cropCanvas.toBlob(resolve, 'image/jpeg', 0.85));
+                const objectPath = `${encodeURIComponent(currentUid)}/profile-photo`;
+                
+                const response = await fetch(`${supabaseUrl}/storage/v1/object/${avatarBucket}/${objectPath}`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: supabasePublishableKey,
+                        'Content-Type': 'image/jpeg',
+                        'x-upsert': 'true'
+                    },
+                    body: croppedPhoto
+                });
+                
+                if (!response.ok) throw new Error('Upload failed');
 
-            const newPhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
-            avatarImg.src = newPhotoUrl;
-            sidebarAvatarPreview.src = newPhotoUrl;
-            navProfileAvatarImg.src = newPhotoUrl;
-            cropDialog.close();
-            showToast("Foto profil diperbarui!");
-            closeSidebar();
+                const newPhotoUrl = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${objectPath}?t=${Date.now()}`;
+                avatarImg.src = newPhotoUrl;
+                avatarImg.hidden = false;
+                avatarInitials.hidden = true;
+                sidebarAvatarPreview.src = newPhotoUrl;
+
+                cropDialog.close();
+                showToast("Foto profil berhasil diperbarui!");
+                closeSidebar();
+            } catch (error) {
+                console.error(error);
+                showToast("Gagal mengunggah foto profil.", "error");
+            } finally {
+                applyCropButton.disabled = false;
+            }
         });
 
         cancelCropButton.addEventListener('click', () => cropDialog.close());
+        cropDialog.addEventListener('close', releaseCropImage);
+
+        cropZoomInput.addEventListener('input', () => setCropZoom(cropZoomInput.value));
+        
+        cropCanvas.addEventListener('pointerdown', (e) => {
+            if (!cropImage) return;
+            cropCanvas.setPointerCapture(e.pointerId);
+            dragPosition = { x: e.clientX, y: e.clientY };
+        });
+
+        cropCanvas.addEventListener('pointermove', (e) => {
+            if (!dragPosition || !cropImage) return;
+            cropX += (e.clientX - dragPosition.x);
+            cropY += (e.clientY - dragPosition.y);
+            dragPosition = { x: e.clientX, y: e.clientY };
+            clampCropPosition();
+            requestAnimationFrame(drawCropPreview);
+        });
+
+        cropCanvas.addEventListener('pointerup', () => dragPosition = null);
 
         window.saveProfileChanges = async function(e) {
             e.preventDefault();
             if (!currentUid) return;
-            const depan = inputNamaDepan.value.trim();
-            const belakang = inputNamaBelakang.value.trim();
-            const fullName = `${depan} ${belakang}`.trim();
 
-            await setDoc(doc(db, "users", currentUid), { namaDepan: depan, namaBelakang: belakang, namaLengkap: fullName }, { merge: true });
-            headerName.innerText = fullName;
-            closeSidebar();
-            showToast("Profil berhasil disimpan!");
-        };
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.innerHTML = 'Menyimpan...';
+            saveBtn.disabled = true;
+
+            try {
+                const depan = inputNamaDepan.value.trim();
+                const belakang = inputNamaBelakang.value.trim();
+                const fullName = `${depan} ${belakang}`.trim();
+
+                const userDocRef = doc(db, "users", currentUid);
+                const updatedData = {
+                    namaDepan: depan,
+                    namaBelakang: belakang,
+                    namaLengkap: fullName,
+                    updatedAt: new Date()
+                };
+
+                await setDoc(userDocRef, updatedData, { merge: true });
+                if (currentUser) {
+                    await updateProfile(currentUser, { displayName: fullName });
+                }
+
+                headerName.innerText = fullName;
+                closeSidebar();
+                showToast("Profil berhasil diperbarui!");
+            } catch (err) {
+                console.error("Gagal menyimpan profil:", err);
+                showToast("Terjadi kesalahan saat menyimpan.", "error");
+            } finally {
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan';
+                saveBtn.disabled = false;
+            }
+        }
 
         window.uploadBusinessLogo = async function(event) {
             const file = event.target.files[0];
             if (!file || !currentUid) return;
-            const filePath = `${currentUid}/business-logo`;
-            await fetch(`${supabaseUrl}/storage/v1/object/${logoBucket}/${filePath}`, {
-                method: 'POST', headers: { apikey: supabasePublishableKey, 'Content-Type': file.type, 'x-upsert': 'true' }, body: file
-            });
-            logoPreviewImg.src = `${supabaseUrl}/storage/v1/object/public/${logoBucket}/${filePath}?t=${Date.now()}`;
-            showToast("Logo bisnis diperbarui!");
-        };
+
+            showToast("Mengunggah logo bisnis...", "info");
+
+            try {
+                const filePath = `${currentUid}/business-logo`;
+                const response = await fetch(`${supabaseUrl}/storage/v1/object/${logoBucket}/${filePath}`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: supabasePublishableKey,
+                        'Content-Type': file.type,
+                        'x-upsert': 'true'
+                    },
+                    body: file
+                });
+
+                if (!response.ok) throw new Error('Upload logo failed');
+
+                const newLogoUrl = `${supabaseUrl}/storage/v1/object/public/${logoBucket}/${filePath}?t=${Date.now()}`;
+                logoPreviewImg.src = newLogoUrl;
+                
+                await setDoc(doc(db, 'users', currentUid), {
+                    bisnis: { logoUrl: newLogoUrl }
+                }, { merge: true });
+
+                showToast("Logo bisnis berhasil diperbarui!");
+            } catch (err) {
+                console.error("Gagal upload logo:", err);
+                showToast("Gagal mengunggah logo bisnis.", "error");
+            }
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentUid) return;
-            const content = document.getElementById('postContent').value.trim();
-            if (!content) return;
-
-            let imageUrl = null;
-            const file = document.getElementById('postImage').files[0];
-            if (file) {
-                const fileName = `${Date.now()}.${file.name.split('.').pop()}`;
-                const res = await fetch(`${supabaseUrl}/storage/v1/object/${forumBucket}/${fileName}`, {
-                    method: 'POST', headers: { 'Authorization': `Bearer ${supabasePublishableKey}`, 'apikey': supabasePublishableKey, 'Content-Type': file.type }, body: file
-                });
-                if (res.ok) imageUrl = `${supabaseUrl}/storage/v1/object/public/${forumBucket}/${fileName}`;
+            if (!currentUid) {
+                showToast("Silakan login terlebih dahulu.", "error");
+                return;
             }
 
-            await addDoc(forumCollection, {
-                authorUid: currentUid, penulis: headerName.innerText, isVerified: currentUserData?.isVerified || false,
-                judul: document.getElementById('postTitle').value.trim(), isi: content, imageUrl, likes: [], comments: [], createdAt: serverTimestamp()
-            });
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
 
-            form.reset(); removeImage(); closeModal();
-            showToast("Diskusi berhasil diposting!");
+            if (!content) return;
+
+            submitBtn.innerHTML = 'Memproses...';
+            submitBtn.disabled = true;
+
+            try {
+                let imageUrl = null;
+                const fileInput = document.getElementById('postImage');
+                const file = fileInput.files[0];
+
+                if (file) {
+                    submitBtn.innerHTML = 'Mengunggah Foto...';
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.floor(Math.random()*1000)}.${fileExt}`;
+                    
+                    const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/${forumBucket}/${fileName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${supabasePublishableKey}`,
+                            'apikey': supabasePublishableKey,
+                            'Content-Type': file.type
+                        },
+                        body: file
+                    });
+                    
+                    if (uploadRes.ok) {
+                        imageUrl = `${supabaseUrl}/storage/v1/object/public/${forumBucket}/${fileName}`;
+                    }
+                }
+
+                submitBtn.innerHTML = 'Menyimpan...';
+
+                const nameVal = headerName.innerText || currentUser?.displayName || "Mitra Sitenexs";
+                const verifiedVal = currentUserData ? Boolean(currentUserData.isVerified) : false;
+
+                await addDoc(forumCollection, {
+                    authorUid: currentUid,
+                    penulis: nameVal,
+                    isVerified: verifiedVal,
+                    judul: title,
+                    isi: content,
+                    imageUrl: imageUrl,
+                    likes: [],
+                    comments: [],
+                    isPrivate: false,
+                    commentsDisabled: false,
+                    hideStats: false,
+                    createdAt: serverTimestamp()
+                });
+
+                form.reset();
+                removeImage();
+                closeModal();
+                showToast("Diskusi baru berhasil diposting!");
+                fetchAllUsersForMention();
+            } catch (error) {
+                console.error("Gagal mengirim postingan:", error);
+                showToast("Terjadi kesalahan saat memposting.", "error");
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Posting';
+                submitBtn.disabled = false;
+            }
         });
 
+        function renderPostCardHtml(postId, data, currentActiveUid) {
+            if (!data) return '';
+            const penulis = data.penulis || 'Mitra Sitenexs';
+            const authorUid = data.authorUid || currentUid || '';
+            const judul = data.judul || '';
+            const isi = data.isi || '';
+
+            const dateObj = data.createdAt ? data.createdAt.toDate() : new Date();
+            const waktuString = timeAgo(dateObj);
+
+            const isPrivate = data.isPrivate === true;
+            const commentsDisabled = data.commentsDisabled === true;
+            const hideStats = data.hideStats === true;
+
+            const likeCount = Array.isArray(data.likes) ? data.likes.length : 0;
+            const comments = Array.isArray(data.comments) ? data.comments : [];
+            const commentCount = comments.length;
+
+            const likeDisplay = hideStats ? 'Suka' : `${likeCount > 0 ? likeCount : ''} Suka`;
+            const commentDisplay = hideStats ? 'Komentar' : `${commentCount > 0 ? commentCount : ''} Komentar`;
+
+            const authorPhoto = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(authorUid)}/profile-photo`;
+            const authorFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(penulis)}&background=2563eb&color=fff`;
+            
+            const verifiedIcon = `<span class="async-verif-badge" data-uid="${authorUid}"></span>`;
+
+            const postTitleHtml = judul ? `<h2 class="post-title">${judul}</h2>` : '';
+            const postImageHtml = data.imageUrl ? `<img src="${data.imageUrl}" alt="Foto Diskusi" class="post-image">` : '';
+            const isLiked = Array.isArray(data.likes) && data.likes.includes(currentActiveUid);
+
+            const activeAvatarUrl = currentUserData ? currentUserData.avatar : 'https://ui-avatars.com/api/?name=User&background=cbd5e1&color=fff';
+            const activeFallback = currentUserData ? currentUserData.fallbackAvatar : activeAvatarUrl;
+
+            let commentsHtml = '';
+            if (!commentsDisabled) {
+                comments.forEach(c => {
+                    const cDate = c.createdAt ? timeAgo(new Date(c.createdAt)) : 'Baru saja';
+                    const cAuthorUid = c.authorUid || 'unknown';
+                    const cAvatar = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(cAuthorUid)}/profile-photo`;
+                    const cFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.penulis || 'Mitra')}&background=random&color=fff`;
+                    
+                    const cVerified = `<span class="async-verif-badge" data-uid="${cAuthorUid}"></span>`;
+
+                    const formattedText = formatCommentText(c.isi || '');
+                    const isMyComment = (cAuthorUid === currentActiveUid);
+                    const deleteBtnHtml = isMyComment ? `<button type="button" class="delete-comment-btn" onclick="deleteComment('${postId}', '${c.createdAt}', '${cAuthorUid}')">Hapus</button>` : '';
+
+                    commentsHtml += `
+                        <div class="comment-item">
+                            <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" style="flex-shrink: 0;">
+                                <img src="${cAvatar}" alt="${c.penulis || 'Mitra'}" class="comment-avatar" onerror="this.onerror=null; this.src='${cFallback}';">
+                            </a>
+                            <div class="comment-content-wrapper">
+                                <div class="comment-bubble">
+                                    <div class="comment-header-row">
+                                        <div class="comment-author-left">
+                                            <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" class="comment-author-link">
+                                                <span class="comment-author">${c.penulis || 'Mitra'}</span>
+                                            </a>
+                                            ${cVerified}
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">${formattedText}</div>
+                                </div>
+                                <div class="comment-footer-row">
+                                    <div class="comment-time">${cDate}</div>
+                                    <button type="button" class="reply-trigger-btn" onclick="replyComment('${postId}', '${(c.penulis || 'Mitra').replace(/'/g, "\\'")}')">Balas</button>
+                                    ${deleteBtnHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                if (comments.length === 0) {
+                    commentsHtml = '<div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Belum ada komentar. Jadilah yang pertama membalas!</div>';
+                }
+            } else {
+                commentsHtml = '<div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Komentar dinonaktifkan untuk postingan ini.</div>';
+            }
+
+            return `
+                <article class="post-card" data-post-id="${postId}">
+                    <div class="post-card-inner">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <img src="${authorPhoto}" alt="${penulis}" class="post-author-img" onerror="this.onerror=null; this.src='${authorFallback}';">
+                                <div class="author-info">
+                                    <div class="author-name-row">
+                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(authorUid)}" class="author-name-link">
+                                            <span class="author-name">${penulis}</span>
+                                        </a>
+                                        ${verifiedIcon}
+                                    </div>
+                                    <div class="author-time-wrapper">
+                                        <span>${waktuString}</span>
+                                        ${isPrivate ? '<span style="color:#f59e0b; display:inline-flex; align-items:center; gap:0.2rem;"><i class="fas fa-lock"></i> Privat</span>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="post-options-container">
+                                <button type="button" class="post-options-btn" onclick="togglePostOptions('${postId}', event)" title="Pengaturan Postingan">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="post-options-dropdown" id="options-dropdown-${postId}">
+                                    <button type="button" class="option-item" onclick="updatePostSetting('${postId}', 'isPrivate', ${!isPrivate})">
+                                        <i class="fas ${isPrivate ? 'fa-globe text-primary' : 'fa-lock'}"></i> ${isPrivate ? 'Ubah ke Publik' : 'Ubah ke Privat'}
+                                    </button>
+                                    <button type="button" class="option-item" onclick="updatePostSetting('${postId}', 'commentsDisabled', ${!commentsDisabled})">
+                                        <i class="fas ${commentsDisabled ? 'fa-comments' : 'fa-comment-slash'}"></i> ${commentsDisabled ? 'Izinkan Komentar' : 'Nonaktifkan Komentar'}
+                                    </button>
+                                    <button type="button" class="option-item" onclick="updatePostSetting('${postId}', 'hideStats', ${!hideStats})">
+                                        <i class="fas ${hideStats ? 'fa-eye' : 'fa-eye-slash'}"></i> ${hideStats ? 'Tampilkan Suka & Komentar' : 'Sembunyikan Suka & Komentar'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${postTitleHtml}
+                        <p class="post-content">${isi}</p>
+                        ${postImageHtml}
+                    </div>
+                    
+                    <div class="post-actions">
+                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${postId}')">
+                            <i class="${isLiked ? 'fas' : 'far'} fa-thumbs-up"></i> 
+                            <span>${likeDisplay}</span>
+                        </button>
+                        ${!commentsDisabled ? `
+                        <button class="action-btn" onclick="toggleComments('${postId}')">
+                            <i class="far fa-comment-alt"></i> 
+                            <span>${commentDisplay}</span>
+                        </button>` : ''}
+                        <button class="action-btn delete-btn" title="Hapus Diskusi" onclick="deletePost('${postId}')">
+                            <i class="fas fa-trash-alt"></i> 
+                            <span>Hapus</span>
+                        </button>
+                    </div>
+
+                    ${!commentsDisabled ? `
+                    <div class="comments-section" id="comments-${postId}">
+                        <div class="comment-list">
+                            ${commentsHtml}
+                        </div>
+                        <form class="comment-form" onsubmit="submitComment(event, '${postId}')">
+                            <img src="${activeAvatarUrl}" class="comment-form-avatar" onerror="this.onerror=null; this.src='${activeFallback}';">
+                            <div class="comment-input-wrapper">
+                                <input type="text" id="comment-input-${postId}" class="comment-input" placeholder="Tulis komentar atau ketik @..." oninput="handleCommentInput(event, '${postId}')" required>
+                                <div class="mention-dropdown" id="mention-dropdown-${postId}"></div>
+                                <button type="submit" class="comment-submit-btn"><i class="fas fa-paper-plane" style="font-size: 0.7rem;"></i></button>
+                            </div>
+                        </form>
+                    </div>` : ''}
+                </article>
+            `;
+        }
+
+        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI ---
+        function runAsyncVerifBadges() {
+            setTimeout(() => {
+                document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
+                    const uid = el.getAttribute('data-uid');
+                    if (!uid || uid === 'unknown') return;
+                    
+                    try {
+                        const snap = await getDoc(doc(db, "users", uid));
+                        if (snap.exists()) {
+                            const d = snap.data();
+                            const isVerified = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
+                            
+                            if (isVerified) {
+                                el.innerHTML = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
+                            } else {
+                                el.innerHTML = '';
+                            }
+                        } else {
+                            el.innerHTML = '';
+                        }
+                    } catch(e) {
+                        el.innerHTML = '';
+                    }
+                });
+            }, 100);
+        }
+
         function subscribeUserPosts(uid) {
-            onSnapshot(query(collection(db, "forum_posts"), where("authorUid", "==", uid)), (snapshot) => {
+            const qPosts = query(collection(db, "forum_posts"), where("authorUid", "==", uid));
+            
+            onSnapshot(qPosts, (snapshot) => {
                 statPostCount.innerText = snapshot.size;
-                let totalLikes = 0, docsList = [];
+
+                let totalLikes = 0;
+                const docsList = [];
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
-                    docsList.push({ id: docSnap.id, data });
-                    if (Array.isArray(data.likes)) totalLikes += data.likes.length;
+                    docsList.push({ id: docSnap.id, docSnap: docSnap, data: data });
+                    if (Array.isArray(data.likes)) {
+                        totalLikes += data.likes.length;
+                    }
                 });
                 statLikeCount.innerText = totalLikes;
 
                 if (docsList.length === 0) {
-                    myPostsContainer.innerHTML = '<div style="text-align:center; padding:1rem; color:var(--text-muted);">Belum ada postingan.</div>';
+                    myPostsContainer.innerHTML = '<div class="loader-container"><p>Anda belum pernah membuat postingan di komunitas.</p></div>';
+                    isInitialLoad = false;
                     return;
                 }
 
-                docsList.sort((a, b) => (b.data.createdAt?.toDate().getTime() || 0) - (a.data.createdAt?.toDate().getTime() || 0));
-                
-                let html = "";
+                docsList.sort((a, b) => {
+                    const timeA = a.data.createdAt ? a.data.createdAt.toDate().getTime() : 0;
+                    const timeB = b.data.createdAt ? b.data.createdAt.toDate().getTime() : 0;
+                    return timeB - timeA;
+                });
+
+                if (isInitialLoad) {
+                    let html = "";
+                    docsList.forEach(item => {
+                        html += renderPostCardHtml(item.id, item.data, uid);
+                    });
+                    myPostsContainer.innerHTML = html;
+                    isInitialLoad = false;
+                    runAsyncVerifBadges();
+                    return;
+                }
+
+                const existingCards = {};
+                document.querySelectorAll('.my-posts-list .post-card').forEach(card => {
+                    existingCards[card.getAttribute('data-post-id')] = card;
+                });
+
+                const currentSnapshotIds = new Set();
+                const tempDiv = document.createElement('div');
+
                 docsList.forEach(item => {
-                    const d = item.data;
-                    const isLiked = Array.isArray(d.likes) && d.likes.includes(uid);
-                    html += `
-                        <article class="post-card" data-post-id="${item.id}">
-                            <div class="post-card-inner">
-                                <div class="post-header">
-                                    <div class="post-author">
-                                        <img src="${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(uid)}/profile-photo" class="post-author-img" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2563eb&color=fff'">
-                                        <div class="author-info">
-                                            <span class="author-name">${d.penulis}</span>
-                                            <span class="author-time-wrapper">${timeAgo(d.createdAt?.toDate())}</span>
+                    const postId = item.id;
+                    const data = item.data;
+                    currentSnapshotIds.add(postId);
+                    const existingCard = existingCards[postId];
+
+                    const likes = data.likes || [];
+                    const isLiked = likes.includes(uid);
+                    const likeCount = likes.length;
+                    const hideStats = data.hideStats === true;
+                    const likeDisplay = hideStats ? 'Suka' : `${likeCount > 0 ? likeCount : ''} Suka`;
+                    const comments = data.comments || [];
+                    const commentDisplay = hideStats ? 'Komentar' : `${comments.length > 0 ? comments.length : ''} Komentar`;
+
+                    if (existingCard) {
+                        const likeBtn = existingCard.querySelector('.action-btn');
+                        if (likeBtn && document.activeElement !== likeBtn) {
+                            if (isLiked) {
+                                likeBtn.classList.add('liked');
+                                likeBtn.querySelector('i').className = 'fas fa-thumbs-up';
+                            } else {
+                                likeBtn.classList.remove('liked');
+                                likeBtn.querySelector('i').className = 'far fa-thumbs-up';
+                            }
+                            likeBtn.querySelector('span').innerText = likeDisplay;
+                        }
+
+                        const commentBtn = existingCard.querySelectorAll('.action-btn')[1];
+                        if (commentBtn) {
+                            commentBtn.querySelector('span').innerText = commentDisplay;
+                        }
+
+                        const commentsListEl = existingCard.querySelector('.comment-list');
+                        if (commentsListEl && document.activeElement.id !== `comment-input-${postId}`) {
+                            let commentsHtml = '';
+                            comments.forEach(c => {
+                                const cDate = c.createdAt ? timeAgo(new Date(c.createdAt)) : 'Baru saja';
+                                const cAuthorUid = c.authorUid || 'unknown';
+                                const cAvatar = `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(cAuthorUid)}/profile-photo`;
+                                const cFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.penulis || 'Mitra')}&background=random&color=fff`;
+                                
+                                const cVerified = `<span class="async-verif-badge" data-uid="${cAuthorUid}"></span>`;
+
+                                const formattedText = formatCommentText(c.isi || '');
+                                const isMyComment = (cAuthorUid === uid);
+                                const deleteBtnHtml = isMyComment ? `<button type="button" class="delete-comment-btn" onclick="deleteComment('${postId}', '${c.createdAt}', '${cAuthorUid}')">Hapus</button>` : '';
+
+                                commentsHtml += `
+                                    <div class="comment-item">
+                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" style="flex-shrink: 0;">
+                                            <img src="${cAvatar}" alt="${c.penulis || 'Mitra'}" class="comment-avatar" onerror="this.onerror=null; this.src='${cFallback}';">
+                                        </a>
+                                        <div class="comment-content-wrapper">
+                                            <div class="comment-bubble">
+                                                <div class="comment-header-row">
+                                                    <div class="comment-author-left">
+                                                        <a href="https://sitenexs.com/community/profile?uid=${encodeURIComponent(cAuthorUid)}" class="comment-author-link">
+                                                            <span class="comment-author">${c.penulis || 'Mitra'}</span>
+                                                        </a>
+                                                        ${cVerified}
+                                                    </div>
+                                                </div>
+                                                <div class="comment-text">${formattedText}</div>
+                                            </div>
+                                            <div class="comment-footer-row">
+                                                <div class="comment-time">${cDate}</div>
+                                                <button type="button" class="reply-trigger-btn" onclick="replyComment('${postId}', '${(c.penulis || 'Mitra').replace(/'/g, "\\'")}')">Balas</button>
+                                                ${deleteBtnHtml}
+                                            </div>
                                         </div>
                                     </div>
-                                    <button class="post-options-btn" onclick="togglePostOptions('${item.id}', event)"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="post-options-dropdown" id="options-dropdown-${item.id}">
-                                        <button class="option-item" onclick="updatePostSetting('${item.id}', 'isPrivate', ${!d.isPrivate})"><i class="fas fa-lock"></i> ${d.isPrivate ? 'Publik' : 'Privat'}</button>
-                                        <button class="option-item" onclick="updatePostSetting('${item.id}', 'commentsDisabled', ${!d.commentsDisabled})"><i class="fas fa-comment-slash"></i> ${d.commentsDisabled ? 'Buka Komentar' : 'Matikan Komentar'}</button>
-                                    </div>
-                                </div>
-                                ${d.judul ? `<h2 class="post-title">${d.judul}</h2>` : ''}
-                                <p class="post-content">${d.isi}</p>
-                                ${d.imageUrl ? `<img src="${d.imageUrl}" class="post-image">` : ''}
-                            </div>
-                            <div class="post-actions">
-                                <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}')"><i class="${isLiked ? 'fas' : 'far'} fa-thumbs-up"></i> <span>${d.likes?.length || ''} Suka</span></button>
-                                <button class="action-btn" onclick="toggleComments('${item.id}')"><i class="far fa-comment-alt"></i> <span>${d.comments?.length || ''} Komentar</span></button>
-                                <button class="action-btn delete-btn" onclick="deletePost('${item.id}')"><i class="fas fa-trash-alt"></i> Hapus</button>
-                            </div>
-                            <div class="comments-section" id="comments-${item.id}">
-                                <div class="comment-list">${(d.comments || []).map(c => `<div class="comment-text"><b>${c.penulis}:</b> ${c.isi}</div>`).join('') || 'Belum ada komentar.'}</div>
-                                <form class="comment-form" onsubmit="submitComment(event, '${item.id}')">
-                                    <div class="comment-input-wrapper"><input type="text" id="comment-input-${item.id}" class="comment-input" placeholder="Tulis komentar..." required></div>
-                                    <button type="submit" class="comment-submit-btn"><i class="fas fa-paper-plane"></i></button>
-                                </form>
-                            </div>
-                        </article>
-                    `;
+                                `;
+                            });
+                            if (comments.length === 0) {
+                                commentsHtml = '<div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.5rem 0;">Belum ada komentar. Jadilah yang pertama membalas!</div>';
+                            }
+                            commentsListEl.innerHTML = commentsHtml;
+                        }
+                    } else {
+                        tempDiv.innerHTML = renderPostCardHtml(postId, data, uid);
+                        const newCard = tempDiv.firstElementChild;
+                        if (newCard) {
+                            myPostsContainer.insertBefore(newCard, myPostsContainer.firstChild);
+                        }
+                    }
                 });
-                myPostsContainer.innerHTML = html;
+
+                Object.keys(existingCards).forEach(postId => {
+                    if (!currentSnapshotIds.has(postId)) {
+                        existingCards[postId].remove();
+                    }
+                });
+
+                runAsyncVerifBadges();
+            }, (err) => {
+                console.error("Gagal memuat postingan:", err);
             });
         }
 
         window.toggleLike = async function(postId) {
-            const ref = doc(db, "forum_posts", postId);
-            const snap = await getDoc(ref);
-            if (snap.exists()) {
-                const likes = snap.data().likes || [];
-                if (likes.includes(currentUid)) await updateDoc(ref, { likes: arrayRemove(currentUid) });
-                else await updateDoc(ref, { likes: arrayUnion(currentUid) });
+            if (!currentUid) {
+                showToast("Silakan login terlebih dahulu.", "error");
+                return;
+            }
+
+            const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+            const btn = postCard ? postCard.querySelector('.post-actions .action-btn') : null;
+            
+            if (btn) {
+                const icon = btn.querySelector('i');
+                const spanCount = btn.querySelector('span');
+                const isCurrentlyLiked = btn.classList.contains('liked');
+                
+                btn.classList.toggle('liked', !isCurrentlyLiked);
+                playLikeSound(!isCurrentlyLiked);
+
+                let currentText = spanCount.innerText.trim();
+                let currentNum = parseInt(currentText) || 0;
+                let isHideStats = currentText.toLowerCase() === 'suka';
+
+                if (!isHideStats) {
+                    if (!isCurrentlyLiked) {
+                        icon.className = 'fas fa-thumbs-up';
+                        spanCount.innerText = `${currentNum + 1} Suka`;
+                    } else {
+                        icon.className = 'far fa-thumbs-up';
+                        let newCount = Math.max(0, currentNum - 1);
+                        spanCount.innerText = newCount > 0 ? `${newCount} Suka` : 'Suka';
+                    }
+                }
+            }
+
+            const postRef = doc(db, "forum_posts", postId);
+            try {
+                const postSnap = await getDoc(postRef);
+                if (postSnap.exists()) {
+                    const data = postSnap.data();
+                    const likes = data.likes || [];
+                    if (likes.includes(currentUid)) {
+                        await updateDoc(postRef, { likes: arrayRemove(currentUid) });
+                    } else {
+                        await updateDoc(postRef, { likes: arrayUnion(currentUid) });
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal melakukan like:", err);
+                showToast("Gagal menyukai postingan.", "error");
             }
         };
 
         window.toggleComments = function(postId) {
-            document.getElementById(`comments-${postId}`).classList.toggle('active');
+            const section = document.getElementById(`comments-${postId}`);
+            if (section) {
+                section.classList.toggle('active');
+            }
         };
 
-        window.submitComment = async function(e, postId) {
-            e.preventDefault();
-            const input = document.getElementById(`comment-input-${postId}`);
-            const text = input.value.trim();
-            if (!text) return;
+        window.submitComment = async function(event, postId) {
+            event.preventDefault();
+            if (!currentUid) {
+                showToast("Silakan login terlebih dahulu.", "error");
+                return;
+            }
 
-            await updateDoc(doc(db, "forum_posts", postId), {
-                comments: arrayUnion({ authorUid: currentUid, penulis: headerName.innerText, isi: text, createdAt: new Date().toISOString() })
-            });
-            input.value = '';
+            const inputEl = document.getElementById(`comment-input-${postId}`);
+            const commentText = inputEl.value.trim();
+            if (!commentText) return;
+
+            const nameVal = headerName.innerText || currentUser?.displayName || "Mitra Sitenexs";
+            const verifiedVal = currentUserData ? Boolean(currentUserData.isVerified) : false;
+
+            const postRef = doc(db, "forum_posts", postId);
+            try {
+                const newComment = {
+                    authorUid: currentUid,
+                    penulis: nameVal,
+                    isVerified: verifiedVal,
+                    isi: commentText,
+                    createdAt: new Date().toISOString()
+                };
+
+                await updateDoc(postRef, {
+                    comments: arrayUnion(newComment)
+                });
+
+                inputEl.value = '';
+                const dropdown = document.getElementById(`mention-dropdown-${postId}`);
+                if (dropdown) dropdown.classList.remove('active');
+            } catch (err) {
+                console.error("Gagal mengirim komentar:", err);
+                showToast("Terjadi kesalahan saat mengirim komentar.", "error");
+            }
+        };
+
+        window.deleteComment = async function(postId, commentCreatedAt, commentAuthorUid) {
+            if (!currentUid || currentUid !== commentAuthorUid) {
+                showToast("Anda tidak memiliki izin menghapus komentar ini.", "error");
+                return;
+            }
+
+            if (!confirm("Hapus komentar ini?")) return;
+
+            const postRef = doc(db, "forum_posts", postId);
+            try {
+                const postSnap = await getDoc(postRef);
+                if (postSnap.exists()) {
+                    const data = postSnap.data();
+                    const comments = data.comments || [];
+                    const targetComment = comments.find(c => c.createdAt === commentCreatedAt);
+
+                    if (targetComment) {
+                        await updateDoc(postRef, {
+                            comments: arrayRemove(targetComment)
+                        });
+                        showToast("Komentar berhasil dihapus.");
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal menghapus komentar:", err);
+                showToast("Terjadi kesalahan saat menghapus komentar.", "error");
+            }
         };
 
         window.deletePost = async function(postId) {
-            if (confirm("Hapus diskusi ini?")) {
-                await deleteDoc(doc(db, "forum_posts", postId));
-                showToast("Diskusi dihapus.");
+            if (confirm("Apakah Anda yakin ingin menghapus diskusi ini? Tindakan ini tidak dapat dibatalkan.")) {
+                try {
+                    await deleteDoc(doc(db, "forum_posts", postId));
+                    showToast("Diskusi berhasil dihapus!");
+                } catch (err) {
+                    console.error("Gagal menghapus postingan:", err);
+                    showToast("Gagal menghapus diskusi.", "error");
+                }
             }
         };
 
-        window.handleLogout = async function() {
-            if (confirm("Keluar dari akun Sitenexs?")) {
-                localStorage.clear(); sessionStorage.clear();
-                try { await signOut(auth); } catch(e) {}
+        let pressTimer = null;
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('.comment-item.focused-comment')) return;
+
+            if (e.target.closest('button, input, textarea, a, .post-actions, .mention-dropdown, .post-options-dropdown')) {
+                if ((document.body.classList.contains('forum-focus-mode') && !e.target.closest('.post-card.focused-card')) ||
+                    (document.querySelector('.comment-item.focused-comment') && !e.target.closest('.comment-item.focused-comment'))) {
+                    exitFocusMode();
+                }
+                return;
+            }
+
+            if (document.querySelector('.comment-item.focused-comment') && !e.target.closest('.comment-item.focused-comment')) {
+                exitFocusMode();
+                return;
+            }
+
+            const commentItem = e.target.closest('.comment-item');
+            if (commentItem) {
+                startX = e.clientX;
+                startY = e.clientY;
+                pressTimer = setTimeout(() => {
+                    activateCommentFocusMode(commentItem);
+                }, 600);
+                return;
+            }
+
+            const card = e.target.closest('.post-card');
+            if (!card) {
+                exitFocusMode();
+                return;
+            }
+
+            startX = e.clientX;
+            startY = e.clientY;
+            pressTimer = setTimeout(() => {
+                activateFocusMode(card);
+            }, 600);
+        });
+
+        document.addEventListener('pointermove', (e) => {
+            if (!pressTimer) return;
+            if (Math.abs(e.clientX - startX) > 10 || Math.abs(e.clientY - startY) > 10) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        });
+
+        document.addEventListener('pointerup', () => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        });
+
+        document.addEventListener('pointercancel', () => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        });
+
+        window.activateFocusMode = function(card) {
+            document.querySelectorAll('.post-card').forEach(c => c.classList.remove('focused-card'));
+            card.classList.add('focused-card');
+            document.body.classList.add('forum-focus-mode');
+            if (navigator.vibrate) navigator.vibrate(50);
+        };
+
+        window.exitFocusMode = function() {
+            document.body.classList.remove('forum-focus-mode');
+            document.querySelectorAll('.post-card').forEach(c => c.classList.remove('focused-card'));
+            document.querySelectorAll('.comments-section').forEach(sec => sec.classList.remove('comment-focus-mode'));
+            document.querySelectorAll('.comment-item').forEach(item => item.classList.remove('focused-comment'));
+        };
+
+        window.activateCommentFocusMode = function(commentItem) {
+            const section = commentItem.closest('.comments-section');
+            if (!section) return;
+
+            section.querySelectorAll('.comment-item').forEach(item => item.classList.remove('focused-comment'));
+            commentItem.classList.add('focused-comment');
+            section.classList.add('comment-focus-mode');
+            if (navigator.vibrate) navigator.vibrate(50);
+        };
+
+                  window.handleLogout = async function() {
+            if (confirm("Apakah Anda yakin ingin keluar dari akun Sitenexs?")) {
+                // Hapus data sesi di subdomain akun
+                localStorage.removeItem('sitenexs_uid');
+                localStorage.removeItem('sitenexs_logged_in');
+                localStorage.removeItem('sitenexs_show_welcome');
+                sessionStorage.clear();
+                
+                try {
+                    await signOut(auth);
+                } catch(e) {}
+
+                // LEMPAR KE INDEX.HTML DENGAN PARAMETER LOGOUT AGAR DOMAIN UTAMA MEMBERSIHKAN SESI JUGA
                 window.location.replace("https://sitenexs.com/?logout=true");
             }
         };
+
+
     </script>
 </body>
 </html>
