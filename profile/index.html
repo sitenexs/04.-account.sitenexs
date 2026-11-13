@@ -195,7 +195,7 @@
         }
         .create-post-trigger-btn:hover { background: var(--primary-dark); transform: scale(1.1); }
 
-        .profile-name-row { display: flex; align-items: center; justify-content: center; gap: 0.35rem; margin-bottom: 0.15rem; }
+        .profile-name-row { display: flex; align-items: center; justify-content: center; gap: 0.35rem; margin-bottom: 0.15rem; flex-wrap: wrap; }
         .profile-name { font-size: 1.2rem; font-weight: 800; color: var(--text-main); line-height: 1.3; }
         .verified-badge { width: 16px; height: 16px; object-fit: contain; }
         .profile-email { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; word-break: break-all; }
@@ -594,7 +594,7 @@
         }
     </style>
 </head>
-<body>
+<body data-package="basic">
 
     <!-- CONTAINER NOTIFIKASI TOAST -->
     <div id="toastContainer"></div>
@@ -690,7 +690,7 @@
 
             <div class="profile-name-row">
                 <h1 id="profileHeaderName" class="profile-name">Memuat Nama...</h1>
-                <img id="profileVerifiedIcon" src="https://sitenexs.com/assets/logo/verified.png" class="verified-badge" alt="Verified" style="display: none;">
+                <span id="profileBadgesContainer" style="display:inline-flex; align-items:center; gap:0.25rem;"></span>
             </div>
             <p id="profileHeaderEmail" class="profile-email">Memuat email...</p>
             
@@ -818,7 +818,7 @@
         const headerName = document.getElementById('profileHeaderName');
         const headerEmail = document.getElementById('profileHeaderEmail');
         const headerBusiness = document.getElementById('profileHeaderBusiness');
-        const verifiedIcon = document.getElementById('profileVerifiedIcon');
+        const profileBadgesContainer = document.getElementById('profileBadgesContainer');
         const statPostCount = document.getElementById('statPostCount');
         const statLikeCount = document.getElementById('statLikeCount');
         
@@ -947,7 +947,6 @@
         }
         fetchAllUsersForMention();
 
-        // --- FITUR MENTION & REPLY KOMENTAR DI PROFIL ---
         window.replyComment = function(postId, authorName) {
             const inputEl = document.getElementById(`comment-input-${postId}`);
             if (inputEl) {
@@ -1127,7 +1126,8 @@
                     bisnisNama: 'UMKM / Bisnis Mitra',
                     paketLangganan: 'Basic',
                     email: user.email || '',
-                    isVerified: false
+                    isVerified: false,
+                    isPro: false
                 };
 
                 if (userDocSnap.exists()) {
@@ -1147,7 +1147,8 @@
                     d.paketLangganan = rawPkg || 'Basic';
 
                     d.email = data.email || user.email || '';
-                    d.isVerified = data.isVerified || false;
+                    d.isVerified = Boolean(data.isVerified) || Boolean(data.isFounder) || Boolean(data.isDeveloper);
+                    d.isPro = Boolean(data.isPro) || Boolean(data.lencanaKuning) || Boolean(data.isLencanaKuning);
                 }
 
                 applyUserPackageTheme(d.paketLangganan);
@@ -1159,16 +1160,20 @@
                 headerEmail.innerText = d.email;
                 headerBusiness.innerHTML = `<i class="fas fa-store"></i> ${d.bisnisNama || 'UMKM / Bisnis Mitra'}`;
 
+                let badgesHtml = '';
                 if (d.isVerified) {
-                    verifiedIcon.style.display = 'inline-block';
-                } else {
-                    verifiedIcon.style.display = 'none';
+                    badgesHtml += `<img src="https://sitenexs.com/assets/logo/verified.png" class="verified-badge" alt="Verified" title="Verified">`;
                 }
+                if (d.isPro) {
+                    badgesHtml += `<img src="https://sitenexs.com/assets/logo/lencana.png" class="verified-badge" alt="Pro Badge" title="Lencana Pro" style="margin-left: 2px;">`;
+                }
+                profileBadgesContainer.innerHTML = badgesHtml;
 
                 currentUserData = {
                     uid: user.uid,
                     nama: d.namaLengkap,
                     isVerified: d.isVerified,
+                    isPro: d.isPro,
                     avatar: `${supabaseUrl}/storage/v1/object/public/${avatarBucket}/${encodeURIComponent(user.uid)}/profile-photo?t=${Date.now()}`,
                     fallbackAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(d.namaLengkap)}&background=2563eb&color=fff`
                 };
@@ -1634,7 +1639,7 @@
             `;
         }
 
-        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI ---
+        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI & LENCANA KUNING ---
         function runAsyncVerifBadges() {
             setTimeout(() => {
                 document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
@@ -1646,12 +1651,16 @@
                         if (snap.exists()) {
                             const d = snap.data();
                             const isVerified = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
+                            const isPro = Boolean(d.isPro) || Boolean(d.lencanaKuning) || Boolean(d.isLencanaKuning);
                             
+                            let badgesHtml = '';
                             if (isVerified) {
-                                el.innerHTML = `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified">`;
-                            } else {
-                                el.innerHTML = '';
+                                badgesHtml += `<img src="https://sitenexs.com/assets/logo/verified.png" class="member-verification-icon" alt="Verified" title="Verified">`;
                             }
+                            if (isPro) {
+                                badgesHtml += `<img src="https://sitenexs.com/assets/logo/lencana.png" class="member-verification-icon" alt="Pro Badge" title="Lencana Pro" style="margin-left: 2px;">`;
+                            }
+                            el.innerHTML = badgesHtml;
                         } else {
                             el.innerHTML = '';
                         }
@@ -2034,9 +2043,8 @@
             if (navigator.vibrate) navigator.vibrate(50);
         };
 
-                  window.handleLogout = async function() {
+        window.handleLogout = async function() {
             if (confirm("Apakah Anda yakin ingin keluar dari akun Sitenexs?")) {
-                // Hapus data sesi di subdomain akun
                 localStorage.removeItem('sitenexs_uid');
                 localStorage.removeItem('sitenexs_logged_in');
                 localStorage.removeItem('sitenexs_show_welcome');
@@ -2046,12 +2054,9 @@
                     await signOut(auth);
                 } catch(e) {}
 
-                // LEMPAR KE INDEX.HTML DENGAN PARAMETER LOGOUT AGAR DOMAIN UTAMA MEMBERSIHKAN SESI JUGA
                 window.location.replace("https://sitenexs.com/?logout=true");
             }
         };
-
-
     </script>
 </body>
 </html>
