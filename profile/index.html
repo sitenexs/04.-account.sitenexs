@@ -1147,7 +1147,9 @@
                     d.paketLangganan = rawPkg || 'Basic';
 
                     d.email = data.email || user.email || '';
-                    d.isVerified = Boolean(data.isVerified) || Boolean(data.isFounder) || Boolean(data.isDeveloper);
+                    
+                    // DIPERBARUI: Hanya bernilai true jika field isVerified bernilai true secara mutlak
+                    d.isVerified = Boolean(data.isVerified);
                     d.isPro = Boolean(data.isPro) || Boolean(data.lencanaKuning) || Boolean(data.isLencanaKuning);
                 }
 
@@ -1639,7 +1641,7 @@
             `;
         }
 
-        // --- PEMERIKSAAN DINAMIS STATUS VERIFIKASI & LENCANA KUNING ---
+        // --- DIPERBARUI: Hanya menampilkan centang biru jika isVerified bernilai true secara mutlak ---
         function runAsyncVerifBadges() {
             setTimeout(() => {
                 document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
@@ -1650,7 +1652,9 @@
                         const snap = await getDoc(doc(db, "users", uid));
                         if (snap.exists()) {
                             const d = snap.data();
-                            const isVerified = Boolean(d.isVerified) || Boolean(d.isFounder) || Boolean(d.isDeveloper);
+                            
+                            // PERBAIKAN: Hanya cek field isVerified langsung
+                            const isVerified = Boolean(d.isVerified);
                             const isPro = Boolean(d.isPro) || Boolean(d.lencanaKuning) || Boolean(d.isLencanaKuning);
                             
                             let badgesHtml = '';
