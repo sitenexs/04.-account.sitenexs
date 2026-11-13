@@ -709,7 +709,7 @@
     
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -728,6 +728,17 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const mainSiteOrigin = 'https://sitenexs.com';
+
+        // Sinkronisasi Sesi
+        onAuthStateChanged(auth, (user) => {
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'sitenexs-auth-state',
+                    signedIn: Boolean(user)
+                }, mainSiteOrigin);
+            }
+        });
 
         const countryData = [
             { code: '+62', name: 'Indonesia' },
@@ -1005,8 +1016,14 @@
                     createdAt: new Date().toISOString()
                 });
                 
+                // Simpan juga ke localStorage cadangan & Sinkronisasi Sesi
+                localStorage.setItem('sitenexs_logged_in', 'true');
+                localStorage.setItem('sitenexs_uid', user.uid);
+
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
-                window.location.assign('https://sitenexs.com/');
+                
+                // LEMPAR KE HALAMAN KOMUNITAS DENGAN MEMBAWA PARAMETER UID (Sama seperti sign-in.html)
+                window.location.assign(`https://sitenexs.com/community/?uid=${user.uid}`);
                 
             } catch (error) {
                 message.className = 'error';
