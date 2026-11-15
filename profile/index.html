@@ -666,7 +666,8 @@
                 <span class="logo-text" id="navLogoText">SITENEXS</span>
             </a>
             <div class="nav-actions">
-                <a href="https://sitenexs.com/" class="btn btn-secondary btn-icon-only" title="Beranda"><i class="fas fa-home"></i></a>
+                <!-- Tombol Akses Pesan / Inbox -->
+                <a href="https://sitenexs.com/messages.html" class="btn btn-secondary btn-icon-only" title="Pesan Masuk"><i class="fas fa-envelope"></i></a>
                 <a href="https://sitenexs.com/community/" class="btn btn-secondary btn-icon-only" title="Komunitas"><i class="fas fa-comments"></i></a>
                 <button type="button" onclick="openSidebar()" class="btn btn-secondary btn-icon-only" title="Edit Profil & Pengaturan"><i class="fas fa-bars"></i></button>
             </div>
@@ -1147,8 +1148,6 @@
                     d.paketLangganan = rawPkg || 'Basic';
 
                     d.email = data.email || user.email || '';
-                    
-                    // DIPERBARUI: Hanya bernilai true jika field isVerified bernilai true secara mutlak
                     d.isVerified = Boolean(data.isVerified);
                     d.isPro = Boolean(data.isPro) || Boolean(data.lencanaKuning) || Boolean(data.isLencanaKuning);
                 }
@@ -1641,7 +1640,6 @@
             `;
         }
 
-        // --- DIPERBARUI: Hanya menampilkan centang biru jika isVerified bernilai true secara mutlak ---
         function runAsyncVerifBadges() {
             setTimeout(() => {
                 document.querySelectorAll('.async-verif-badge').forEach(async (el) => {
@@ -1652,8 +1650,6 @@
                         const snap = await getDoc(doc(db, "users", uid));
                         if (snap.exists()) {
                             const d = snap.data();
-                            
-                            // PERBAIKAN: Hanya cek field isVerified langsung
                             const isVerified = Boolean(d.isVerified);
                             const isPro = Boolean(d.isPro) || Boolean(d.lencanaKuning) || Boolean(d.isLencanaKuning);
                             
