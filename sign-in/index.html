@@ -407,7 +407,8 @@
             signInWithEmailAndPassword,
             sendPasswordResetEmail,
             GoogleAuthProvider,
-            signInWithRedirect
+            signInWithRedirect,
+            getRedirectResult
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
 
         const firebaseConfig = {
@@ -449,23 +450,48 @@
             btnText.textContent = 'Masuk';
         });
 
-        // Tetapkan persistensi lokal secara default
-        setPersistence(auth, browserLocalPersistence).catch(console.error);
+        // Tetapkan persistensi lokal & tangkap hasil redirect Google secara eksplisit
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => getRedirectResult(auth))
+            .then((result) => {
+                if (result && result.user) {
+                    const user = result.user;
+                    localStorage.setItem('sitenexs_logged_in', 'true');
+                    localStorage.setItem('sitenexs_uid', user.uid);
+                    localStorage.setItem('sitenexs_show_welcome', 'true');
+                    
+                    googleBtnText.innerHTML = 'Berhasil';
+                    showMessage('Login berhasil! Mengalihkan ke Sitenexs...', 'success');
 
-        // Pantau status login secara otomatis untuk Google Redirect maupun Email/Password
+                    setTimeout(() => {
+                        window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
+                    }, 400);
+                }
+            })
+            .catch((error) => {
+                console.error("Redirect Auth Error:", error);
+                googleBtn.disabled = false;
+                googleBtnText.textContent = 'Lanjutkan dengan Google';
+                if (error.code && error.code !== 'auth/null-user') {
+                    const messages = {
+                        'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
+                        'auth/popup-closed-by-user': 'Login dibatalkan.',
+                        'auth/unauthorized-domain': 'Domain ini belum diizinkan di Firebase Console.'
+                    };
+                    showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
+                }
+            });
+
+        // Pantau status login secara otomatis sebagai pengaman tambahan
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
                 localStorage.setItem('sitenexs_show_welcome', 'true');
 
-                googleBtnText.innerHTML = 'Berhasil';
-                showMessage('Login berhasil! Mengalihkan ke Sitenexs...', 'success');
-
-                // Langsung arahkan ke sitenexs.com membawa parameter
-                setTimeout(() => {
+                if (!window.location.search.includes('welcome=true')) {
                     window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
-                }, 400);
+                }
             }
 
             if (window.parent !== window) {
