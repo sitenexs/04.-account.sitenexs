@@ -379,6 +379,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import {
             browserLocalPersistence,
+            browserSessionPersistence,
             getAuth,
             onAuthStateChanged,
             setPersistence,
@@ -420,7 +421,50 @@
             this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
 
+        // Reset tombol jika halaman dimuat ulang dari cache browser (mencegah nyangkut di "Mengalihkan...")
+        window.addEventListener('pageshow', () => {
+            googleBtn.disabled = false;
+            googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
+            submitButton.disabled = false;
+            btnText.textContent = 'Masuk';
+        });
+
+        // Tangani hasil redirect Google secara aman & tangguh
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => getRedirectResult(auth))
+            .then((result) => {
+                if (result && result.user) {
+                    const user = result.user;
+                    localStorage.setItem('sitenexs_logged_in', 'true');
+                    localStorage.setItem('sitenexs_uid', user.uid);
+                    localStorage.setItem('sitenexs_show_welcome', 'true');
+                    window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
+                }
+            })
+            .catch((error) => {
+                console.error("Redirect Auth Error:", error);
+                googleBtn.disabled = false;
+                googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
+                if (error.code && error.code !== 'auth/null-user') {
+                    const messages = {
+                        'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
+                        'auth/popup-closed-by-user': 'Login dibatalkan.'
+                    };
+                    showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
+                }
+            });
+
+        // Listener Auth State & PostMessage
         onAuthStateChanged(auth, (user) => {
+            if (user && !window.location.search.includes('welcome=true')) {
+                localStorage.setItem('sitenexs_logged_in', 'true');
+                localStorage.setItem('sitenexs_uid', user.uid);
+                localStorage.setItem('sitenexs_show_welcome', 'true');
+                // Auto-redirect jika sudah terdeteksi login aktif
+                if (window.location.origin !== 'https://sitenexs.com') {
+                    window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
+                }
+            }
             if (window.parent !== window) {
                 window.parent.postMessage({
                     type: 'sitenexs-auth-state',
@@ -433,32 +477,6 @@
             message.textContent = msg;
             message.className = type;
         }
-
-        // Tangani hasil redirect Google secara aman dengan menetapkan persistensi terlebih dahulu
-        setPersistence(auth, browserLocalPersistence)
-            .then(() => {
-                return getRedirectResult(auth);
-            })
-            .then((result) => {
-                if (result && result.user) {
-                    const user = result.user;
-                    localStorage.setItem('sitenexs_logged_in', 'true');
-                    localStorage.setItem('sitenexs_uid', user.uid);
-                    localStorage.setItem('sitenexs_show_welcome', 'true');
-
-                    window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                if (error.code && error.code !== 'auth/null-user') {
-                    const messages = {
-                        'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
-                        'auth/popup-closed-by-user': 'Login dibatalkan.'
-                    };
-                    showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
-                }
-            });
 
         // Login Email & Password
         form.addEventListener('submit', async (event) => {
@@ -515,10 +533,10 @@
                 await setPersistence(auth, browserLocalPersistence);
                 await signInWithRedirect(auth, googleProvider);
             } catch (error) {
-                console.error(error);
-                showMessage('Gagal menghubungkan ke Google.', 'error');
+                console.error("Google Redirect Error:", error);
+                showMessage('Gagal menghubungkan ke Google: ' + error.message, 'error');
                 googleBtn.disabled = false;
-                googleBtnText.textContent = 'Lanjutkan dengan Google';
+                googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
             }
         });
 
