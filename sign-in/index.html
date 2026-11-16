@@ -421,10 +421,10 @@
             this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
 
-        // Reset tombol jika halaman dimuat ulang dari cache browser (mencegah nyangkut di "Mengalihkan...")
+        // Reset tombol jika halaman dimuat ulang dari cache browser
         window.addEventListener('pageshow', () => {
             googleBtn.disabled = false;
-            googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
+            googleBtnText.textContent = 'Lanjutkan dengan Google';
             submitButton.disabled = false;
             btnText.textContent = 'Masuk';
         });
@@ -444,11 +444,12 @@
             .catch((error) => {
                 console.error("Redirect Auth Error:", error);
                 googleBtn.disabled = false;
-                googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
+                googleBtnText.textContent = 'Lanjutkan dengan Google';
                 if (error.code && error.code !== 'auth/null-user') {
                     const messages = {
                         'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
-                        'auth/popup-closed-by-user': 'Login dibatalkan.'
+                        'auth/popup-closed-by-user': 'Login dibatalkan.',
+                        'auth/unauthorized-domain': 'Domain ini belum diizinkan di Firebase Console.'
                     };
                     showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
                 }
@@ -460,7 +461,6 @@
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
                 localStorage.setItem('sitenexs_show_welcome', 'true');
-                // Auto-redirect jika sudah terdeteksi login aktif
                 if (window.location.origin !== 'https://sitenexs.com') {
                     window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
                 }
@@ -536,7 +536,7 @@
                 console.error("Google Redirect Error:", error);
                 showMessage('Gagal menghubungkan ke Google: ' + error.message, 'error');
                 googleBtn.disabled = false;
-                googleBtnText.innerHTML = '<i class="fab fa-google"></i> <span>Lanjutkan dengan Google</span>';
+                googleBtnText.textContent = 'Lanjutkan dengan Google';
             }
         });
 
