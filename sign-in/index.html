@@ -407,7 +407,8 @@
             sendPasswordResetEmail,
             GoogleAuthProvider,
             signInWithPopup,
-            signOut
+            signOut,
+            deleteUser
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         
         import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
@@ -503,7 +504,10 @@
                 const isRegistered = await checkUserRegistered(user);
                 if (!isRegistered) {
                     await signOut(auth);
-                    window.location.assign(`https://account.sitenexs.com/register/?email=${encodeURIComponent(user.email)}`);
+                    showMessage('Anda belum mempunyai akun, silahkan mendaftar dulu', 'error');
+                    setTimeout(() => {
+                        window.location.assign(`https://account.sitenexs.com/register/?email=${encodeURIComponent(user.email)}`);
+                    }, 1200);
                     return;
                 }
 
@@ -542,8 +546,11 @@
                 const isRegistered = await checkUserRegistered(user);
                 
                 if (!isRegistered) {
-                    await signOut(auth);
-                    // Menampilkan pesan notifikasi sebelum dialihkan ke halaman register membawa parameter email
+                    // Hapus akun dari Firebase Authentication agar tidak tersimpan jika belum mendaftar
+                    await deleteUser(user).catch(async () => {
+                        await signOut(auth);
+                    });
+
                     showMessage('Anda belum mempunyai akun, silahkan mendaftar dulu', 'error');
                     setTimeout(() => {
                         window.location.assign(`https://account.sitenexs.com/register/?email=${encodeURIComponent(user.email)}`);
