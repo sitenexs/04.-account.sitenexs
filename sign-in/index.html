@@ -429,7 +429,7 @@
             btnText.textContent = 'Masuk';
         });
 
-        // Tangani hasil redirect Google secara aman & tangguh
+        // Tangani hasil redirect Google & langsung lempar ke sitenexs.com
         setPersistence(auth, browserLocalPersistence)
             .then(() => getRedirectResult(auth))
             .then((result) => {
@@ -438,6 +438,8 @@
                     localStorage.setItem('sitenexs_logged_in', 'true');
                     localStorage.setItem('sitenexs_uid', user.uid);
                     localStorage.setItem('sitenexs_show_welcome', 'true');
+                    
+                    // Eksekusi pengalihan langsung ke halaman utama
                     window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
                 }
             })
@@ -455,13 +457,15 @@
                 }
             });
 
-        // Listener Auth State & PostMessage
+        // Listener Auth State cadangan untuk memastikan jika redirect result sudah bersih tapi user sudah login
         onAuthStateChanged(auth, (user) => {
-            if (user && !window.location.search.includes('welcome=true')) {
+            if (user) {
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
                 localStorage.setItem('sitenexs_show_welcome', 'true');
-                if (window.location.origin !== 'https://sitenexs.com') {
+
+                // Jika terdeteksi user sudah masuk dan bukan di halaman utama, langsung lempar
+                if (window.location.origin !== 'https://sitenexs.com' && !window.location.search.includes('welcome=true')) {
                     window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
                 }
             }
