@@ -379,7 +379,6 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import {
             browserLocalPersistence,
-            browserSessionPersistence,
             getAuth,
             onAuthStateChanged,
             setPersistence,
@@ -435,9 +434,12 @@
             message.className = type;
         }
 
-        // Cek hasil redirect dari Google setelah halaman dimuat kembali
-        getRedirectResult(auth)
-            .then(async (result) => {
+        // Tangani hasil redirect Google secara aman dengan menetapkan persistensi terlebih dahulu
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => {
+                return getRedirectResult(auth);
+            })
+            .then((result) => {
                 if (result && result.user) {
                     const user = result.user;
                     localStorage.setItem('sitenexs_logged_in', 'true');
@@ -449,11 +451,13 @@
             })
             .catch((error) => {
                 console.error(error);
-                const messages = {
-                    'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
-                    'auth/popup-closed-by-user': 'Login dibatalkan.'
-                };
-                showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
+                if (error.code && error.code !== 'auth/null-user') {
+                    const messages = {
+                        'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
+                        'auth/popup-closed-by-user': 'Login dibatalkan.'
+                    };
+                    showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
+                }
             });
 
         // Login Email & Password
