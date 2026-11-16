@@ -231,7 +231,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
             width: 100%;
             padding: 0.65rem; 
             border-radius: var(--radius-sm);
@@ -250,7 +250,44 @@
             background: var(--primary-dark);
         }
 
+        /* Tombol Google */
+        .btn-google {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            margin-top: 0.75rem;
+        }
+
+        .btn-google:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-google i {
+            color: #ea4335;
+        }
+
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Divider "Atau" */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.25rem 0 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .divider span {
+            padding: 0 0.75rem;
+        }
 
         /* Message */
         #auth-message {
@@ -340,6 +377,15 @@
                 </button>
             </form>
 
+            <div class="divider">
+                <span>Atau</span>
+            </div>
+
+            <!-- Tombol Google Sign-In -->
+            <button type="button" class="btn btn-google" id="googleBtn">
+                <i class="fab fa-google"></i> <span id="googleBtnText">Lanjutkan dengan Google</span>
+            </button>
+
             <div id="auth-message" role="status" aria-live="polite"></div>
 
             <div class="alt">
@@ -357,7 +403,9 @@
             onAuthStateChanged,
             setPersistence,
             signInWithEmailAndPassword,
-            sendPasswordResetEmail
+            sendPasswordResetEmail,
+            GoogleAuthProvider,
+            signInWithPopup
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
 
         const firebaseConfig = {
@@ -375,6 +423,11 @@
         const message = document.getElementById('auth-message');
         const submitButton = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
+        
+        const googleBtn = document.getElementById('googleBtn');
+        const googleBtnText = document.getElementById('googleBtnText');
+        const googleProvider = new GoogleAuthProvider();
+
         const mainSiteOrigin = 'https://sitenexs.com';
         
         // Fitur Toggle Password (Mata)
@@ -402,7 +455,8 @@
             message.className = type;
         }
 
-            form.addEventListener('submit', async (event) => {
+        // Login Email & Password
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
             message.textContent = '';
@@ -424,14 +478,11 @@
                 
                 const user = userCredential.user;
 
-                // Simpan juga ke localStorage cadangan
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
                 localStorage.setItem('sitenexs_show_welcome', 'true');
 
                 btnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
-                
-                // LEMPAR LANGSUNG KE INDEX.HTML DENGAN MEMBAWA PARAMETER WELCOME DAN UID
                 window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
 
             } catch (error) {
@@ -448,8 +499,41 @@
             }
         });
 
+        // Login dengan Google
+        googleBtn.addEventListener('click', async () => {
+            message.className = '';
+            message.textContent = '';
+            googleBtn.disabled = true;
+            googleBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
 
+            try {
+                await setPersistence(auth, browserLocalPersistence);
 
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                localStorage.setItem('sitenexs_logged_in', 'true');
+                localStorage.setItem('sitenexs_uid', user.uid);
+                localStorage.setItem('sitenexs_show_welcome', 'true');
+
+                googleBtnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
+                window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
+
+            } catch (error) {
+                console.error(error);
+                const messages = {
+                    'auth/popup-closed-by-user': 'Login Google dibatalkan.',
+                    'auth/cancelled-popup-request': 'Permintaan login dibatalkan.',
+                    'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.'
+                };
+                showMessage(messages[error.code] || 'Gagal masuk dengan Google.', 'error');
+                
+                googleBtn.disabled = false;
+                googleBtnText.textContent = 'Lanjutkan dengan Google';
+            }
+        });
+
+        // Lupa Password
         document.getElementById('reset-password').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
             if (!email) {
