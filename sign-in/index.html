@@ -411,8 +411,7 @@
             signOut
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         
-        // Jika Anda menggunakan Firestore untuk menyimpan data user, aktifkan baris di bawah ini:
-        // import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -426,7 +425,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        // const db = getFirestore(app); // Aktifkan jika menggunakan Firestore
+        const db = getFirestore(app);
 
         const form = document.getElementById('login-form');
         const message = document.getElementById('auth-message');
@@ -456,19 +455,13 @@
             btnText.textContent = 'Masuk';
         });
 
-        // Fungsi pembantu untuk mengecek apakah user sudah terdaftar di database Sitenexs
+        // Fungsi nyata untuk memeriksa apakah user sudah terdaftar di Firestore
         async function checkUserRegistered(user) {
             try {
-                // Contoh pengecekan ke Firestore pada koleksi 'users' dengan ID `user.uid`
-                // const userRef = doc(db, 'users', user.uid);
-                // const userSnap = await getDoc(userRef);
-                // return userSnap.exists();
-
-                // CATATAN: Jika Anda menggunakan metode lain (seperti database kustom/API), 
-                // ganti blok di atas dengan fetch ke server Anda. 
-                // Untuk sementara, kita asumsikan jika email mengandung domain tertentu atau Anda bisa sesuaikan kondisinya.
-                
-                return true; // Ubah ke false jika data belum ditemukan di database Anda
+                // Mengecek apakah dokumen dengan ID UID user ada di koleksi 'users'
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+                return userSnap.exists();
             } catch (err) {
                 console.error("Gagal memeriksa data user:", err);
                 return false;
