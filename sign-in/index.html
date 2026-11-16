@@ -19,7 +19,6 @@
             --border-light: #cbd5e1;
             --border-focus: #93c5fd;
             
-            /* Shadow yang lebih rapat dan natural */
             --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
             
             --radius-sm: 0.4rem;  
@@ -46,7 +45,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Topbar - Lebih Ramping */
         .topbar {
             width: min(900px, calc(100% - 2rem));
             margin: 0 auto;
@@ -72,7 +70,6 @@
             border: 1px solid var(--border-light);
         }
 
-        /* Gradient pada Sitenexs */
         .brand-text {
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             -webkit-background-clip: text;
@@ -92,7 +89,6 @@
         
         .back-link:hover { color: var(--primary); }
 
-        /* Card Wrapper - Diperkecil */
         .auth-wrap {
             flex: 1;
             display: flex;
@@ -127,7 +123,6 @@
             line-height: 1.4;
         }
 
-        /* Form Inputs - Lebih presisi dan ringkas */
         .form-group { margin-bottom: 1rem; }
 
         label {
@@ -162,9 +157,7 @@
         }
 
         input::placeholder { color: #94a3b8; }
-
         input:hover { border-color: #94a3b8; }
-
         input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--border-focus); 
@@ -189,7 +182,6 @@
 
         .toggle-password:hover { color: var(--text-main); }
 
-        /* Row untuk Ingat Saya & Lupa Password */
         .row {
             display: flex;
             justify-content: space-between;
@@ -226,7 +218,6 @@
         
         .link:hover { text-decoration: underline; }
 
-        /* Button - Lebih slim */
         .btn {
             display: flex;
             align-items: center;
@@ -250,7 +241,6 @@
             background: var(--primary-dark);
         }
 
-        /* Tombol Google */
         .btn-google {
             background: #ffffff;
             color: var(--text-main);
@@ -263,13 +253,9 @@
             border-color: #94a3b8;
         }
 
-        .btn-google i {
-            color: #ea4335;
-        }
-
+        .btn-google i { color: #ea4335; }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* Divider "Atau" */
         .divider {
             display: flex;
             align-items: center;
@@ -285,11 +271,8 @@
             border-bottom: 1px solid var(--border-light);
         }
 
-        .divider span {
-            padding: 0 0.75rem;
-        }
+        .divider span { padding: 0 0.75rem; }
 
-        /* Message */
         #auth-message {
             margin-top: 1rem;
             padding: 0.6rem;
@@ -313,7 +296,6 @@
             border: 1px solid #a7f3d0;
         }
 
-        /* Alt Link */
         .alt {
             margin-top: 1.5rem;
             text-align: center;
@@ -323,7 +305,6 @@
 
         .alt a { color: var(--primary); font-weight: 600; }
         .alt a:hover { text-decoration: underline; }
-
     </style>
 </head>
 <body>
@@ -405,7 +386,8 @@
             signInWithEmailAndPassword,
             sendPasswordResetEmail,
             GoogleAuthProvider,
-            signInWithPopup
+            signInWithRedirect,
+            getRedirectResult
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
 
         const firebaseConfig = {
@@ -430,7 +412,6 @@
 
         const mainSiteOrigin = 'https://sitenexs.com';
         
-        // Fitur Toggle Password (Mata)
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
 
@@ -440,7 +421,6 @@
             this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
 
-        // Sinkronisasi Sesi
         onAuthStateChanged(auth, (user) => {
             if (window.parent !== window) {
                 window.parent.postMessage({
@@ -454,6 +434,27 @@
             message.textContent = msg;
             message.className = type;
         }
+
+        // Cek hasil redirect dari Google setelah halaman dimuat kembali
+        getRedirectResult(auth)
+            .then(async (result) => {
+                if (result && result.user) {
+                    const user = result.user;
+                    localStorage.setItem('sitenexs_logged_in', 'true');
+                    localStorage.setItem('sitenexs_uid', user.uid);
+                    localStorage.setItem('sitenexs_show_welcome', 'true');
+
+                    window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                const messages = {
+                    'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.',
+                    'auth/popup-closed-by-user': 'Login dibatalkan.'
+                };
+                showMessage(messages[error.code] || 'Gagal masuk dengan Google: ' + error.message, 'error');
+            });
 
         // Login Email & Password
         form.addEventListener('submit', async (event) => {
@@ -499,35 +500,19 @@
             }
         });
 
-        // Login dengan Google
+        // Login dengan Google menggunakan Redirect
         googleBtn.addEventListener('click', async () => {
             message.className = '';
             message.textContent = '';
             googleBtn.disabled = true;
-            googleBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghubungkan...';
+            googleBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengalihkan...';
 
             try {
                 await setPersistence(auth, browserLocalPersistence);
-
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-
-                localStorage.setItem('sitenexs_logged_in', 'true');
-                localStorage.setItem('sitenexs_uid', user.uid);
-                localStorage.setItem('sitenexs_show_welcome', 'true');
-
-                googleBtnText.innerHTML = '<i class="fas fa-check"></i> Berhasil';
-                window.location.assign(`https://sitenexs.com/?welcome=true&uid=${user.uid}`);
-
+                await signInWithRedirect(auth, googleProvider);
             } catch (error) {
                 console.error(error);
-                const messages = {
-                    'auth/popup-closed-by-user': 'Login Google dibatalkan.',
-                    'auth/cancelled-popup-request': 'Permintaan login dibatalkan.',
-                    'auth/account-exists-with-different-credential': 'Akun sudah terdaftar dengan metode lain.'
-                };
-                showMessage(messages[error.code] || 'Gagal masuk dengan Google.', 'error');
-                
+                showMessage('Gagal menghubungkan ke Google.', 'error');
                 googleBtn.disabled = false;
                 googleBtnText.textContent = 'Lanjutkan dengan Google';
             }
