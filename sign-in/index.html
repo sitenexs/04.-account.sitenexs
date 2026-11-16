@@ -241,7 +241,6 @@
             background: var(--primary-dark);
         }
 
-        /* Tombol Google Standar Asli (Desain Profesional) */
         .btn-google {
             background: #ffffff;
             color: #3c4043;
@@ -447,7 +446,6 @@
             this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
 
-        // Reset tombol jika halaman dimuat ulang dari cache browser
         window.addEventListener('pageshow', () => {
             googleBtn.disabled = false;
             googleBtnText.textContent = 'Lanjutkan dengan Google';
@@ -455,10 +453,8 @@
             btnText.textContent = 'Masuk';
         });
 
-        // Fungsi nyata untuk memeriksa apakah user sudah terdaftar di Firestore
         async function checkUserRegistered(user) {
             try {
-                // Mengecek apakah dokumen dengan ID UID user ada di koleksi 'users'
                 const userRef = doc(db, 'users', user.uid);
                 const userSnap = await getDoc(userRef);
                 return userSnap.exists();
@@ -468,7 +464,6 @@
             }
         }
 
-        // Pantau status login secara otomatis untuk postMessage
         onAuthStateChanged(auth, (user) => {
             if (window.parent !== window) {
                 window.parent.postMessage({
@@ -483,7 +478,6 @@
             message.className = type;
         }
 
-        // Login Email & Password
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
             message.className = '';
@@ -506,11 +500,10 @@
                 
                 const user = userCredential.user;
 
-                // Cek apakah data user ada di database Sitenexs
                 const isRegistered = await checkUserRegistered(user);
                 if (!isRegistered) {
                     await signOut(auth);
-                    window.location.assign('https://account.sitenexs.com/register/');
+                    window.location.assign(`https://account.sitenexs.com/register/?email=${encodeURIComponent(user.email)}`);
                     return;
                 }
 
@@ -535,7 +528,6 @@
             }
         });
 
-        // Login dengan Google menggunakan Popup
         googleBtn.addEventListener('click', async () => {
             message.className = '';
             message.textContent = '';
@@ -547,13 +539,15 @@
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
 
-                // CEK APAKAH USER SUDAH TERDAFTAR DI DATABASE SITENEXS
                 const isRegistered = await checkUserRegistered(user);
                 
                 if (!isRegistered) {
-                    // Jika belum terdaftar, keluarkan sesi auth dan arahkan ke halaman register
                     await signOut(auth);
-                    window.location.assign('https://account.sitenexs.com/register/');
+                    // Menampilkan pesan notifikasi sebelum dialihkan ke halaman register membawa parameter email
+                    showMessage('Anda belum mempunyai akun, silahkan mendaftar dulu', 'error');
+                    setTimeout(() => {
+                        window.location.assign(`https://account.sitenexs.com/register/?email=${encodeURIComponent(user.email)}`);
+                    }, 1200);
                     return;
                 }
 
@@ -579,7 +573,6 @@
             }
         });
 
-        // Lupa Password
         document.getElementById('reset-password').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
             if (!email) {
