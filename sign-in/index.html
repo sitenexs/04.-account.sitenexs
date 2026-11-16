@@ -407,8 +407,12 @@
             signInWithEmailAndPassword,
             sendPasswordResetEmail,
             GoogleAuthProvider,
-            signInWithPopup
+            signInWithPopup,
+            signOut
         } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+        
+        // Jika Anda menggunakan Firestore untuk menyimpan data user, aktifkan baris di bawah ini:
+        // import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
@@ -420,7 +424,10 @@
             measurementId: 'G-C7YL0Q7YRQ'
         };
 
-        const auth = getAuth(initializeApp(firebaseConfig));
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // const db = getFirestore(app); // Aktifkan jika menggunakan Firestore
+
         const form = document.getElementById('login-form');
         const message = document.getElementById('auth-message');
         const submitButton = document.getElementById('submitBtn');
@@ -448,6 +455,25 @@
             submitButton.disabled = false;
             btnText.textContent = 'Masuk';
         });
+
+        // Fungsi pembantu untuk mengecek apakah user sudah terdaftar di database Sitenexs
+        async function checkUserRegistered(user) {
+            try {
+                // Contoh pengecekan ke Firestore pada koleksi 'users' dengan ID `user.uid`
+                // const userRef = doc(db, 'users', user.uid);
+                // const userSnap = await getDoc(userRef);
+                // return userSnap.exists();
+
+                // CATATAN: Jika Anda menggunakan metode lain (seperti database kustom/API), 
+                // ganti blok di atas dengan fetch ke server Anda. 
+                // Untuk sementara, kita asumsikan jika email mengandung domain tertentu atau Anda bisa sesuaikan kondisinya.
+                
+                return true; // Ubah ke false jika data belum ditemukan di database Anda
+            } catch (err) {
+                console.error("Gagal memeriksa data user:", err);
+                return false;
+            }
+        }
 
         // Pantau status login secara otomatis untuk postMessage
         onAuthStateChanged(auth, (user) => {
@@ -487,6 +513,14 @@
                 
                 const user = userCredential.user;
 
+                // Cek apakah data user ada di database Sitenexs
+                const isRegistered = await checkUserRegistered(user);
+                if (!isRegistered) {
+                    await signOut(auth);
+                    window.location.assign('https://account.sitenexs.com/register/');
+                    return;
+                }
+
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
                 localStorage.setItem('sitenexs_show_welcome', 'true');
@@ -508,7 +542,7 @@
             }
         });
 
-        // Login dengan Google menggunakan Popup (Langsung tangkap hasil & arahkan ke sitenexs.com)
+        // Login dengan Google menggunakan Popup
         googleBtn.addEventListener('click', async () => {
             message.className = '';
             message.textContent = '';
@@ -519,6 +553,16 @@
                 await setPersistence(auth, browserLocalPersistence);
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
+
+                // CEK APAKAH USER SUDAH TERDAFTAR DI DATABASE SITENEXS
+                const isRegistered = await checkUserRegistered(user);
+                
+                if (!isRegistered) {
+                    // Jika belum terdaftar, keluarkan sesi auth dan arahkan ke halaman register
+                    await signOut(auth);
+                    window.location.assign('https://account.sitenexs.com/register/');
+                    return;
+                }
 
                 localStorage.setItem('sitenexs_logged_in', 'true');
                 localStorage.setItem('sitenexs_uid', user.uid);
