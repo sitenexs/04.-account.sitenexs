@@ -126,6 +126,66 @@
         .text-primary { color: var(--primary); }
         .text-muted { color: var(--text-muted); }
 
+        /* BANNER DALAM PANGGILAN (DI BAWAH NAVBAR) */
+        .active-call-banner {
+            display: none;
+            width: 100%;
+            max-width: 680px;
+            margin: 0.5rem auto 0;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.55rem 1rem;
+            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+            color: #ffffff;
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            transition: var(--transition);
+        }
+        .active-call-banner:hover {
+            filter: brightness(1.04);
+        }
+        .active-call-banner.active {
+            display: flex;
+        }
+        .active-call-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            min-width: 0;
+        }
+        .active-call-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            flex-shrink: 0;
+            animation: callBannerPulse 1.3s infinite ease-in-out;
+        }
+        @keyframes callBannerPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.45); opacity: 0.55; }
+        }
+        .active-call-banner-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .active-call-banner-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(255, 255, 255, 0.22);
+            padding: 0.24rem 0.65rem;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
         /* BUTTONS */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
@@ -444,6 +504,7 @@
 
         /* MODE FOKUS & BLUR POST CARD */
         body.forum-focus-mode header,
+        body.forum-focus-mode .active-call-banner,
         body.forum-focus-mode .profile-header-card,
         body.forum-focus-mode .card-title,
         body.forum-focus-mode .post-card:not(.focused-card) {
@@ -674,6 +735,19 @@
         </div>
     </header>
 
+    <!-- BANNER DI BAWAH NAVBAR SAAT SEDANG BERADA DI DALAM PANGGILAN -->
+    <div id="activeCallBanner" class="active-call-banner" role="button" tabindex="0">
+        <div class="active-call-banner-left">
+            <span class="active-call-pulse"></span>
+            <i id="activeCallBannerIcon" class="fas fa-phone-alt"></i>
+            <span id="activeCallBannerText" class="active-call-banner-text">Dalam panggilan...</span>
+        </div>
+        <span class="active-call-banner-cta">
+            <span>Masuk</span>
+            <i class="fas fa-chevron-right"></i>
+        </span>
+    </div>
+
     <!-- KONTEN UTAMA PROFIL -->
     <main class="container profile-wrapper">
 
@@ -781,10 +855,17 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, updateProfile } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
         import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, collection, query, where, getDocs, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
+        import { getDatabase } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js';
+        import {
+            DEFAULT_CALL_PAGE_URL,
+            attachForcedIncomingCallRedirect,
+            attachOngoingCallBanner
+        } from 'https://sitenexs.com/assets/js/sitenexs-call-presence.js';
 
         const firebaseConfig = {
             apiKey: 'AIzaSyDuN4zlRaSnmcUSuXE_E84IE7d3Mz8E-N4',
             authDomain: 'sitenexs-62919.firebaseapp.com',
+            databaseURL: 'https://sitenexs-62919-default-rtdb.asia-southeast1.firebasedatabase.app',
             projectId: 'sitenexs-62919',
             storageBucket: 'sitenexs-62919.firebasestorage.app',
             messagingSenderId: '1060348110644',
@@ -799,6 +880,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const rtdb = getDatabase(app);
         const auth = getAuth(app);
         
         setPersistence(auth, browserLocalPersistence).catch(err => console.log(err));
@@ -807,8 +889,9 @@
         let currentUser = null;
         let currentUserData = null;
         let allRegisteredUsers = [];
-        let userVerifCache = {};
         let isInitialLoad = true;
+        let cleanupIncomingRedirect = null;
+        let cleanupOngoingBanner = null;
 
         const avatarImg = document.getElementById('profileAvatarImg');
         const sidebarAvatarPreview = document.getElementById('sidebarAvatarPreview');
@@ -1115,6 +1198,25 @@
             currentUid = user.uid;
             currentUser = user;
             renderAvatar(user);
+
+            if (cleanupIncomingRedirect) cleanupIncomingRedirect();
+            cleanupIncomingRedirect = attachForcedIncomingCallRedirect({
+                rtdb,
+                currentUid: user.uid,
+                callPageUrl: DEFAULT_CALL_PAGE_URL,
+                fallbackPeerName: user.displayName || 'Mitra Sitenexs'
+            });
+
+            if (cleanupOngoingBanner) cleanupOngoingBanner();
+            cleanupOngoingBanner = attachOngoingCallBanner({
+                rtdb,
+                currentUid: user.uid,
+                bannerElement: document.getElementById('activeCallBanner'),
+                textElement: document.getElementById('activeCallBannerText'),
+                iconElement: document.getElementById('activeCallBannerIcon'),
+                fallbackPeerName: user.displayName || 'Mitra Sitenexs',
+                callPageUrl: DEFAULT_CALL_PAGE_URL
+            });
 
             try {
                 const userDocRef = doc(db, "users", user.uid);
